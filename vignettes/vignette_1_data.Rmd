@@ -75,12 +75,16 @@ out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
 
 ```{r extract_doi2, warning=FALSE, message=FALSE, echo=FALSE}
 
-col_doi <- which(colnames(out_doi) %in% c("author", "title"))
+col_doi1 <- which(colnames(out_doi) %in% c("title"))
+col_doi2 <- which(colnames(out_doi) %in% c("doi", "author_group","author"))
+
+colnames(out_doi) <- gsub("_", "\\_", colnames(out_doi)) # required for md output
 
 out_doi %>%
-  dplyr::mutate(author = paste0(substr(author, 1, 50), "...")) %>%
+  dplyr::mutate(author = ifelse(is.na(author)==F, paste0(substr(author, 1, 50), "..."),author)) %>%
   knitr::kable(format="html") %>%
-  kableExtra::column_spec(col_doi, width_min="6in") %>%
+  kableExtra::column_spec(col_doi1, width_min="7in") %>%
+  kableExtra::column_spec(col_doi2, width_min="2.5in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
   kableExtra::scroll_box(width = "1000px")
 
@@ -118,10 +122,16 @@ Presentations of academic work are important additional research outputs, yet ar
 
 - The format can be customised via `cite_format` to match preferred referencing style. Note the variable names in the string must exactly match an essential column (e.g. "author" not "Author" or "AUTHOR") 
 
-```{r cite_pre_data, warning=FALSE, message=FALSE, echo=FALSE}
+```{r cite_pre_data, warning=FALSE, message=FALSE, echo=FALSE,results='asis'}
+col_pre7 <- which(colnames(data_presentations) %in% c("title"))
+col_pre3 <- which(colnames(data_presentations) %in% c("author", "con_org", "con_name"))
+col_pre1 <- which(colnames(data_presentations) %in% c("type", "con_country"))
+
  data_presentations %>%
   knitr::kable(format="html") %>%
-  kableExtra::column_spec(which(colnames(.) %in% c("title", "con_org", "con_name")), width_min="6in") %>%
+  kableExtra::column_spec(col_pre7, width_min="7in") %>%
+  kableExtra::column_spec(col_pre3, width_min="3in") %>%
+  kableExtra::column_spec(col_pre1, width_min="1.5in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
   kableExtra::scroll_box(width = "1000px")
 ```

@@ -326,13 +326,13 @@ journal\_issn
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 2.5in; ">
 10.1136/bmjopen-2015-009812
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 2.5in; ">
 NA
 </td>
-<td style="text-align:left;min-width: 6in; ">
+<td style="text-align:left;min-width: 7in; ">
 Outcomes After Kidney injury in Surgery (OAKS): protocol for a
 multicentre, observational cohort study of acute kidney injury following
 major gastrointestinal and liver surgery
@@ -358,8 +358,8 @@ e009812
 <td style="text-align:right;">
 NA
 </td>
-<td style="text-align:left;min-width: 6in; ">
-NA…
+<td style="text-align:left;min-width: 2.5in; ">
+NA
 </td>
 <td style="text-align:left;">
 BMJ Open
@@ -369,13 +369,13 @@ BMJ Open
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 2.5in; ">
 10.1136/bmjopen-2015-008811
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 2.5in; ">
 NA
 </td>
-<td style="text-align:left;min-width: 6in; ">
+<td style="text-align:left;min-width: 7in; ">
 Determining Surgical Complications in the Overweight (DISCOVER): a
 multicentre observational cohort study to evaluate the role of obesity
 as a risk factor for postoperative complications in general surgery
@@ -401,7 +401,7 @@ e008811
 <td style="text-align:right;">
 11
 </td>
-<td style="text-align:left;min-width: 6in; ">
+<td style="text-align:left;min-width: 2.5in; ">
 Nepogodiev D, Chapman SJ, Glasbey J, Kelly M, Khat…
 </td>
 <td style="text-align:left;">
@@ -412,13 +412,13 @@ BMJ Open
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 2.5in; ">
 10.1002/bjs5.86
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 2.5in; ">
 STARSurg Collaborative
 </td>
-<td style="text-align:left;min-width: 6in; ">
+<td style="text-align:left;min-width: 7in; ">
 Prognostic model to predict postoperative acute kidney injury in
 patients undergoing major gastrointestinal surgery based on a national
 prospective observational cohort study
@@ -444,8 +444,8 @@ BJS Open
 <td style="text-align:right;">
 NA
 </td>
-<td style="text-align:left;min-width: 6in; ">
-NA…
+<td style="text-align:left;min-width: 2.5in; ">
+NA
 </td>
 <td style="text-align:left;">
 BJS Open
@@ -586,21 +586,21 @@ author
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 Poster
 </td>
 <td style="text-align:left;">
 International
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7in; ">
 The effects of perioperative Angiotensin Converting Enzyme Inhibitors
 and Angiotensin Receptor Blockers on acute kidney injury in major
 elective non-cardiac surgery. A multicentre, prospective cohort study.
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 ESCP (European Society of Coloproctology)
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 International Conference 2018
 </td>
 <td style="text-align:left;">
@@ -612,28 +612,28 @@ International Conference 2018
 <td style="text-align:left;">
 Nice
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 France
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 STARSurg Collaborative
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 Poster
 </td>
 <td style="text-align:left;">
 International
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7in; ">
 The impact of intravenous contrast on post-operative acute kidney injury
 following major gastrointestinal and liver surgery
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 ESCP (European Society of Coloproctology)
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 International Conference 2018
 </td>
 <td style="text-align:left;">
@@ -645,27 +645,27 @@ International Conference 2018
 <td style="text-align:left;">
 Nice
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 France
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 STARSurg Collaborative
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 Oral
 </td>
 <td style="text-align:left;">
 International
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7in; ">
 EuroSurg Student Initiative - IMAGINE Study: Preliminary Results
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 ESCP (European Society of Coloproctology)
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 International Conference 2018
 </td>
 <td style="text-align:left;">
@@ -677,27 +677,27 @@ International Conference 2018
 <td style="text-align:left;">
 Nice
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 France
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 EuroSurg Collaborative
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 Oral
 </td>
 <td style="text-align:left;">
 International
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7in; ">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 RSM (Royal Society of Medicine)
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 doctor as a scholar and a scientist: international research course for
 medical students and foundation year doctors
 </td>
@@ -710,29 +710,29 @@ medical students and foundation year doctors
 <td style="text-align:left;">
 London
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 UK
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 STARSurg Collaborative
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 Oral-Poster
 </td>
 <td style="text-align:left;">
 International
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7in; ">
 Perioperative non-steroidal anti-inflammatory drugs (NSAID)
 administration and Acute Kidney Injury (AKI) in major gastrointestinal
 surgery: A national, multicentre, propensity matched cohort study
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 ASiT (Association of Surgeons in Training)
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 ASIT Conference
 </td>
 <td style="text-align:left;">
@@ -744,10 +744,10 @@ ASIT Conference
 <td style="text-align:left;">
 Belfast
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 United Kingdom
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 NA
 </td>
 </tr>
