@@ -21,13 +21,13 @@ extract_doi <- function(doi, get_auth = TRUE, get_almetric = TRUE, get_impact=TR
 
   "%ni%" <- Negate("%in%")
 
-  article_id <- article_id[which(article_id %ni% c(NA, ""))]
+  doi <- doi[which(doi %ni% c(NA, ""))]
 
   extract_var <- c("DOI", "title","container-title", "container-title-short", "ISSN",
                    "volume", "issue", "page", "published-print","published-online", "is-referenced-by-count")
 
-  if(length(article_id)>1){
-    out_crossref <- rcrossref::cr_cn(dois = article_id, format = "citeproc-json") %>%
+  if(length(doi)>1){
+    out_crossref <- rcrossref::cr_cn(dois = doi, format = "citeproc-json") %>%
       purrr::map(., function(x){
 
         x <- x[which(names(x) %in% extract_var)]
@@ -60,7 +60,7 @@ extract_doi <- function(doi, get_auth = TRUE, get_almetric = TRUE, get_impact=TR
                         "issue" = issue, "pages" = page, "cite_cr" = `is-referenced-by-count`)
         return(y)}) %>%
       data.table::rbindlist(.) %>% as_tibble()}else{
-        x <- rcrossref::cr_cn(dois = article_id, format = "citeproc-json")
+        x <- rcrossref::cr_cn(dois = doi, format = "citeproc-json")
         x <- x[which(names(x) %in% extract_var)]
 
         if(is.null(x$`published-online`)==F){
@@ -95,7 +95,7 @@ extract_doi <- function(doi, get_auth = TRUE, get_almetric = TRUE, get_impact=TR
     dplyr::mutate(doi = tolower(doi)) %>%
     dplyr::select(doi, title, year, journal_abbr,volume,issue,pages,cite_cr, everything())
 
-  if(get_auth==TRUE){crossref_auth <- extract_doi_auth(article_id)
+  if(get_auth==TRUE){crossref_auth <- extract_doi_auth(doi)
 
   out_crossref <- dplyr::left_join(out_crossref, crossref_auth, by=c("doi")) %>%
     dplyr::select(doi, author_group, title:cite_cr, auth_n, "author" = auth_list, everything())}
