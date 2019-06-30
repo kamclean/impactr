@@ -78,11 +78,9 @@ out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
 col_doi1 <- which(colnames(out_doi) %in% c("title"))
 col_doi2 <- which(colnames(out_doi) %in% c("doi", "author_group","author"))
 
-colnames(out_doi) <- gsub("_", "\\_", colnames(out_doi)) # required for md output
-
 out_doi %>%
-  dplyr::mutate(author = ifelse(is.na(author)==F, paste0(substr(author, 1, 50), "..."),author)) %>%
-  knitr::kable(format="html") %>%
+  dplyr::mutate(author = ifelse(is.na(author)==F, paste0(substr(author, 1, 50), "..."), author)) %>%
+  knitr::kable(format="html", col.names = gsub("_", "\\\\_", colnames(.))) %>%  # required for md output on github
   kableExtra::column_spec(col_doi1, width_min="7in") %>%
   kableExtra::column_spec(col_doi2, width_min="2.5in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
