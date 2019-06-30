@@ -59,6 +59,7 @@ cite_publication <- function(df, author = "author", title = "title", journal = "
       dplyr::mutate_all(function(x){ifelse(x=="NA;"|x=="NA", NA, x)})}
 
   citation_na <- cite %>%
+    dplyr::mutate_all(function(x){ifelse(x=="", NA, x)}) %>%
     dplyr::select(author, title, journal, year,volume, pages) %>%
     apply(., 1, function(x)which(is.na(x)==T)) %>%
     lapply(., names) %>%

@@ -71,6 +71,7 @@ cite_presentation <- function(df, type = "type", level = "level", title = "title
     # clean string
     dplyr::mutate(citation = gsub("  ", " ", citation)) %>%
     dplyr::mutate(citation = gsub(", NA, ", ", ", citation)) %>%
+    dplyr::mutate(citation = gsub("\\..", "\\. ", citation)) %>%
     dplyr::mutate_at(vars(title, con_name, con_org, con_date_range, con_city,con_country,author,citation), (function(x){ifelse(x=="", NA, x)}))
 
   return(cite2)}
