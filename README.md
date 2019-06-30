@@ -25,7 +25,9 @@ It is recommended that this package is used together with `tidyverse` packages.
 
 Vignettes
 ---------
-[Extract and Cite Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_1_data.md)
+[Extract Publication Data](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_1_extract.md)
+
+[Cite Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_2_cite.md)
 
 [Impact from Traditional Metrics](...)
 

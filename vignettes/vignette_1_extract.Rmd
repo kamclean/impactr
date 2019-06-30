@@ -14,12 +14,6 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE)
 library(dplyr);library(impactr)
-data_presentations <- readRDS("~/starsurg_impact/data/data_pre.rds") %>%
-  dplyr::filter(level == "International") %>%
-  dplyr::distinct(title, .keep_all = TRUE) %>%
-  dplyr::mutate(title = ifelse(title=="Collaborative Research: How to Get Involved", NA, title)) %>%
-  dplyr::mutate(author = ifelse(con_city=="Belfast", NA, author)) %>%
-  dplyr::select(type:author) %>% dplyr::arrange(con_date_start) %>% tail(5)
 ```
 
 # **Extract Publication Data**
@@ -86,62 +80,6 @@ out_doi %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
   kableExtra::scroll_box(width = "1000px")
 
-```
-
-&nbsp;
-
-## **2. `cite_publication()`**
-The `cite_publication()` function will accept direct input from both `extract_pmid()` and `extract_doi()`, however will also accept other dataframes with the prerequiste columns. The columns can be specified within the function. Other features include:
-
-- Highlighting any missing data essential for citation (e.g. author, jounral, etc). The issue, pmid, and doi are considered optional (depending on whether the dataset was generated from `extract_pmid()` or `extract_doi()`).
-
-- Automatically displaying all authors, however the auth_max can be set from 1 to n to add "et al." for any authors beyond that number.
-
-- The format can be customised via `cite_format` to match preferred referencing style (default is as shown below - Vancouver). Note the variable names in the string must exactly match an essential column (e.g. "author" not "Author" or "AUTHOR") 
-
-```{r edit, warning=FALSE, message=FALSE}
- out_doi %>%
-  # If a single-authorship collaborative publication (e.g. "STARSurg Collaborative") then display that
-  dplyr::mutate(author = ifelse(is.na(author_group)==TRUE, author, author_group)) %>%
-  impactr::cite_publication(journal = "journal_full", max_auth = 10,
-                   cite_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi.") %>%
-  dplyr::mutate(citation = gsub("\\]", "", gsub("\\[", "", as.character(citation)))) %>%
-  dplyr::select(citation) %>%
-  knitr::kable(format="html") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
-  
-```
-
-&nbsp;
-
-## **3. `cite_presentation()`**
-Presentations of academic work are important additional research outputs, yet are often not recorded online and so cannot be extracted. Therefore, the `cite_presentation()` function will accept any dataframe with the prerequiste columns. The columns can be specified within the function. Other features include:
-
-- Highlighting any missing data essential for citation (e.g. author, name of meeting/conference, etc). The type or level or presentation, and the date of the meeting/conference are considered optional for the purposes of citation.
-
-- The format can be customised via `cite_format` to match preferred referencing style. Note the variable names in the string must exactly match an essential column (e.g. "author" not "Author" or "AUTHOR") 
-
-```{r cite_pre_data, warning=FALSE, message=FALSE, echo=FALSE,results='asis'}
-col_pre7 <- which(colnames(data_presentations) %in% c("title"))
-col_pre3 <- which(colnames(data_presentations) %in% c("author", "con_org", "con_name"))
-col_pre1 <- which(colnames(data_presentations) %in% c("type", "con_country"))
-
- data_presentations %>%
-  knitr::kable(format="html") %>%
-  kableExtra::column_spec(col_pre7, width_min="7in") %>%
-  kableExtra::column_spec(col_pre3, width_min="3in") %>%
-  kableExtra::column_spec(col_pre1, width_min="1.5in") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
-  kableExtra::scroll_box(width = "1000px")
-```
-
-&nbsp;
-
-```{r cite_pre, warning=FALSE, message=FALSE}
-impactr::cite_presentation(data_presentations, cite_format = "author. title. con_org con_name, con_date_range, con_city (con_country).") %>%
-  
-  dplyr::mutate(citation = gsub("\\]", "", gsub("\\[", "", as.character(citation)))) %>%
-  dplyr::select(citation) %>%
-  knitr::kable(format="html") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 &nbsp;
