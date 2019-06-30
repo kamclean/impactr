@@ -754,6 +754,8 @@ NA
 </tbody>
 </table>
 </div>
+ 
+
 ``` r
 impactr::cite_presentation(data_presentations, cite_format = "author. title. con_org con_name, con_date_range, con_city (con_country).") %>%
   

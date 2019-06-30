@@ -126,13 +126,14 @@ Presentations of academic work are important additional research outputs, yet ar
   kableExtra::scroll_box(width = "1000px")
 ```
 
+&nbsp;
+
 ```{r cite_pre, warning=FALSE, message=FALSE}
 impactr::cite_presentation(data_presentations, cite_format = "author. title. con_org con_name, con_date_range, con_city (con_country).") %>%
   
   dplyr::mutate(citation = gsub("\\]", "", gsub("\\[", "", as.character(citation)))) %>%
   dplyr::select(citation) %>%
   knitr::kable(format="html") %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
-  
 ```
 
 &nbsp;
