@@ -2,8 +2,8 @@
 title: "1 - Extract Publication Data"
 date: "`r Sys.Date()`"
 always_allow_html: yes
-output:
-  md_document
+output: md_document
+  
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -76,8 +76,7 @@ out_doi %>%
   knitr::kable(format="html") %>%
   kableExtra::column_spec(col_doi1, width_min="7in") %>%
   kableExtra::column_spec(col_doi2, width_min="2.5in") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
-  kableExtra::scroll_box(width = "1000px")
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 
 ```
 

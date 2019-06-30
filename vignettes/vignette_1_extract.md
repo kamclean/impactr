@@ -45,10 +45,8 @@ However, this functionality has been made optional as it can extend the
 run time of the function (particularly in the case of a large number of
 authors).
 
-``` r
-out_pubmed <- impactr::extract_pmid(pmid = c(26769786, 26195471, 30513129),
-                            get_auth = TRUE, get_almetric = FALSE, get_impact = FALSE)
-```
+    out_pubmed <- impactr::extract_pmid(pmid = c(26769786, 26195471, 30513129),
+                                get_auth = TRUE, get_almetric = FALSE, get_impact = FALSE)
 
 <div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:1000px; ">
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -273,13 +271,10 @@ run time of the function (particularly in the case of a large number of
 authors). It should be also noted that crossref tends to record
 authorship less well (compared to PubMed).
 
-``` r
-# Example output from user_roles_n()
-out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
-                       get_auth = TRUE, get_almetric = FALSE, get_impact = FALSE)
-```
+    # Example output from user_roles_n()
+    out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
+                           get_auth = TRUE, get_almetric = FALSE, get_impact = FALSE)
 
-<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:1000px; ">
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -456,4 +451,3 @@ BJS Open
 </tr>
 </tbody>
 </table>
-</div>
