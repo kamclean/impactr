@@ -1,0 +1,43 @@
+---
+title: "3 - Collaborator Engagement"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+library(dplyr)
+
+source('~/starsurg_impact/R/impact_auth.R')
+# source('~/starsurg_impact/R/impact_almetric.R')
+source('~/starsurg_impact/R/impact_cite.R')
+
+data_pub <- readRDS("~/starsurg_impact/data/data_pub.rds")
+```
+
+#  Engagement 
+
+```{r impact_auth, warning=FALSE, message=FALSE}
+#
+```
+
+## Examples: 
+
+#### Descriptive
+```{r impact_auth_example1, warning=FALSE, message=FALSE}
+#
+
+```
+
+#### UpSet Plot
+```{r impact_auth_example2, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+...
+
+```
+
+# ? Parallel sets plot---------------
+# https://serialmentor.com/dataviz/nested-proportions.html#fig:bridges-parallel-sets1

@@ -38,7 +38,7 @@ out_pubmed <- impactr::extract_pmid(pmid = c(26769786, 26195471, 30513129),
 
 ```
 
-```{r extract_pmid2, warning=FALSE, message=FALSE, echo=FALSE}
+```{r extract_pmid2, warning=FALSE, message=FALSE, echo=FALSE, results = 'asis'}
 col_pubmed <- which(colnames(out_pubmed) %in% c("author", "title"))
 
 out_pubmed %>%
@@ -66,7 +66,7 @@ out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
                        get_auth = TRUE, get_almetric = FALSE, get_impact = FALSE)
 ```
 
-```{r extract_doi2, warning=FALSE, message=FALSE, echo=FALSE}
+```{r extract_doi2, warning=FALSE, message=FALSE, echo=FALSE, }
 
 col_doi1 <- which(colnames(out_doi) %in% c("title"))
 col_doi2 <- which(colnames(out_doi) %in% c("doi", "author_group","author"))
@@ -76,7 +76,8 @@ out_doi %>%
   knitr::kable(format="html") %>%
   kableExtra::column_spec(col_doi1, width_min="7in") %>%
   kableExtra::column_spec(col_doi2, width_min="2.5in") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
+  kableExtra::scroll_box(width = "1000px")
 
 ```
 

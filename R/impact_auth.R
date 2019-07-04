@@ -102,3 +102,10 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
   auth_out <- list("auth_out" = auth_out, "data_upset" = data_upset, "metric" = out_metric)
 
   return(auth_out)}
+
+df = data
+pub_group = "project"
+max_inital = 1
+upset = TRUE
+metric = TRUE
+author_list = "author"
