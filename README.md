@@ -29,8 +29,8 @@ Vignettes
 
 [Cite Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_2_cite.md)
 
-[Impact from Traditional Metrics](...)
+[Impact from Traditional Metrics](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_3_traditional.md)
 
-[Impact from Co-authorship Network](...)
+[Impact from Co-authorship Network](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_4_author.md)
 
 [Impact from Social Media Engagement](...)
