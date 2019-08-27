@@ -4,58 +4,66 @@
 #' @description Extract additional citation metrics from Google Scholar
 #' @param df Dataframe containing at least three columns: publictaion title ("title"), publication year ("year"), and journal name ("journal") with each publication listed as a row.
 #' @param scholar_id Google scholar ID number linking to records in the dataframe.
-#' @param var_citation Column in dataframe which already contains number of citations for each publication (optional).
-#' @param match_by_year Argument to match publications by title and year, rather than just title (default = TRUE). See "unmatch" output.
+#' @param match_title_nchar Argument to specify how many characters the titles should be matched (default = 50). See "unmatch" output.
 #' @import magrittr
 #' @import dplyr
 #' @import tibble
 #' @importFrom scholar get_impactfactor get_publications
-#' @return Nested dataframe of: (1)."output" - Amended dataframe with additional citaion metrics appended (2). "no_scholar" - Dataframe of publications with no scholar record (3). "unmatch" - Dataframe of publications that could not be matched to a journal.
+#' @return Nested dataframe of: (1)."out_df" - Amended dataframe with additional total citations appended (2). "df_cite" - Dataframe of citations over time for google doc papers (3). "validation" - Dataframe of publications that could not be matched to a google scholar record (noscholar) or google scholar records that could not be matched to the dataframe (unmatched).
 #' @export
 
 # Function----------------
-extract_scholar_cite <- function(df, scholar_id, var_citation="", match_by_year =  TRUE){
+extract_scholar_cite <- function(df, scholar_id, match_title_nchar = 50){
   "%ni%" <- Negate("%in%")
+  gcite_data <- gcite::gcite_user_info(scholar_id)$paper_df %>%
+    tibble::as_tibble()
 
-  df_gs <- scholar_id %>%
-    scholar::get_publications() %>%
-    tibble::as_tibble() %>%
-    dplyr::select("title_gs" = title, year, "cite_gs" = cites) %>%
-    dplyr::mutate(title_gs = tolower(title_gs),
-                  title_match = substr(gsub("[[:punct:]]", "",tolower(title_gs)), 1, 50))
+  cite_years <- suppressWarnings(names(gcite_data) %>%
+                                   purrr::map_dbl(as.numeric) %>%
+                                   na.omit() %>%
+                                   as.vector())
+
+  df_gs <- gcite_data %>%
+    dplyr::mutate(year = as.numeric(stringr::str_sub(`publication date`, 1,4))) %>%
+    dplyr::select(title, year, which(names(gcite_data) %in% cite_years)) %>%
+    dplyr::mutate(title_match = gsub("[[:punct:]]", "",tolower(title))) %>%
+    dplyr::mutate(title_match = substr(title_match, 1, match_title_nchar)) %>%
+    dplyr::mutate_at(names(dplyr::select(., -title, -title_match, -year)),
+                     function(x){ifelse(is.na(x)==T, 0, as.numeric(x))}) %>%
+    dplyr::mutate(cite_gs = rowSums(dplyr::select(., -title, -title_match, -year))) %>%
+    dplyr::select(-title)
 
   df_out <- df %>%
-    dplyr::mutate(title_match = substr(gsub("[[:punct:]]", "",tolower(title)), 1, 50))
+    dplyr::mutate(title_match = gsub("[[:punct:]]", "",tolower(title))) %>%
+    dplyr::mutate(title_match = substr(title_match, 1, match_title_nchar)) %>%
+    dplyr::full_join(df_gs, by=c("title_match", "year")) %>%
+    dplyr::mutate(year = factor(year, levels=sort(unique(year))),
+                  outcome = ifelse(is.na(pmid)==T&is.na(doi)==T, "unmatched",
+                                   ifelse(is.na(cite_gs)==T, "noscholar", "matched")))
 
-  if(match_by_year==TRUE){df_out <- dplyr::left_join(df_out,
-                                                     df_gs,
-                                                     by = c("title_match", "year"))}else{df_out <- dplyr::left_join(df_out,
-                                                                                                                    dplyr::select(df_gs,-year),
-                                                                                                                    by = c("title_match"))}
+  # if(match_by_year==TRUE){df_out <- dplyr::left_join(df_out,
+  #                                                   df_gs,
+  #                                                   by = c("title_match", "year"))}else{df_out <- dplyr::left_join(df_out,
+  #                                                                                                                  dplyr::select(df_gs,-year),
+  #                                                                                                                  by = c("title_match"))}
 
-  if(var_citation!=""){df_out <- df_out %>%
-    dplyr::mutate(citation = dplyr::pull(., var_citation)) %>%
-    dplyr::mutate(cite_total = ifelse(is.na(cite_gs)==F, cite_gs, ifelse(is.na(citation)==F, citation, 0))) %>%
-    dplyr::select(-citation)}
+  validation <- df_out %>%
+    dplyr::filter(outcome!="matched") %>%
+    dplyr::select(outcome, pmid, doi, title_match)
 
-  no_scholar <- NULL
-  if(sum(df_out$title_match %ni% df_gs$title_match)>0){
-    no_scholar <- df_out %>%
-      dplyr::filter(title_match %ni% df_gs$title_match) %>%
-      dplyr::select(doi, title,year) %>%
-      dplyr::arrange(-year)}
+  df_updated <- df_out %>%
+    dplyr::filter(outcome!="unmatched") %>%
+    dplyr::select(-title_match, -outcome, -which(names(.) %in% cite_years))
 
-  unmatch <- NULL
-  if(sum(is.na(df_out$title_gs)==T&df_out$title_match %in% df_gs$title_match)>0){
-    unmatch <- df_out %>%
-      dplyr::filter(df_out$title_match %in% df_gs$title_match) %>%
-      dplyr::filter(is.na(title_gs)==T) %>%
-      dplyr::select(doi, year, title) %>%
-      dplyr::arrange(-year)}
+  df_cite <- df_out %>%
+    dplyr::filter(outcome!="unmatched") %>%
+    dplyr::select(pmid, doi,title, year, which(names(.) %in% cite_years)) %$%
+    tidyr::pivot_longer(., cols = which(names(.) %in% cite_years),
+                        names_to = "cite_year", values_to = "cite_n") %>%
+    dplyr::group_by(title) %>%
+    dplyr::mutate(cite_cumsum = cumsum(cite_n)) %>%
+    dplyr::ungroup()
 
-  df_out <- df_out %>%
-    dplyr::select(-title_match, -title_gs)
-
-  out <- list("output" = df_out, "no_scholar" = no_scholar, "unmatch" = unmatch)
+  out <- list("out_df" = df_updated,"out_cite" = df_cite, "validation" = validation)
 
   return(out)}

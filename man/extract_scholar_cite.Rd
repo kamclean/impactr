@@ -4,20 +4,17 @@
 \alias{extract_scholar_cite}
 \title{Extract additional citation metrics from Google Scholar}
 \usage{
-extract_scholar_cite(df, scholar_id, var_citation = "",
-  match_by_year = TRUE)
+extract_scholar_cite(df, scholar_id, match_title_nchar = 50)
 }
 \arguments{
 \item{df}{Dataframe containing at least three columns: publictaion title ("title"), publication year ("year"), and journal name ("journal") with each publication listed as a row.}
 
 \item{scholar_id}{Google scholar ID number linking to records in the dataframe.}
 
-\item{var_citation}{Column in dataframe which already contains number of citations for each publication (optional).}
-
-\item{match_by_year}{Argument to match publications by title and year, rather than just title (default = TRUE). See "unmatch" output.}
+\item{match_title_nchar}{Argument to specify how many characters the titles should be matched (default = 50). See "unmatch" output.}
 }
 \value{
-Nested dataframe of: (1)."output" - Amended dataframe with additional citaion metrics appended (2). "no_scholar" - Dataframe of publications with no scholar record (3). "unmatch" - Dataframe of publications that could not be matched to a journal.
+Nested dataframe of: (1)."out_df" - Amended dataframe with additional total citations appended (2). "df_cite" - Dataframe of citations over time for google doc papers (3). "validation" - Dataframe of publications that could not be matched to a google scholar record (noscholar) or google scholar records that could not be matched to the dataframe (unmatched).
 }
 \description{
 Extract additional citation metrics from Google Scholar
