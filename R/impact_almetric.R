@@ -52,6 +52,8 @@ names_cited <- tibble::tibble(old = names_cited_old) %>%
 
 df = tibble::tibble(pmid = list_pmid)
 
+rAltmetric::altmetric_data(rAltmetric::altmetrics(pmid = list_pmid[1]))
+
 df_alm <- df %>%
   dplyr::mutate(alm_data = purrr::map_chr(pmid,
                                           function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(pmid = x))$score, error=function(e) NA)})) %>%
@@ -76,8 +78,8 @@ df_alm <- df %>%
     cited_by <- dplyr::bind_cols(names_cited_included, names_cited_excluded) %>%
       dplyr::select(names_cited$new) %>%
       dplyr::mutate_all(function(x){ifelse(is.na(x)==T, 0, x)}) %>%
-      dplyr::mutate(n_engage_other = sum(dplyr::select(., starts_with("n_engage_other")))) %>%
-      dplyr::select(-one_of(names(dplyr::select(., n_engage_other1:n_engage_other6))))
+      dplyr::mutate(n_engage_other = sum(dplyr::select(., dplyr::starts_with("n_engage_other")))) %>%
+      dplyr::select(-dplyr::one_of(names(dplyr::select(., n_engage_other1:n_engage_other6))))
 
     v_out <- v %>%
       dplyr::mutate(pmid = x$pmid) %>%
@@ -97,26 +99,73 @@ df_alm <- df %>%
                     "alm_journal_all_n" = context.journal.count,
                     "alm_journal_3m_mean" = context.similar_age_journal_3m.mean,
                     "alm_journal_3m_rank" = context.similar_age_journal_3m.rank,
-                    "alm_journal_3m_n" = context.similar_age_journal_3m.count) %>%
-      dplyr::mutate_at(vars(pmid, dplyr::starts_with("alm_")), as.numeric) %>%
+                    "alm_journal_3m_n" = context.similar_age_journal_3m.count,
+                    last_updated, published_on,added_on) %>%
+      dplyr::mutate_at(dplyr::vars(pmid, dplyr::starts_with("alm_")), as.numeric) %>%
       dplyr::mutate(alm_all_prop = 1-(alm_all_rank/alm_all_n),
                     alm_journal_all_prop = 1-(alm_journal_all_rank/alm_journal_all_n),
                     alm_journal_3m_prop = 1-(alm_journal_3m_rank/alm_journal_3m_n)) %>%
       dplyr::select(pmid:alm_all_n, alm_all_prop,
                     alm_journal_all_mean:alm_journal_all_n, alm_journal_all_prop,
-                    alm_journal_3m_mean:alm_journal_3m_n, alm_journal_3m_prop) %>%
+                    alm_journal_3m_mean:alm_journal_3m_n, alm_journal_3m_prop,
+                    last_updated, published_on,added_on) %>%
       dplyr::bind_cols(cited_by)}) %>%
-  data.table::rbindlist() %>% as_tibble()
+  data.table::rbindlist() %>% tibble::as_tibble() %>%
+  dplyr::mutate(date_update = lubridate::as_date(lubridate::as_datetime(as.numeric(last_updated))),
+                date_pub = lubridate::as_date(lubridate::as_datetime(as.numeric(published_on))),
+                date_added = lubridate::as_date(lubridate::as_datetime(as.numeric(added_on)))) %>%
+  dplyr::select(-last_updated, -published_on, -added_on)
 
 pmid_na <- df %>% dplyr::filter(pmid %ni% df_alm$pmid) %>% dplyr::pull(pmid) %>% as.numeric()
 
-df_pmid_na<- head(df_alm, length(pmid_na)) %>%
-  dplyr::mutate_at(vars(-pmid), function(x){x = NA}) %>%
+
+df_pmid_na <- head(df_alm, length(pmid_na)) %>%
+  dplyr::mutate_at(dplyr::vars(-pmid), function(x){x = NA}) %>%
   dplyr::mutate(pmid = pmid_na)
 
-df_out <- bind_rows(df_alm, df_pmid_na) %>%
+df_out <- dplyr::bind_rows(df_alm, df_pmid_na) %>%
   dplyr::mutate(pmid = factor(pmid, levels=as.numeric(df$pmid))) %>%
   dplyr::arrange(pmid) %>%
   dplyr::mutate(pmid = as.numeric(as.character(pmid)))
 
-return(df_out)}
+df_alm_time <- df_out %>%
+  dplyr::select(pmid, doi, alm_score_1w:alm_score_now, date_pub,date_added) %>%
+  tidyr::pivot_longer(cols = c(alm_score_1w:alm_score_now),
+                      names_to = "alm_time", values_to = "alm_score") %>%
+  dplyr::mutate(alm_time = ifelse(alm_time=="alm_score_1w", 7,
+                                   ifelse(alm_time=="alm_score_1m", 30,
+                                          ifelse(alm_time=="alm_score_3m", 90,
+                                                 ifelse(alm_time=="alm_score_6m", 180,
+                                                        ifelse(alm_time=="alm_score_1y", 365,
+                                                               alm_time)))))) %>%
+  dplyr::mutate(pub2now =  as.numeric(lubridate::as_date(Sys.Date())-date_added)) %>%
+  dplyr::mutate(alm_time = as.numeric(ifelse(alm_time == "alm_score_now",
+                                             pub2now, alm_time))) %>%
+  dplyr::filter(pub2now>=alm_time) %>%
+  dplyr::select(-pub2now) %>%
+  dplyr::arrange(pmid, alm_time) %>%
+  dplyr::mutate(pmid = factor(pmid))
+
+
+df_alm_engage <- df_out %>%
+  dplyr::select(pmid, doi, n_engage_all:n_engage_other) %>%
+  dplyr::mutate_at(dplyr::vars(dplyr::starts_with("n_engage")), as.numeric) %>%
+  tidyr::pivot_longer(cols = c(n_engage_all:n_engage_other),
+                      names_to = "source", values_to = "n") %>%
+  dplyr::mutate(source = gsub("n_engage_", "", source)) %>%
+  dplyr::filter(source %ni% c("twitter_posts","all")) %>%
+  dplyr::mutate(source = gsub("twitter_accounts", "twitter", source)) %>%
+  dplyr::mutate(pmid = factor(pmid),
+                source = factor(source, levels = c(dplyr::group_by(., source)   %>%
+                                                     dplyr::summarise(sum = sum(n)) %>%
+                                                     dplyr::arrange(-sum) %>%
+                                                     dplyr::filter(sum>0) %>%
+                                                     dplyr::pull(source)))) %>%
+  dplyr::filter(is.na(source)==F) %>%
+  dplyr::group_by(pmid) %>%
+  dplyr::mutate(total = sum(n))  %>% dplyr::mutate(prop = n / total) %>%
+  dplyr::ungroup()
+
+  out = list("df_output" = df_out, "temporal" = df_alm_time, "source" = df_alm_engage)
+
+return(out)}
