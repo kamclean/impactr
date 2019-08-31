@@ -2,13 +2,13 @@
 # Documentation
 #' Calculate several common citation metrics (H-Index, G-Index, M-Quotient).
 #' @description Calculate several common citation metrics (H-Index, G-Index, M-Quotient).
-#' @param n_citations Vector of citations (numerical variable).
+#' @param citations Vector of citations (numerical variable).
 #' @param year Vector of years or minimum year of publication (optional - required for M-Quotient)
 #' @return Dataframe of citation metrics for data supplied (H-Index, G-Index, M-Quotient)
 #' @export
 
 # Function-------------------------------
-impact_cite_metric(citations, year = ""){
+impact_cite_metric <- function(citations, year = ""){
 
   if(length(citations)==length(year)){df <- dplyr::bind_cols("n_cite" = citations,
                                                              "year" = as.numeric(year))}
@@ -16,10 +16,12 @@ impact_cite_metric(citations, year = ""){
   if(length(citations)!=length(year)){df <- dplyr::bind_cols("n_cite" = citations,
                                                              "year" = rep(min(as.numeric(year)),
                                                                           length(citations)))}
+
   if(year==""){df <- dplyr::bind_cols("n_cite" = citations,
                                       "year" = rep(NA,
                                                    length(citations)))}
-  # https://datascienceplus.com/hindex-gindex-pubmed-rismed/
+
+    # https://datascienceplus.com/hindex-gindex-pubmed-rismed/
   out <- df %>%
     dplyr::select(year, n_cite) %>%
     dplyr::arrange(-n_cite) %>%

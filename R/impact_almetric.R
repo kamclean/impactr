@@ -3,14 +3,19 @@
 #' Extract almetric data on social media engagment
 #' @description Extract impact data from social media engagment
 #' @param list_pmid Vector of unique PubMed identifier numbers (PMID)
-#' @return Dataframe of data on social media engagment from the almetric repository
+#' @return Nested dataframe (1) df_output; Original dataset with appended almetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data almetric ranking (4) source; Long format data sources used to derive almetric.
 #' @import magrittr
 #' @import dplyr
 #' @import tibble
 #' @importFrom rAltmetric altmetric_data altmetrics
 #' @importFrom purrr map map_chr
 #' @importFrom data.table rbindlist
-#' @importFrom tidyr unite
+#' @importFrom tidyr unite pivot_longer pivot_wider
+#' @importFrom tidyr unite pivot_longer pivot_wider
+#' @importFrom stringr str_split_fixed
+#' @importFrom stringi stri_reverse
+#' @importFrom lubridate as_date as_datetime
+#' @importFrom data.table rbindlist
 #' @export
 
 # Function-------------------------------
@@ -51,8 +56,6 @@ names_cited <- tibble::tibble(old = names_cited_old) %>%
   dplyr::mutate(new = paste0("n_engage_", new))
 
 df = tibble::tibble(pmid = list_pmid)
-
-rAltmetric::altmetric_data(rAltmetric::altmetrics(pmid = list_pmid[1]))
 
 df_alm <- df %>%
   dplyr::mutate(alm_data = purrr::map_chr(pmid,
@@ -130,6 +133,7 @@ df_out <- dplyr::bind_rows(df_alm, df_pmid_na) %>%
 
 df_alm_time <- df_out %>%
   dplyr::select(pmid, doi, alm_score_1w:alm_score_now, date_pub,date_added) %>%
+  dplyr::filter(is.na(doi)==F) %>%
   tidyr::pivot_longer(cols = c(alm_score_1w:alm_score_now),
                       names_to = "alm_time", values_to = "alm_score") %>%
   dplyr::mutate(alm_time = ifelse(alm_time=="alm_score_1w", 7,
@@ -146,10 +150,10 @@ df_alm_time <- df_out %>%
   dplyr::arrange(pmid, alm_time) %>%
   dplyr::mutate(pmid = factor(pmid))
 
-
-df_alm_engage <- df_out %>%
+df_alm_source <- df_out %>%
   dplyr::select(pmid, doi, n_engage_all:n_engage_other) %>%
   dplyr::mutate_at(dplyr::vars(dplyr::starts_with("n_engage")), as.numeric) %>%
+  dplyr::filter(is.na(doi)==F) %>%
   tidyr::pivot_longer(cols = c(n_engage_all:n_engage_other),
                       names_to = "source", values_to = "n") %>%
   dplyr::mutate(source = gsub("n_engage_", "", source)) %>%
@@ -166,6 +170,17 @@ df_alm_engage <- df_out %>%
   dplyr::mutate(total = sum(n))  %>% dplyr::mutate(prop = n / total) %>%
   dplyr::ungroup()
 
-  out = list("df_output" = df_out, "temporal" = df_alm_time, "source" = df_alm_engage)
+df_alm_rank <- df_out %>%
+  dplyr::select(pmid, doi, alm_all_mean:alm_journal_3m_prop) %>%
+  tidyr::pivot_longer(names(dplyr::select(., alm_all_mean:alm_journal_3m_prop)), names_to = "alm_category") %>%
+  dplyr::mutate(alm_category = gsub("alm_", "", alm_category)) %>%
+  dplyr::mutate(alm_measure = stringr::str_split_fixed(stringi::stri_reverse(alm_category), "_", 2)[,1],
+                alm_category = stringr::str_split_fixed(stringi::stri_reverse(alm_category), "_", 2)[,2]) %>%
+  dplyr::mutate(alm_measure = stringi::stri_reverse(alm_measure),
+                alm_category = factor(stringi::stri_reverse(alm_category))) %>%
+  tidyr::pivot_wider(names_from = alm_measure, values_from = value) %>%
+  dplyr::filter(is.na(mean)==F)
 
-return(out)}
+  out <- list("df_output" = df_out, "temporal" = df_alm_time, "rank" = df_alm_rank, "source" = df_alm_source)
+
+  return(out)}

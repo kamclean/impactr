@@ -55,6 +55,12 @@ Citations (e.g. `cite_total`) can be used to either provide summary statistics o
 
 **Note**: Google Scholar is typically being more sensitive but less specific in estimating citation count than Crossref / PubMed repositories.
 
+df <-readRDS("~/starsurg_impact/data/impact_pub.rds")
+
+d <- impact_cite(df, var_citation = "cite_total",scholar_id = "Ol5uNSwAAAAJ",match_title_nchar = 50)
+
+
+
 ```{r cite_plot1, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
 cite_max <- data_cite$output %$% max(cite_total, na.rm=TRUE)
 

@@ -36,6 +36,8 @@ extract_scholar_cite <- function(df, scholar_id, match_title_nchar = 50){
   df_out <- df %>%
     dplyr::mutate(title_match = gsub("[[:punct:]]", "",tolower(title))) %>%
     dplyr::mutate(title_match = substr(title_match, 1, match_title_nchar)) %>%
+    dplyr::mutate(year = as.numeric(year)) %>%
+    dplyr::select(-cite_gs) %>%
     dplyr::full_join(df_gs, by=c("title_match", "year")) %>%
     dplyr::mutate(year = factor(year, levels=sort(unique(year))),
                   outcome = ifelse(is.na(pmid)==T&is.na(doi)==T, "unmatched",

@@ -1,5 +1,5 @@
 ---
-title: "3 - Collaborator Engagement"
+title: "5 - Altmetric Attention"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -8,12 +8,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
   
+Although there are well recognised concerns regarding potentia;
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE)
-library(dplyr)
+library(dplyr);library(ggplot2)
 
 source('~/starsurg_impact/R/impact_auth.R')
-# source('~/starsurg_impact/R/impact_almetric.R')
+source('~/impactr/R/impact_almetric.R')
 source('~/starsurg_impact/R/impact_cite.R')
 
 data_pub <- readRDS("~/starsurg_impact/data/data_pub.rds")
@@ -21,23 +23,37 @@ data_pub <- readRDS("~/starsurg_impact/data/data_pub.rds")
 
 #  Engagement 
 
-```{r impact_auth, warning=FALSE, message=FALSE}
-#
+```{r impact_auth, message=FALSE, warning=FALSE}
+almetric <- impact_almetric(data_pub$pmid)
+```
+
+```{r impact_auth, echo=FALSE, include=TRUE}
+almetric$df_output %>%
+  knitr::kable(format="html") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
+  kableExtra::scroll_box(width = "1000px")
+
 ```
 
 ## Examples: 
 
-#### Descriptive
-```{r impact_auth_example1, warning=FALSE, message=FALSE}
-#
+#### Almetric score over time (almetric$temporal)
 
+
+
+```{r impact_almetric_plot1, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+almetric$temporal %>% 
+  ggplot() +
+  aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
+  geom_line() + geom_point()
 ```
 
-#### UpSet Plot
-```{r impact_auth_example2, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-...
+#### Almetric source (almetric$source)
 
+
+```{r impact_almetric_plot2, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+almetric$source %>% 
+  ggplot() +
+  aes(x = pmid, y = prop, group = source, colour = source, fill = source) +
+  geom_col()  
 ```
-
-# ? Parallel sets plot---------------
-# https://serialmentor.com/dataviz/nested-proportions.html#fig:bridges-parallel-sets1
