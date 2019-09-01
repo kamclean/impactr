@@ -65,7 +65,7 @@ as columns. There are 4 broad groups that describes the:
     almetric, and when almetric data was last
 updated.
 
-<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:1000px; ">
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:1000; ">
 
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 
@@ -73,265 +73,265 @@ updated.
 
 <tr>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 journal
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 pmid
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 doi
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 title
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 type
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 author\_list
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 journal\_issn
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 altmetric\_id
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_score\_1w
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_score\_1m
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_score\_3m
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_score\_6m
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_score\_1y
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_score\_now
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_all\_mean
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_all\_rank
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_all\_n
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_all\_prop
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_all\_mean
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_all\_rank
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_all\_n
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_all\_prop
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_3m\_mean
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_3m\_rank
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_3m\_n
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 alm\_journal\_3m\_prop
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_all
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_twitter\_accounts
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_twitter\_posts
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_fb
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_news\_media
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_policy\_source
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_peer\_review\_sites
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_wikipedia
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_blogs
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_forum
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_googleplus
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_research\_highlight
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_linkedin
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 n\_engage\_readers
 
 </th>
 
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:right;">
 
 n\_engage\_other
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 date\_update
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 date\_pub
 
 </th>
 
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+<th style="text-align:left;">
 
 date\_added
 
@@ -357,13 +357,13 @@ Anaesthesia
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 10.1111/anae.14552
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7.5in; ">
 
 Peri-operative acute kidney injury - a reply
 
@@ -375,7 +375,7 @@ article
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 
 T. M. Drake, W. Ahmed, R. A. Khaw, I. Yasin, D. Baker, E. Mills, S. K.
 Kamarajah…
@@ -396,19 +396,19 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0.0
 
 </td>
 
@@ -426,7 +426,7 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-3.750
+3.75
 
 </td>
 
@@ -456,7 +456,7 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-14.999629
+14.99963
 
 </td>
 
@@ -480,7 +480,7 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-70.271667
+70.27167
 
 </td>
 
@@ -592,19 +592,19 @@ Kamarajah…
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-01-25
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-01-17
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-01-20
 
@@ -626,13 +626,13 @@ BJA
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 10.1016/j.bja.2018.07.029
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7.5in; ">
 
 Critical care usage after major gastrointestinal and liver surgery: a
 prospective, multicentre observational study
@@ -645,7 +645,7 @@ article
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 
 K.A. McLean, J.C. Glasbey, A. Borakati, T.M. Brooks, H.M. Chang, S.M.
 Choi, R. G…
@@ -666,19 +666,19 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0.0
 
 </td>
 
@@ -696,7 +696,7 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-33.850
+33.85
 
 </td>
 
@@ -726,7 +726,7 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-7.135920
+7.13592
 
 </td>
 
@@ -750,7 +750,7 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-14.966129
+14.96613
 
 </td>
 
@@ -862,19 +862,19 @@ Choi, R. G…
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-04-11
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-01-01
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-09-21
 
@@ -896,13 +896,13 @@ BJS Open
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 10.1002/bjs5.86
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7.5in; ">
 
 Prognostic model to predict postoperative acute kidney injury in
 patients undergoing major gastrointestinal surgery based on a national
@@ -916,7 +916,7 @@ article
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 
 NA
 
@@ -936,19 +936,19 @@ NA
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0.0
 
 </td>
 
@@ -966,7 +966,7 @@ NA
 
 <td style="text-align:right;">
 
-57.350
+57.35
 
 </td>
 
@@ -996,7 +996,7 @@ NA
 
 <td style="text-align:right;">
 
-10.907738
+10.90774
 
 </td>
 
@@ -1020,7 +1020,7 @@ NA
 
 <td style="text-align:right;">
 
-15.022500
+15.02250
 
 </td>
 
@@ -1132,19 +1132,19 @@ NA
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-05-03
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-07-27
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-07-27
 
@@ -1166,13 +1166,13 @@ Anaesthesia
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 10.1111/anae.14349
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7.5in; ">
 
 Association between peri‐operative angiotensin‐converting enzyme
 inhibitors and angiotensin‐2 receptor blockers and acute kidney injury
@@ -1187,7 +1187,7 @@ article
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 
 Thomas M Drake, Lok Ka Cheung, Fortis Gaba, James Glasbey, Nathan
 Griffiths, Reb…
@@ -1208,19 +1208,19 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0.0
 
 </td>
 
@@ -1238,7 +1238,7 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-113.680
+113.68
 
 </td>
 
@@ -1268,7 +1268,7 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-15.070542
+15.07054
 
 </td>
 
@@ -1292,7 +1292,7 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-32.698875
+32.69888
 
 </td>
 
@@ -1404,19 +1404,19 @@ Griffiths, Reb…
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-05-06
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-07-09
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-07-09
 
@@ -1438,13 +1438,13 @@ Colorectal Disease
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 10.1111/codi.14292
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 7.5in; ">
 
 Body mass index and complications following major gastrointestinal
 surgery: a prospective, international cohort study and meta-analysis
@@ -1457,7 +1457,7 @@ article
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 3in; ">
 
 NA
 
@@ -1477,19 +1477,19 @@ NA
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-0.00
+0
 
 </td>
 
 <td style="text-align:right;">
 
-3.10
+3.1
 
 </td>
 
@@ -1507,7 +1507,7 @@ NA
 
 <td style="text-align:right;">
 
-146.850
+146.85
 
 </td>
 
@@ -1537,7 +1537,7 @@ NA
 
 <td style="text-align:right;">
 
-7.644570
+7.64457
 
 </td>
 
@@ -1561,7 +1561,7 @@ NA
 
 <td style="text-align:right;">
 
-14.327174
+14.32717
 
 </td>
 
@@ -1673,4601 +1673,21 @@ NA
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2019-06-25
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-07-09
 
 </td>
 
-<td style="text-align:left;">
+<td style="text-align:left;min-width: 1.5in; ">
 
 2018-06-13
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-International Journal of Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-29292217
-
-</td>
-
-<td style="text-align:left;">
-
-10.1016/j.ijsu.2017.12.019
-
-</td>
-
-<td style="text-align:left;">
-
-Recognising contributions to work in research collaboratives: Guidelines
-for standardising reporting of authorship in collaborative research
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Natalie Blencowe, James Glasbey, Nick Heywood, Veeru Kasivisvanathan,
-Matthew Le…
-
-</td>
-
-<td style="text-align:left;">
-
-1743-9191
-
-</td>
-
-<td style="text-align:left;">
-
-31064218
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-9.25
-
-</td>
-
-<td style="text-align:right;">
-
-9.25
-
-</td>
-
-<td style="text-align:right;">
-
-12.25
-
-</td>
-
-<td style="text-align:right;">
-
-23.650
-
-</td>
-
-<td style="text-align:right;">
-
-8.073092
-
-</td>
-
-<td style="text-align:right;">
-
-670100
-
-</td>
-
-<td style="text-align:right;">
-
-13434955
-
-</td>
-
-<td style="text-align:right;">
-
-0.9501226
-
-</td>
-
-<td style="text-align:right;">
-
-2.307291
-
-</td>
-
-<td style="text-align:right;">
-
-17
-
-</td>
-
-<td style="text-align:right;">
-
-1810
-
-</td>
-
-<td style="text-align:right;">
-
-0.9906077
-
-</td>
-
-<td style="text-align:right;">
-
-1.856173
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-82
-
-</td>
-
-<td style="text-align:right;">
-
-0.9878049
-
-</td>
-
-<td style="text-align:left;">
-
-55
-
-</td>
-
-<td style="text-align:left;">
-
-42
-
-</td>
-
-<td style="text-align:left;">
-
-41
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-35
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-07-29
-
-</td>
-
-<td style="text-align:left;">
-
-2018-04-01
-
-</td>
-
-<td style="text-align:left;">
-
-2017-12-30
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Colorectal Disease
-
-</td>
-
-<td style="text-align:right;">
-
-29178625
-
-</td>
-
-<td style="text-align:left;">
-
-10.1111/codi.13976
-
-</td>
-
-<td style="text-align:left;">
-
-Ileus Management International (IMAGINE): protocol for a multicentre,
-observational study of ileus after colorectal surgery
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-1462-8910
-
-</td>
-
-<td style="text-align:left;">
-
-29459345
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-8.35
-
-</td>
-
-<td style="text-align:right;">
-
-77.600
-
-</td>
-
-<td style="text-align:right;">
-
-8.066940
-
-</td>
-
-<td style="text-align:right;">
-
-211552
-
-</td>
-
-<td style="text-align:right;">
-
-13415789
-
-</td>
-
-<td style="text-align:right;">
-
-0.9842311
-
-</td>
-
-<td style="text-align:right;">
-
-7.842396
-
-</td>
-
-<td style="text-align:right;">
-
-14
-
-</td>
-
-<td style="text-align:right;">
-
-1454
-
-</td>
-
-<td style="text-align:right;">
-
-0.9903714
-
-</td>
-
-<td style="text-align:right;">
-
-11.570000
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-45
-
-</td>
-
-<td style="text-align:right;">
-
-0.9777778
-
-</td>
-
-<td style="text-align:left;">
-
-351
-
-</td>
-
-<td style="text-align:left;">
-
-129
-
-</td>
-
-<td style="text-align:left;">
-
-127
-
-</td>
-
-<td style="text-align:left;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-23
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-02-23
-
-</td>
-
-<td style="text-align:left;">
-
-2018-01-03
-
-</td>
-
-<td style="text-align:left;">
-
-2017-11-26
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Postgraduate Medical Journal
-
-</td>
-
-<td style="text-align:right;">
-
-28866608
-
-</td>
-
-<td style="text-align:left;">
-
-10.1136/postgradmedj-2017-135035
-
-</td>
-
-<td style="text-align:left;">
-
-Medical research and audit skills training for undergraduates: an
-international analysis and student-focused needs assessment
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-0032-5473, 1469-0756
-
-</td>
-
-<td style="text-align:left;">
-
-25437135
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-3.45
-
-</td>
-
-<td style="text-align:right;">
-
-26.050
-
-</td>
-
-<td style="text-align:right;">
-
-8.015838
-
-</td>
-
-<td style="text-align:right;">
-
-600901
-
-</td>
-
-<td style="text-align:right;">
-
-13288433
-
-</td>
-
-<td style="text-align:right;">
-
-0.9547801
-
-</td>
-
-<td style="text-align:right;">
-
-8.701609
-
-</td>
-
-<td style="text-align:right;">
-
-119
-
-</td>
-
-<td style="text-align:right;">
-
-2023
-
-</td>
-
-<td style="text-align:right;">
-
-0.9411765
-
-</td>
-
-<td style="text-align:right;">
-
-14.243750
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-17
-
-</td>
-
-<td style="text-align:right;">
-
-0.7647059
-
-</td>
-
-<td style="text-align:left;">
-
-62
-
-</td>
-
-<td style="text-align:left;">
-
-42
-
-</td>
-
-<td style="text-align:left;">
-
-42
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-27
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2018-10-13
-
-</td>
-
-<td style="text-align:left;">
-
-2017-09-02
-
-</td>
-
-<td style="text-align:left;">
-
-2017-09-16
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-International Journal of Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-28167380
-
-</td>
-
-<td style="text-align:left;">
-
-10.1016/j.ijsu.2017.01.114
-
-</td>
-
-<td style="text-align:left;">
-
-Students’ participation in collaborative research should be recognised
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Aditya Borakati, Kenneth McLean, Thomas M. Drake, Ewen M. Harrison,
-Sivesh K. Ka…
-
-</td>
-
-<td style="text-align:left;">
-
-1743-9191
-
-</td>
-
-<td style="text-align:left;">
-
-16134473
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-6.15
-
-</td>
-
-<td style="text-align:right;">
-
-20.30
-
-</td>
-
-<td style="text-align:right;">
-
-20.30
-
-</td>
-
-<td style="text-align:right;">
-
-25.20
-
-</td>
-
-<td style="text-align:right;">
-
-73.700
-
-</td>
-
-<td style="text-align:right;">
-
-8.049237
-
-</td>
-
-<td style="text-align:right;">
-
-222963
-
-</td>
-
-<td style="text-align:right;">
-
-13371296
-
-</td>
-
-<td style="text-align:right;">
-
-0.9833253
-
-</td>
-
-<td style="text-align:right;">
-
-2.323797
-
-</td>
-
-<td style="text-align:right;">
-
-3
-
-</td>
-
-<td style="text-align:right;">
-
-1797
-
-</td>
-
-<td style="text-align:right;">
-
-0.9983306
-
-</td>
-
-<td style="text-align:right;">
-
-1.187019
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-105
-
-</td>
-
-<td style="text-align:right;">
-
-0.9904762
-
-</td>
-
-<td style="text-align:left;">
-
-238
-
-</td>
-
-<td style="text-align:left;">
-
-110
-
-</td>
-
-<td style="text-align:left;">
-
-109
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-109
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-08-07
-
-</td>
-
-<td style="text-align:left;">
-
-2017-03-01
-
-</td>
-
-<td style="text-align:left;">
-
-2017-02-04
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-World Journal of Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-27766396
-
-</td>
-
-<td style="text-align:left;">
-
-10.1007/s00268-016-3727-3
-
-</td>
-
-<td style="text-align:left;">
-
-Safety of Nonsteroidal Anti-inflammatory Drugs in Major Gastrointestinal
-Surgery: A Prospective, Multicenter Cohort Study
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-0364-2313, 1432-2323
-
-</td>
-
-<td style="text-align:left;">
-
-12921564
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-62.308
-
-</td>
-
-<td style="text-align:right;">
-
-8.045172
-
-</td>
-
-<td style="text-align:right;">
-
-267385
-
-</td>
-
-<td style="text-align:right;">
-
-13352827
-
-</td>
-
-<td style="text-align:right;">
-
-0.9799754
-
-</td>
-
-<td style="text-align:right;">
-
-6.071856
-
-</td>
-
-<td style="text-align:right;">
-
-24
-
-</td>
-
-<td style="text-align:right;">
-
-2577
-
-</td>
-
-<td style="text-align:right;">
-
-0.9906868
-
-</td>
-
-<td style="text-align:right;">
-
-6.672361
-
-</td>
-
-<td style="text-align:right;">
-
-2
-
-</td>
-
-<td style="text-align:right;">
-
-73
-
-</td>
-
-<td style="text-align:right;">
-
-0.9726027
-
-</td>
-
-<td style="text-align:left;">
-
-191
-
-</td>
-
-<td style="text-align:left;">
-
-92
-
-</td>
-
-<td style="text-align:left;">
-
-89
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-98
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2018-01-18
-
-</td>
-
-<td style="text-align:left;">
-
-2016-10-20
-
-</td>
-
-<td style="text-align:left;">
-
-2016-10-23
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-The Lancet
-
-</td>
-
-<td style="text-align:right;">
-
-27507749
-
-</td>
-
-<td style="text-align:left;">
-
-10.1016/s0140-6736(16)31151-5
-
-</td>
-
-<td style="text-align:left;">
-
-UK surgical trainees will continue to support European research
-collaboration
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-0140-6736
-
-</td>
-
-<td style="text-align:left;">
-
-10108615
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.50
-
-</td>
-
-<td style="text-align:right;">
-
-13.05
-
-</td>
-
-<td style="text-align:right;">
-
-21.80
-
-</td>
-
-<td style="text-align:right;">
-
-87.600
-
-</td>
-
-<td style="text-align:right;">
-
-8.078789
-
-</td>
-
-<td style="text-align:right;">
-
-184400
-
-</td>
-
-<td style="text-align:right;">
-
-13449710
-
-</td>
-
-<td style="text-align:right;">
-
-0.9862897
-
-</td>
-
-<td style="text-align:right;">
-
-34.688303
-
-</td>
-
-<td style="text-align:right;">
-
-2314
-
-</td>
-
-<td style="text-align:right;">
-
-31895
-
-</td>
-
-<td style="text-align:right;">
-
-0.9274494
-
-</td>
-
-<td style="text-align:right;">
-
-112.547161
-
-</td>
-
-<td style="text-align:right;">
-
-87
-
-</td>
-
-<td style="text-align:right;">
-
-416
-
-</td>
-
-<td style="text-align:right;">
-
-0.7908654
-
-</td>
-
-<td style="text-align:left;">
-
-244
-
-</td>
-
-<td style="text-align:left;">
-
-138
-
-</td>
-
-<td style="text-align:left;">
-
-136
-
-</td>
-
-<td style="text-align:left;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-8
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-06-09
-
-</td>
-
-<td style="text-align:left;">
-
-2016-07-01
-
-</td>
-
-<td style="text-align:left;">
-
-2016-07-29
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-British Journal of Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-27321766
-
-</td>
-
-<td style="text-align:left;">
-
-10.1002/bjs.10203
-
-</td>
-
-<td style="text-align:left;">
-
-Multicentre prospective cohort study of body mass index and
-postoperative complications following gastrointestinal surgery
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-0007-1323
-
-</td>
-
-<td style="text-align:left;">
-
-8901461
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-101.850
-
-</td>
-
-<td style="text-align:right;">
-
-8.049237
-
-</td>
-
-<td style="text-align:right;">
-
-152101
-
-</td>
-
-<td style="text-align:right;">
-
-13370967
-
-</td>
-
-<td style="text-align:right;">
-
-0.9886245
-
-</td>
-
-<td style="text-align:right;">
-
-10.240244
-
-</td>
-
-<td style="text-align:right;">
-
-56
-
-</td>
-
-<td style="text-align:right;">
-
-3382
-
-</td>
-
-<td style="text-align:right;">
-
-0.9834418
-
-</td>
-
-<td style="text-align:right;">
-
-14.612968
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-63
-
-</td>
-
-<td style="text-align:right;">
-
-0.9365079
-
-</td>
-
-<td style="text-align:left;">
-
-459
-
-</td>
-
-<td style="text-align:left;">
-
-164
-
-</td>
-
-<td style="text-align:left;">
-
-159
-
-</td>
-
-<td style="text-align:left;">
-
-4
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-132
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2018-08-14
-
-</td>
-
-<td style="text-align:left;">
-
-2016-06-20
-
-</td>
-
-<td style="text-align:left;">
-
-2016-06-20
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-BMJ Open
-
-</td>
-
-<td style="text-align:right;">
-
-26769786
-
-</td>
-
-<td style="text-align:left;">
-
-10.1136/bmjopen-2015-009812
-
-</td>
-
-<td style="text-align:left;">
-
-Outcomes After Kidney injury in Surgery (OAKS): protocol for a
-multicentre, observational cohort study of acute kidney injury following
-major gastrointestinal and liver surgery.
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-, , STARSurg Collaborative, Michael Bath*, James Glasbey*, Henry
-Claireaux, Tom …
-
-</td>
-
-<td style="text-align:left;">
-
-2044-6055
-
-</td>
-
-<td style="text-align:left;">
-
-5001963
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-5.350
-
-</td>
-
-<td style="text-align:right;">
-
-7.856905
-
-</td>
-
-<td style="text-align:right;">
-
-2861303
-
-</td>
-
-<td style="text-align:right;">
-
-12819002
-
-</td>
-
-<td style="text-align:right;">
-
-0.7767921
-
-</td>
-
-<td style="text-align:right;">
-
-18.185794
-
-</td>
-
-<td style="text-align:right;">
-
-4359
-
-</td>
-
-<td style="text-align:right;">
-
-10427
-
-</td>
-
-<td style="text-align:right;">
-
-0.5819507
-
-</td>
-
-<td style="text-align:right;">
-
-23.577068
-
-</td>
-
-<td style="text-align:right;">
-
-198
-
-</td>
-
-<td style="text-align:right;">
-
-415
-
-</td>
-
-<td style="text-align:right;">
-
-0.5228916
-
-</td>
-
-<td style="text-align:left;">
-
-9
-
-</td>
-
-<td style="text-align:left;">
-
-9
-
-</td>
-
-<td style="text-align:left;">
-
-9
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-47
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2017-03-31
-
-</td>
-
-<td style="text-align:left;">
-
-2016-01-01
-
-</td>
-
-<td style="text-align:left;">
-
-2016-01-16
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-BMJ Open
-
-</td>
-
-<td style="text-align:right;">
-
-26195471
-
-</td>
-
-<td style="text-align:left;">
-
-10.1136/bmjopen-2015-008811
-
-</td>
-
-<td style="text-align:left;">
-
-Determining Surgical Complications in the Overweight (DISCOVER): a
-multicentre observational cohort study to evaluate the role of obesity
-as a risk factor for postoperative complications in general surgery
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Dmitri Nepogodiev, Stephen J Chapman, James Glasbey, Michael Kelly,
-Chetan Khatr…
-
-</td>
-
-<td style="text-align:left;">
-
-2044-6055
-
-</td>
-
-<td style="text-align:left;">
-
-4298507
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-10.050
-
-</td>
-
-<td style="text-align:right;">
-
-7.626824
-
-</td>
-
-<td style="text-align:right;">
-
-1276226
-
-</td>
-
-<td style="text-align:right;">
-
-12361048
-
-</td>
-
-<td style="text-align:right;">
-
-0.8967542
-
-</td>
-
-<td style="text-align:right;">
-
-18.148028
-
-</td>
-
-<td style="text-align:right;">
-
-2609
-
-</td>
-
-<td style="text-align:right;">
-
-9616
-
-</td>
-
-<td style="text-align:right;">
-
-0.7286814
-
-</td>
-
-<td style="text-align:right;">
-
-16.920083
-
-</td>
-
-<td style="text-align:right;">
-
-77
-
-</td>
-
-<td style="text-align:right;">
-
-289
-
-</td>
-
-<td style="text-align:right;">
-
-0.7335640
-
-</td>
-
-<td style="text-align:left;">
-
-24
-
-</td>
-
-<td style="text-align:left;">
-
-19
-
-</td>
-
-<td style="text-align:left;">
-
-19
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-48
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2017-12-30
-
-</td>
-
-<td style="text-align:left;">
-
-2015-01-01
-
-</td>
-
-<td style="text-align:left;">
-
-2015-07-21
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-American Journal of Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-26095017
-
-</td>
-
-<td style="text-align:left;">
-
-10.1016/j.amjsurg.2015.04.005
-
-</td>
-
-<td style="text-align:left;">
-
-Caution when interpreting anti-inflammatory drug effects in rat models
-of gastrointestinal anastomosis
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Chia Kong, James Glasbey, Midhun Mohan, Lisa McNamee, J. Edward F.
-Fitzgerald, N…
-
-</td>
-
-<td style="text-align:left;">
-
-0002-9610
-
-</td>
-
-<td style="text-align:left;">
-
-4069084
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.50
-
-</td>
-
-<td style="text-align:right;">
-
-0.50
-
-</td>
-
-<td style="text-align:right;">
-
-0.500
-
-</td>
-
-<td style="text-align:right;">
-
-7.941279
-
-</td>
-
-<td style="text-align:right;">
-
-10400255
-
-</td>
-
-<td style="text-align:right;">
-
-13044078
-
-</td>
-
-<td style="text-align:right;">
-
-0.2026838
-
-</td>
-
-<td style="text-align:right;">
-
-4.447857
-
-</td>
-
-<td style="text-align:right;">
-
-2308
-
-</td>
-
-<td style="text-align:right;">
-
-2799
-
-</td>
-
-<td style="text-align:right;">
-
-0.1754198
-
-</td>
-
-<td style="text-align:right;">
-
-2.800000
-
-</td>
-
-<td style="text-align:right;">
-
-36
-
-</td>
-
-<td style="text-align:right;">
-
-49
-
-</td>
-
-<td style="text-align:right;">
-
-0.2653061
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-7
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-03-10
-
-</td>
-
-<td style="text-align:left;">
-
-2016-01-01
-
-</td>
-
-<td style="text-align:left;">
-
-2015-05-29
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-British Medical Journal
-
-</td>
-
-<td style="text-align:right;">
-
-26014828
-
-</td>
-
-<td style="text-align:left;">
-
-10.1136/bmj.h2772
-
-</td>
-
-<td style="text-align:left;">
-
-Training and trials–building a future
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-T. M. Drake, M. Bath, H. A. Claireaux, C. Kong, C. Khatri, L. McNamee,
-M. Mohan,…
-
-</td>
-
-<td style="text-align:left;">
-
-1756-1833
-
-</td>
-
-<td style="text-align:left;">
-
-4058526
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-9.500
-
-</td>
-
-<td style="text-align:right;">
-
-7.192755
-
-</td>
-
-<td style="text-align:right;">
-
-963359
-
-</td>
-
-<td style="text-align:right;">
-
-8605600
-
-</td>
-
-<td style="text-align:right;">
-
-0.8880544
-
-</td>
-
-<td style="text-align:right;">
-
-24.258130
-
-</td>
-
-<td style="text-align:right;">
-
-12479
-
-</td>
-
-<td style="text-align:right;">
-
-35372
-
-</td>
-
-<td style="text-align:right;">
-
-0.6472068
-
-</td>
-
-<td style="text-align:right;">
-
-52.750827
-
-</td>
-
-<td style="text-align:right;">
-
-480
-
-</td>
-
-<td style="text-align:right;">
-
-574
-
-</td>
-
-<td style="text-align:right;">
-
-0.1637631
-
-</td>
-
-<td style="text-align:left;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-12
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2015-06-26
-
-</td>
-
-<td style="text-align:left;">
-
-2015-05-26
-
-</td>
-
-<td style="text-align:left;">
-
-2015-05-26
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-JAMA Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-25946128
-
-</td>
-
-<td style="text-align:left;">
-
-10.1001/jamasurg.2015.0806
-
-</td>
-
-<td style="text-align:left;">
-
-Selective vs Nonselective Nonsteroidal Anti-inflammatory Drugs and
-Anastomotic Leakage After Colorectal Surgery
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Thomas M. Drake, Dmitri Nepogodiev, Henry A. Claireaux, NA…
-
-</td>
-
-<td style="text-align:left;">
-
-2168-6254
-
-</td>
-
-<td style="text-align:left;">
-
-3981197
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-1.250
-
-</td>
-
-<td style="text-align:right;">
-
-7.737940
-
-</td>
-
-<td style="text-align:right;">
-
-7531155
-
-</td>
-
-<td style="text-align:right;">
-
-12489540
-
-</td>
-
-<td style="text-align:right;">
-
-0.3970030
-
-</td>
-
-<td style="text-align:right;">
-
-41.721732
-
-</td>
-
-<td style="text-align:right;">
-
-1754
-
-</td>
-
-<td style="text-align:right;">
-
-1972
-
-</td>
-
-<td style="text-align:right;">
-
-0.1105477
-
-</td>
-
-<td style="text-align:right;">
-
-21.041472
-
-</td>
-
-<td style="text-align:right;">
-
-123
-
-</td>
-
-<td style="text-align:right;">
-
-126
-
-</td>
-
-<td style="text-align:right;">
-
-0.0238095
-
-</td>
-
-<td style="text-align:left;">
-
-6
-
-</td>
-
-<td style="text-align:left;">
-
-4
-
-</td>
-
-<td style="text-align:left;">
-
-3
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-6
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2015-07-28
-
-</td>
-
-<td style="text-align:left;">
-
-2015-07-01
-
-</td>
-
-<td style="text-align:left;">
-
-2015-05-09
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-BMC Medical Education
-
-</td>
-
-<td style="text-align:right;">
-
-25879617
-
-</td>
-
-<td style="text-align:left;">
-
-10.1186/s12909-015-0326-1
-
-</td>
-
-<td style="text-align:left;">
-
-Promoting research and audit at medical school: evaluating the
-educational impact of participation in a student-led national
-collaborative study
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Stephen J Chapman, James C D Glasbey, Chetan Khatri, Michael Kelly,
-Dmitri Nepog…
-
-</td>
-
-<td style="text-align:left;">
-
-1472-6920
-
-</td>
-
-<td style="text-align:left;">
-
-3784521
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-5.30
-
-</td>
-
-<td style="text-align:right;">
-
-5.30
-
-</td>
-
-<td style="text-align:right;">
-
-12.90
-
-</td>
-
-<td style="text-align:right;">
-
-54.250
-
-</td>
-
-<td style="text-align:right;">
-
-8.079517
-
-</td>
-
-<td style="text-align:right;">
-
-313243
-
-</td>
-
-<td style="text-align:right;">
-
-13451724
-
-</td>
-
-<td style="text-align:right;">
-
-0.9767135
-
-</td>
-
-<td style="text-align:right;">
-
-5.984068
-
-</td>
-
-<td style="text-align:right;">
-
-19
-
-</td>
-
-<td style="text-align:right;">
-
-1992
-
-</td>
-
-<td style="text-align:right;">
-
-0.9904618
-
-</td>
-
-<td style="text-align:right;">
-
-0.000000
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-0.0000000
-
-</td>
-
-<td style="text-align:left;">
-
-186
-
-</td>
-
-<td style="text-align:left;">
-
-95
-
-</td>
-
-<td style="text-align:left;">
-
-90
-
-</td>
-
-<td style="text-align:left;">
-
-5
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-52
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-08-01
-
-</td>
-
-<td style="text-align:left;">
-
-2015-03-13
-
-</td>
-
-<td style="text-align:left;">
-
-2015-03-13
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-PLoS ONE
-
-</td>
-
-<td style="text-align:right;">
-
-25775005
-
-</td>
-
-<td style="text-align:left;">
-
-10.1371/journal.pone.0118899
-
-</td>
-
-<td style="text-align:left;">
-
-Social Media and Internet Driven Study Recruitment: Evaluating a New
-Model for Promoting Collaborator Engagement and Participation
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-Chetan Khatri, Stephen J. Chapman, James Glasbey, Michael Kelly, Dmitri
-Nepogodi…
-
-</td>
-
-<td style="text-align:left;">
-
-1932-6203
-
-</td>
-
-<td style="text-align:left;">
-
-3798277
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-0.00
-
-</td>
-
-<td style="text-align:right;">
-
-5.45
-
-</td>
-
-<td style="text-align:right;">
-
-5.45
-
-</td>
-
-<td style="text-align:right;">
-
-9.70
-
-</td>
-
-<td style="text-align:right;">
-
-42.000
-
-</td>
-
-<td style="text-align:right;">
-
-8.047060
-
-</td>
-
-<td style="text-align:right;">
-
-396077
-
-</td>
-
-<td style="text-align:right;">
-
-13366323
-
-</td>
-
-<td style="text-align:right;">
-
-0.9703675
-
-</td>
-
-<td style="text-align:right;">
-
-12.068548
-
-</td>
-
-<td style="text-align:right;">
-
-7331
-
-</td>
-
-<td style="text-align:right;">
-
-142512
-
-</td>
-
-<td style="text-align:right;">
-
-0.9485587
-
-</td>
-
-<td style="text-align:right;">
-
-12.292783
-
-</td>
-
-<td style="text-align:right;">
-
-234
-
-</td>
-
-<td style="text-align:right;">
-
-4394
-
-</td>
-
-<td style="text-align:right;">
-
-0.9467456
-
-</td>
-
-<td style="text-align:left;">
-
-141
-
-</td>
-
-<td style="text-align:left;">
-
-73
-
-</td>
-
-<td style="text-align:left;">
-
-73
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-108
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-07-14
-
-</td>
-
-<td style="text-align:left;">
-
-2015-03-16
-
-</td>
-
-<td style="text-align:left;">
-
-2015-03-17
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-25443488
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-British Journal of Surgery
-
-</td>
-
-<td style="text-align:right;">
-
-25091299
-
-</td>
-
-<td style="text-align:left;">
-
-10.1002/bjs.9614
-
-</td>
-
-<td style="text-align:left;">
-
-Impact of postoperative non-steroidal anti-inflammatory drugs on adverse
-events after gastrointestinal surgery
-
-</td>
-
-<td style="text-align:left;">
-
-article
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-0007-1323
-
-</td>
-
-<td style="text-align:left;">
-
-2570470
-
-</td>
-
-<td style="text-align:right;">
-
-0.75
-
-</td>
-
-<td style="text-align:right;">
-
-1.25
-
-</td>
-
-<td style="text-align:right;">
-
-1.75
-
-</td>
-
-<td style="text-align:right;">
-
-1.75
-
-</td>
-
-<td style="text-align:right;">
-
-1.75
-
-</td>
-
-<td style="text-align:right;">
-
-113.008
-
-</td>
-
-<td style="text-align:right;">
-
-8.079713
-
-</td>
-
-<td style="text-align:right;">
-
-135246
-
-</td>
-
-<td style="text-align:right;">
-
-13452493
-
-</td>
-
-<td style="text-align:right;">
-
-0.9899464
-
-</td>
-
-<td style="text-align:right;">
-
-10.303804
-
-</td>
-
-<td style="text-align:right;">
-
-46
-
-</td>
-
-<td style="text-align:right;">
-
-3396
-
-</td>
-
-<td style="text-align:right;">
-
-0.9864547
-
-</td>
-
-<td style="text-align:right;">
-
-4.594872
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-40
-
-</td>
-
-<td style="text-align:right;">
-
-0.9750000
-
-</td>
-
-<td style="text-align:left;">
-
-378
-
-</td>
-
-<td style="text-align:left;">
-
-170
-
-</td>
-
-<td style="text-align:left;">
-
-160
-
-</td>
-
-<td style="text-align:left;">
-
-7
-
-</td>
-
-<td style="text-align:left;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-88
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:left;">
-
-2019-08-29
-
-</td>
-
-<td style="text-align:left;">
-
-2014-08-04
-
-</td>
-
-<td style="text-align:left;">
-
-2014-08-05
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-24972607
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:left;">
-
-NA
 
 </td>
 
@@ -6715,7 +2135,7 @@ almetric$temporal %>%
   geom_line() + geom_point() + theme_bw()
 ```
 
-<img src="/tmp/Rtmpx7a3jU/preview-ca7170cc95a6.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1-1.png" style="display: block; margin: auto;" />
+<img src="/tmp/Rtmpx7a3jU/preview-ca7128dfc261.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1-1.png" style="display: block; margin: auto;" />
 
 #### **2 b). Almetric ranking ($rank)**
 
@@ -6769,7 +2189,7 @@ journal
 
 <th style="text-align:right;">
 
-alm\_score\_now
+alm\_score
 
 </th>
 
@@ -7884,4 +3304,4 @@ almetric$source %>%
   geom_col() + coord_flip()+ theme_bw()
 ```
 
-<img src="/tmp/Rtmpx7a3jU/preview-ca7170cc95a6.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot2-1.png" style="display: block; margin: auto;" />
+<img src="/tmp/Rtmpx7a3jU/preview-ca7128dfc261.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot2-1.png" style="display: block; margin: auto;" />

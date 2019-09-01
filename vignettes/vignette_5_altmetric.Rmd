@@ -18,7 +18,7 @@ On-line attention and engagement for research is now well recognised as importan
 Altmetric is one such system that tracks the attention research outputs receive online, and this package utilises the [rAltmetric](https://cran.r-project.org/web/packages/rAltmetric/README.html) package developed by the [rOpenSci](https://ropensci.org/) group to incorporate this data.
 
 **Note**: At present this package only includes Altmetric data. PlumX is the other major source of alternative metrics, however there is no open API avialable for this product (it requires an authentication token) and so has not been incorportated at present.
-
+    
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE)
 library(dplyr);library(ggplot2)
@@ -59,14 +59,23 @@ This will return the original dataset with data from almetric appended as column
  
  - **"date_" prefix**: Dates that the article was published, added to almetric, and when almetric data was last updated.
 
-```{r impact_df_output, echo=FALSE, include=TRUE}
+```{r impact_df_output, echo=FALSE, include=TRUE, max_height = "200px"}
+
+col_set1 <- which(colnames(almetric$df_output) %in% c("title"))
+col_set2 <- which(colnames(almetric$df_output) %in% c("author_list"))
+col_set3 <- which(colnames(almetric$df_output) %in% c("doi", "date_update", "date_pub", "date_added"))
+
 almetric$df_output %>%
   dplyr::mutate(author_list = ifelse(author_list!="NA", paste0(substr(author_list, 1, 80), "..."), author_list),
                 journal = gsub(": The British Journal of Anaesthesia", "", journal)) %>%
   
+  head(5) %>% 
   knitr::kable(format="html") %>%
+  kableExtra::column_spec(col_set1, width_min="7.5in") %>%
+  kableExtra::column_spec(col_set2, width_min="3in") %>%
+  kableExtra::column_spec(col_set3, width_min="1.5in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
-  kableExtra::scroll_box(width = "1000px", height = "500px")
+  kableExtra::scroll_box(width = "1000")
 
 ```
 

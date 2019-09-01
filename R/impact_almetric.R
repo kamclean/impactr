@@ -170,7 +170,7 @@ df_alm_source <- df_out %>%
   dplyr::ungroup()
 
 df_alm_rank <- df_out %>%
-  dplyr::select(pmid, doi, journal,alm_score_now, alm_all_mean:alm_journal_3m_prop) %>%
+  dplyr::select(pmid, doi, journal,alm_score_now,alm_all_mean:alm_journal_3m_prop) %>%
   tidyr::pivot_longer(names(dplyr::select(., alm_all_mean:alm_journal_3m_prop)), names_to = "alm_category") %>%
   dplyr::mutate(alm_category = gsub("alm_", "", alm_category),
                 journal = factor(journal)) %>%
@@ -179,7 +179,9 @@ df_alm_rank <- df_out %>%
   dplyr::mutate(alm_measure = stringi::stri_reverse(alm_measure),
                 alm_category = factor(stringi::stri_reverse(alm_category))) %>%
   tidyr::pivot_wider(names_from = alm_measure, values_from = value) %>%
-  dplyr::filter(is.na(mean)==F)
+  dplyr::filter(is.na(mean)==F) %>%
+  dplyr::rename(alm_score = alm_score_now)
+
 
   out <- list("df_output" = df_out, "temporal" = df_alm_time, "rank" = df_alm_rank, "source" = df_alm_source)
 
