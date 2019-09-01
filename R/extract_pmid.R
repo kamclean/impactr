@@ -15,15 +15,15 @@
 #' @importFrom purrr map map_chr
 #' @importFrom data.table rbindlist
 #' @export
-
+pmid <- rmed_pmid
 # Function-------------------------------
 extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact= TRUE){
 
   "%ni%" <- Negate("%in%")
 
-  pmid_original <- pmid
-  pmid_error <- pmid[which(is.na(pmid)==T|is.numeric(pmid)==F)]
-  pmid <- pmid[which(is.na(pmid)==F&is.numeric(pmid)==T)] # ensure no NA/ numeric
+  pmid_original <- as.numeric(pmid)
+  pmid_error <- pmid[which(is.na(pmid)==T|purrr::map_lgl(pmid_original, is.numeric)==F)]
+  pmid <- pmid[which(is.na(pmid)==F&purrr::map_lgl(pmid_original, is.numeric)==T)] # ensure no NA/ numeric
 
   pubmed_call <- RISmed::EUtilsSummary(paste0(paste(pmid, collapse = '[PMID] or '), '[PMID]')) %>%
     RISmed::EUtilsGet()
@@ -75,7 +75,7 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact=
       dplyr::mutate(auth_n = pub_auth$auth_n,
              author = pub_auth$author_list)}
 
-  if(get_impact==TRUE){out_pubmed <- extract_impact_factor(out_pubmed)}
+  if(get_impact==TRUE){out_pubmed <- impactr::extract_impact_factor(out_pubmed)}
 
   if("journal_full.y" %in% names(out_pubmed)){
     out_pubmed <- out_pubmed %>%
