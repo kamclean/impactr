@@ -15,7 +15,7 @@
 #' @importFrom purrr map map_chr
 #' @importFrom data.table rbindlist
 #' @export
-pmid <- rmed_pmid
+
 # Function-------------------------------
 extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact= TRUE){
 
