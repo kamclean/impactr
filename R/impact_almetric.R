@@ -70,7 +70,6 @@ df_alm <- df %>%
       tidyr::unite(., col = "issns", sep = ", ", remove = TRUE,
                    names(dplyr::select(., dplyr::starts_with("issns")))) -> v
 
-
     names_cited_included <- v %>%
       dplyr::select(names_cited$old[names_cited$old %in% names(.)]) %>%
       setNames(names_cited$new[names_cited$old %in% names(.)])
@@ -103,12 +102,12 @@ df_alm <- df %>%
                     "alm_journal_3m_mean" = context.similar_age_journal_3m.mean,
                     "alm_journal_3m_rank" = context.similar_age_journal_3m.rank,
                     "alm_journal_3m_n" = context.similar_age_journal_3m.count,
-                    last_updated, published_on,added_on) %>%
+                    last_updated, published_on,added_on,journal) %>%
       dplyr::mutate_at(dplyr::vars(pmid, dplyr::starts_with("alm_")), as.numeric) %>%
       dplyr::mutate(alm_all_prop = 1-(alm_all_rank/alm_all_n),
                     alm_journal_all_prop = 1-(alm_journal_all_rank/alm_journal_all_n),
                     alm_journal_3m_prop = 1-(alm_journal_3m_rank/alm_journal_3m_n)) %>%
-      dplyr::select(pmid:alm_all_n, alm_all_prop,
+      dplyr::select(journal, pmid:alm_all_n, alm_all_prop,
                     alm_journal_all_mean:alm_journal_all_n, alm_journal_all_prop,
                     alm_journal_3m_mean:alm_journal_3m_n, alm_journal_3m_prop,
                     last_updated, published_on,added_on) %>%
@@ -171,9 +170,10 @@ df_alm_source <- df_out %>%
   dplyr::ungroup()
 
 df_alm_rank <- df_out %>%
-  dplyr::select(pmid, doi, alm_all_mean:alm_journal_3m_prop) %>%
+  dplyr::select(pmid, doi, journal,alm_score_now, alm_all_mean:alm_journal_3m_prop) %>%
   tidyr::pivot_longer(names(dplyr::select(., alm_all_mean:alm_journal_3m_prop)), names_to = "alm_category") %>%
-  dplyr::mutate(alm_category = gsub("alm_", "", alm_category)) %>%
+  dplyr::mutate(alm_category = gsub("alm_", "", alm_category),
+                journal = factor(journal)) %>%
   dplyr::mutate(alm_measure = stringr::str_split_fixed(stringi::stri_reverse(alm_category), "_", 2)[,1],
                 alm_category = stringr::str_split_fixed(stringi::stri_reverse(alm_category), "_", 2)[,2]) %>%
   dplyr::mutate(alm_measure = stringi::stri_reverse(alm_measure),
