@@ -50,8 +50,20 @@ There are 4 outputs from `impact_almetric()` as nested dataframes:
 ### **1. Original dataset ($df\_output)**
 
 This will return the original dataset with data from almetric appended
-as
-columns.
+as columns. There are 4 broad groups that describes the:
+
+  - **“alm\_score\_” prefix**: Overall almetric score over time (see
+    `$temporal` output below).
+
+  - **“alm\_all” / “alm\_journal” prefixes**: Context of almetric score
+    relative to other articles (see `$rank` output below).
+
+  - **“n\_engage\_” prefix**: Number of engagements with the article by
+    source (see `$source` output below).
+
+  - **“date\_” prefix**: Dates that the article was published, added to
+    almetric, and when almetric data was last
+updated.
 
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:1000px; ">
 
@@ -6703,7 +6715,7 @@ almetric$temporal %>%
   geom_line() + geom_point() + theme_bw()
 ```
 
-<img src="/tmp/Rtmpx7a3jU/preview-ca711422e222.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1-1.png" style="display: block; margin: auto;" />
+<img src="/tmp/Rtmpx7a3jU/preview-ca7170cc95a6.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1-1.png" style="display: block; margin: auto;" />
 
 #### **2 b). Almetric ranking ($rank)**
 
@@ -7872,4 +7884,4 @@ almetric$source %>%
   geom_col() + coord_flip()+ theme_bw()
 ```
 
-<img src="/tmp/Rtmpx7a3jU/preview-ca711422e222.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot2-1.png" style="display: block; margin: auto;" />
+<img src="/tmp/Rtmpx7a3jU/preview-ca7170cc95a6.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot2-1.png" style="display: block; margin: auto;" />

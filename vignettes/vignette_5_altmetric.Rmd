@@ -49,7 +49,15 @@ almetric <- impact_almetric(data_pub$pmid)
 There are 4 outputs from `impact_almetric()` as nested dataframes: `$df_output`, `$temporal`, `$rank`, and `$source`.
 
 ### **1. Original dataset ($df_output)**
-This will return the original dataset with data from almetric appended as columns.
+This will return the original dataset with data from almetric appended as columns. There are 4 broad groups that describes the:
+
+ - **"alm_score_" prefix**: Overall almetric score over time (see `$temporal` output below).
+ 
+ - **"alm_all " / "alm_journal" prefixes**: Context of almetric score relative to other articles (see `$rank` output below).
+
+ - **"n_engage_" prefix**: Number of engagements with the article by source (see `$source` output below).
+ 
+ - **"date_" prefix**: Dates that the article was published, added to almetric, and when almetric data was last updated.
 
 ```{r impact_df_output, echo=FALSE, include=TRUE}
 almetric$df_output %>%
