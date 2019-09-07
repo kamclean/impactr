@@ -62,13 +62,13 @@ example <- impactr::impact_auth(data, pub_group = "project", max_inital = 1, ups
 &nbsp;
 
 ## **Output**
-There are 3 potential outputs from `impact_auth()` as nested dataframes: `$auth_out`, `$upset_data`, and `$metrics`.
+There are 3 potential outputs from `impact_auth()` as nested dataframes: `$list`, `$upset`, and `$metrics`.
 
-### **1. $auth_out**
+### **1. $list**
 This will provide a basic summary of all unique collaborators across all groups (`author`), and their involvement in each (`pub_n`, `pub_group`). 
 
-```{r impact_auth_out, warning=FALSE, message=FALSE, echo=FALSE}
-example$auth_out %>%
+```{r impact_list, warning=FALSE, message=FALSE, echo=FALSE}
+example$list %>%
   dplyr::slice(., sample(1:nrow(.),5,replace=F)) %>%
   knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
@@ -76,20 +76,20 @@ example$auth_out %>%
 This data can be used in a variety of ways, including a basic summary of involvement over time. For example, the number of projects authors/collaborators have been involved in:
 
 ```{r impact_auth_ss1, warning=FALSE, message=FALSE}
-example$auth_out %>%
+example$list %>%
   finalfit::summary_factorlist(explanatory = "pub_n", column = TRUE) %>%
   tibble::as_tibble() %>% knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 &nbsp;
 
-### **2. $data_upset**
+### **2. $upset**
 The `impact_auth()` function has the capability to derive information on how the authors relate using the `upset = TRUE` arguement (default).
 
-A subset of the `data_upset` output is displayed below. Each column is a level from the `pub_group` variable (e.g. "project"), with `0` representing presence and the `1` representing absence of the author from each project.
+A subset of the `upset` output is displayed below. Each column is a level from the `pub_group` variable (e.g. "project"), with `0` representing presence and the `1` representing absence of the author from each project.
 
 ```{r impact_auth_upset1b, warning=FALSE, message=FALSE, echo=FALSE}
-example$data_upset %>%
+example$upset %>%
   dplyr::slice(., sample(1:nrow(.),5,replace=F)) %>%
   knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
@@ -97,10 +97,10 @@ example$data_upset %>%
 This data can be used in multiple ways, for example:
 
 #### a). Descriptive summaries:
-The `data_upset` output can be used by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) package to derive information on the relationships between authors and the groups (`pub_group` variable).
+The `upset` output can be used by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) package to derive information on the relationships between authors and the groups (`pub_group` variable).
 
 ```{r impact_auth_upset2, warning=FALSE, message=FALSE,}
-upset_comb_mat <- ComplexHeatmap::make_comb_mat(example$data_upset)
+upset_comb_mat <- ComplexHeatmap::make_comb_mat(example$upset)
 
 impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
@@ -108,35 +108,46 @@ impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>% kableExtra::kable
 &nbsp;
 
 #### b). UpSet plots / Venn diagrams 
-UpSet plots provide an efficient way to visualize intersections of multiple sets compared to the traditional approaches (e.g. Venn Diagram). The `data_upset` output can be used directly to make UpSet plots by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
+UpSet plots provide an efficient way to visualize intersections of multiple sets compared to the traditional approaches (e.g. Venn Diagram). The `upset` output can be used directly to make UpSet plots by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
 
-```{r impact_auth_upset3ai, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-data_auth$data_upset %>%
+```{r impact_auth_upset3ai, echo=TRUE, results='hide'}
+example$upset %>%
   ComplexHeatmap::make_comb_mat() %>%
   ComplexHeatmap::UpSet(m = ., set_order = c("STARSurg-1", "DISCOVER", "OAKS-1"))
 ```
+```{r impact_auth_upset3aii, echo=FALSE}
+plot_upset1 <- example$upset %>%
+  ComplexHeatmap::make_comb_mat() %>%
+  
+  ComplexHeatmap::UpSet(m = ., set_order = c("STARSurg-1", "DISCOVER", "OAKS-1"))
+ggsave(plot = grid::grid.draw(grid::grid.grabExpr(ComplexHeatmap::draw(plot_upset1))),
+       filename="~/impactr/vignettes/plot/plot_upset1.png",height=3.76, width = 7.60, units ="in")
+```
+<img src="plot/plot_upset1.png" align="center"/>
 
 
-```{r impact_auth_upset3bi, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-data_auth$data_upset %>%
-  UpSetR::upset(data = data_auth$data_upset, text.scale = 1.7)
+```{r impact_auth_upset3bi, echo=TRUE, results='hide'}
+example$upset %>%
+  UpSetR::upset(text.scale = 1.7)
 ```
 
-```{r impact_auth_upset3bi, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-plot_upset2 <- data_auth$data_upset %>%
-  UpSetR::upset(data = data_auth$data_upset, text.scale = 1.7)
+```{r impact_auth_upset3bii, echo=FALSE, message=FALSE, error=FALSE,include=FALSE, warning = FALSE}
+plot_upset2 <- example$upset %>%
+  UpSetR::upset(text.scale = 1.7)
 
-ggsave(plot_upset2, filename="~/impactr/vignettes/plot/alm_plot2.png",height=5.76, width = 9.60, units ="in")
+png(file="~/impactr/vignettes/plot/plot_upset2.png", height = 3.76, width = 7.60, units = "in", res=300)
+plot_upset2
+dev.off()
 ```
-
+<img src="plot/plot_upset2.png" align="center"/>
 
 &nbsp;
 
 #### c). Alluvial diagrams:
 Alternatively, it can be used for Alluvial diagrams to provide a visualisation of author/collaborator involvement over time (variations of [Sankey diagrams](https://datavizcatalogue.com/methods/sankey_diagram.html)).
 
-```{r impact_auth_alluvial, warning=FALSE, message=FALSE, echo = FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
-data_auth$data_upset %>%
+```{r impact_auth_alluvial, warning=FALSE, message=FALSE, echo = FALSE}
+plot_alluvial <-  example$upset %>%
   # format data
   mutate_all(function(x){factor(x, levels = c(0, 1), labels = c("No", "Yes"))}) %>%
   table() %>% tibble::as_tibble() %>%
@@ -157,7 +168,11 @@ data_auth$data_upset %>%
   scale_y_continuous(name = "Total Number of Collaborators") +
   theme_bw(base_size = 18) + guides(fill=FALSE)
   
+ggsave(plot_alluvial, filename = "~/impactr/vignettes/plot/plot_alluvial.png",
+       height = 5.76*0.75, width = 9.60*0.75)
 ```
+
+<img src="plot/plot_alluvial.png" align="center"/>
 
 &nbsp;
 

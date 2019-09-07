@@ -1,4 +1,4 @@
-# **Collaborator Engagement**
+# **Impact from from Co-authorship Network**
 
 In collaborative research projects, there can be hundreds or even
 thousands of collaborators involved who gain pubmed-citable authorship
@@ -37,91 +37,18 @@ mandatory requirements are a dataframe of the grouping variable
 (“author”).
 
 ``` r
-data <- extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%
+data <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%
   dplyr::mutate(project = factor(pmid,
                                  levels = c(25091299, 27321766, 30513129),
                                  labels =c("STARSurg-1", "DISCOVER", "OAKS-1"))) %>%
   dplyr::select(project, author)
 ```
 
-<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
-
-<thead>
-
-<tr>
-
-<th style="text-align:left;">
-
-project
-
-</th>
-
-<th style="text-align:left;">
-
-author
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-OAKS-1
-
-</td>
-
-<td style="text-align:left;">
-
-Nepogodiev D, Walker K, Glasbey JC, Drake TM, Borakati A, Kamarajah S,
-McLean K,…
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-DISCOVER
-
-</td>
-
-<td style="text-align:left;">
-
-Drake TM, Nepogodiev D, Chapman SJ, Glasbey JC, Khatri C, Kong CY,
-Claireaux HA,…
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-STARSurg-1
-
-</td>
-
-<td style="text-align:left;">
-
-Chapman SJ, Glasbey J, Kelly M, Khatri C, Nepogodiev D, Fitzgerald JE,
-Bhangu A,…
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+| project    | author                                                                            |
+| :--------- | :-------------------------------------------------------------------------------- |
+| STARSurg-1 | Chapman SJ, Glasbey J, Kelly M, Khatri C, Nepogodiev D, Fitzgerald JE, Bhangu A,… |
+| DISCOVER   | Drake TM, Nepogodiev D, Chapman SJ, Glasbey JC, Khatri C, Kong CY, Claireaux HA,… |
+| OAKS-1     | Nepogodiev D, Walker K, Glasbey JC, Drake TM, Borakati A, Kamarajah S, McLean K,… |
 
 To track collaborator involvement over time, the author names must be
 matched between the groups (and dupliciates within groups excluded).
@@ -146,7 +73,7 @@ combined).
 <!-- end list -->
 
 ``` r
-example <- impact_auth(data, pub_group = "project", max_inital = 1, upset = TRUE, metric = TRUE)
+example <- impactr::impact_auth(data, pub_group = "project", max_inital = 1, upset = TRUE, metric = TRUE)
 ```
 
  
@@ -154,9 +81,9 @@ example <- impact_auth(data, pub_group = "project", max_inital = 1, upset = TRUE
 ## **Output**
 
 There are 3 potential outputs from `impact_auth()` as nested dataframes:
-`$auth_out`, `$upset_data`, and `$metrics`.
+`$list`, `$upset`, and `$metrics`.
 
-### **1. $auth\_out**
+### **1. $list**
 
 This will provide a basic summary of all unique collaborators across all
 groups (`author`), and their involvement in each (`pub_n`,
@@ -196,7 +123,7 @@ pub\_group
 
 <td style="text-align:left;">
 
-makanji d
+jordan p
 
 </td>
 
@@ -218,29 +145,7 @@ OAKS-1
 
 <td style="text-align:left;">
 
-luck j
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-STARSurg-1
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-mishra a
+mithrakumar p
 
 </td>
 
@@ -262,51 +167,7 @@ DISCOVER
 
 <td style="text-align:left;">
 
-maru d
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-DISCOVER
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-lim e
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-DISCOVER
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-van den berg n
+barclay j
 
 </td>
 
@@ -328,29 +189,7 @@ OAKS-1
 
 <td style="text-align:left;">
 
-mccann m
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-DISCOVER
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-ahmad a
+bienias a
 
 </td>
 
@@ -372,7 +211,7 @@ OAKS-1
 
 <td style="text-align:left;">
 
-marsh a
+courquin g
 
 </td>
 
@@ -384,29 +223,7 @@ marsh a
 
 <td style="text-align:left;">
 
-DISCOVER
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-wright a
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:left;">
-
-DISCOVER
+OAKS-1
 
 </td>
 
@@ -421,7 +238,7 @@ involvement over time. For example, the number of projects
 authors/collaborators have been involved in:
 
 ``` r
-example$auth_out %>%
+example$list %>%
   finalfit::summary_factorlist(explanatory = "pub_n", column = TRUE) %>%
   tibble::as_tibble() %>% knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
@@ -524,12 +341,12 @@ pub\_n
 
  
 
-### **2. $data\_upset**
+### **2. $upset**
 
 The `impact_auth()` function has the capability to derive information on
 how the authors relate using the `upset = TRUE` arguement (default).
 
-A subset of the `data_upset` output is displayed below. Each column is a
+A subset of the `upset` output is displayed below. Each column is a
 level from the `pub_group` variable (e.g. “project”), with `0`
 representing presence and the `1` representing absence of the author
 from each
@@ -575,7 +392,51 @@ OAKS-1
 
 <td style="text-align:right;">
 
+1
+
+</td>
+
+<td style="text-align:right;">
+
 0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+1
 
 </td>
 
@@ -603,7 +464,7 @@ OAKS-1
 
 <td style="text-align:right;">
 
-0
+1
 
 </td>
 
@@ -626,50 +487,6 @@ OAKS-1
 <td style="text-align:right;">
 
 0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-1
 
 </td>
 
@@ -683,15 +500,15 @@ This data can be used in multiple ways, for example:
 
 #### a). Descriptive summaries:
 
-The `data_upset` output can be used by the
+The `upset` output can be used by the
 [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) package to
 derive information on the relationships between authors and the groups
 (`pub_group` variable).
 
 ``` r
-upset_comb_mat <- ComplexHeatmap::make_comb_mat(example$data_upset)
+upset_comb_mat <- ComplexHeatmap::make_comb_mat(example$upset)
 
-knitr::kable(comb_name_size(upset_comb_mat)) %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
+impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -703,6 +520,12 @@ knitr::kable(comb_name_size(upset_comb_mat)) %>% kableExtra::kable_styling(boots
 <th style="text-align:left;">
 
 combination
+
+</th>
+
+<th style="text-align:right;">
+
+degree
 
 </th>
 
@@ -728,6 +551,12 @@ STARSurg-1
 
 <td style="text-align:right;">
 
+1
+
+</td>
+
+<td style="text-align:right;">
+
 306
 
 </td>
@@ -739,6 +568,12 @@ STARSurg-1
 <td style="text-align:left;">
 
 DISCOVER
+
+</td>
+
+<td style="text-align:right;">
+
+1
 
 </td>
 
@@ -760,6 +595,12 @@ STARSurg-1\&DISCOVER
 
 <td style="text-align:right;">
 
+2
+
+</td>
+
+<td style="text-align:right;">
+
 74
 
 </td>
@@ -771,6 +612,12 @@ STARSurg-1\&DISCOVER
 <td style="text-align:left;">
 
 OAKS-1
+
+</td>
+
+<td style="text-align:right;">
+
+1
 
 </td>
 
@@ -792,6 +639,12 @@ STARSurg-1\&OAKS-1
 
 <td style="text-align:right;">
 
+2
+
+</td>
+
+<td style="text-align:right;">
+
 29
 
 </td>
@@ -803,6 +656,12 @@ STARSurg-1\&OAKS-1
 <td style="text-align:left;">
 
 DISCOVER\&OAKS-1
+
+</td>
+
+<td style="text-align:right;">
+
+2
 
 </td>
 
@@ -824,6 +683,12 @@ STARSurg-1\&DISCOVER\&OAKS-1
 
 <td style="text-align:right;">
 
+3
+
+</td>
+
+<td style="text-align:right;">
+
 37
 
 </td>
@@ -840,28 +705,28 @@ STARSurg-1\&DISCOVER\&OAKS-1
 
 UpSet plots provide an efficient way to visualize intersections of
 multiple sets compared to the traditional approaches (e.g. Venn
-Diagram). The `data_upset` output can be used directly to make UpSet
-plots by the
-[ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and
+Diagram). The `upset` output can be used directly to make UpSet plots by
+the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and
 [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
 
 ``` r
-example$data_upset %>%
+example$upset %>%
   ComplexHeatmap::make_comb_mat() %>%
   ComplexHeatmap::UpSet(m = ., set_order = c("STARSurg-1", "DISCOVER", "OAKS-1"))
 ```
 
-<img src="impact_auth_upset3-1.png" style="display: block; margin: auto;" />
+![](/tmp/RtmpEWMyi8/preview-84f135d3507e.dir/vignette_4_author_files/figure-gfm/impact_auth_upset3ai-1.png)<!-- -->
+
+<img src="plot/plot_upset1.png" align="center"/>
 
 ``` r
-example$data_upset %>%
-  UpSetR::upset(data = ., keep.order = T, group.by = "degree",
-                  sets = colnames(.), text.scale = 1.7,
-                  mainbar.y.label = "STARSurg Project Participation",
-                  sets.x.label = "Number of Collaborators")
+example$upset %>%
+  UpSetR::upset(text.scale = 1.7)
 ```
 
-<img src="impact_auth_upset3-2.png" style="display: block; margin: auto;" />
+![](/tmp/RtmpEWMyi8/preview-84f135d3507e.dir/vignette_4_author_files/figure-gfm/impact_auth_upset3bi-1.png)<!-- -->
+
+<img src="plot/plot_upset2.png" align="center"/>
 
  
 
@@ -872,7 +737,7 @@ visualisation of author/collaborator involvement over time (variations
 of [Sankey
 diagrams](https://datavizcatalogue.com/methods/sankey_diagram.html)).
 
-<img src="impact_auth_alluvial-1.png" style="display: block; margin: auto;" />
+<img src="plot/plot_alluvial.png" align="center"/>
 
  
 
