@@ -2126,7 +2126,1186 @@ alm\_score
 
 </table>
 
-**Plot of almetric score over
-time**
+**Plot of almetric score over time**
 
-<img src="vignettes/plot/alm_plot1.png" align="center" width="159" height="174"/>
+``` r
+almetric$temporal %>% 
+  ggplot() +
+  aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
+  geom_line() + geom_point() + theme_bw()
+```
+
+![](/tmp/Rtmpun2AyT/preview-5ffd3c70cf98.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1a-1.png)<!-- -->
+
+<img src="plot/alm_plot1.png" align="center"/>
+
+#### **2 b). Almetric ranking ($rank)**
+
+The almetric score is not normalised, and so it is meaningless without
+context. As such, almetric allows you to see the score relative to other
+articles (whether from all indexed by almetric or those from the same
+journal at the same time). Within `$rank` these categories
+(alm\_category) include:
+
+  - **all**: All papers recorded by almetric.
+
+  - **journal\_all**: All papers recorded by almetric **for that
+    journal**
+
+  - **journal\_3m**: All papers recorded by almetric **for that journal
+    within 3 month period**
+
+For each category, almetric records the following measures:
+
+  - The mean almetric score (`mean`).
+
+  - The number (`n`) of all papers, and the rank of the specific paper
+    within those (`rank`).
+
+  - The proportion of papers (`prop`) that the paper outranks (`rank` /
+    `n`).
+
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+
+<thead>
+
+<tr>
+
+<th style="text-align:right;">
+
+pmid
+
+</th>
+
+<th style="text-align:left;">
+
+doi
+
+</th>
+
+<th style="text-align:left;">
+
+journal
+
+</th>
+
+<th style="text-align:right;">
+
+alm\_score
+
+</th>
+
+<th style="text-align:left;">
+
+alm\_category
+
+</th>
+
+<th style="text-align:right;">
+
+mean
+
+</th>
+
+<th style="text-align:right;">
+
+rank
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+prop
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:right;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+Anaesthesia
+
+</td>
+
+<td style="text-align:right;">
+
+3.75
+
+</td>
+
+<td style="text-align:left;">
+
+all
+
+</td>
+
+<td style="text-align:right;">
+
+8.062658
+
+</td>
+
+<td style="text-align:right;">
+
+3642028
+
+</td>
+
+<td style="text-align:right;">
+
+13404018
+
+</td>
+
+<td style="text-align:right;">
+
+0.7282883
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+Anaesthesia
+
+</td>
+
+<td style="text-align:right;">
+
+3.75
+
+</td>
+
+<td style="text-align:left;">
+
+journal\_all
+
+</td>
+
+<td style="text-align:right;">
+
+14.999629
+
+</td>
+
+<td style="text-align:right;">
+
+1510
+
+</td>
+
+<td style="text-align:right;">
+
+3393
+
+</td>
+
+<td style="text-align:right;">
+
+0.5549661
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+Anaesthesia
+
+</td>
+
+<td style="text-align:right;">
+
+3.75
+
+</td>
+
+<td style="text-align:left;">
+
+journal\_3m
+
+</td>
+
+<td style="text-align:right;">
+
+70.271667
+
+</td>
+
+<td style="text-align:right;">
+
+69
+
+</td>
+
+<td style="text-align:right;">
+
+97
+
+</td>
+
+<td style="text-align:right;">
+
+0.2886598
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+BJA
+
+</td>
+
+<td style="text-align:right;">
+
+33.85
+
+</td>
+
+<td style="text-align:left;">
+
+all
+
+</td>
+
+<td style="text-align:right;">
+
+8.024820
+
+</td>
+
+<td style="text-align:right;">
+
+478772
+
+</td>
+
+<td style="text-align:right;">
+
+13318908
+
+</td>
+
+<td style="text-align:right;">
+
+0.9640532
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+BJA
+
+</td>
+
+<td style="text-align:right;">
+
+33.85
+
+</td>
+
+<td style="text-align:left;">
+
+journal\_all
+
+</td>
+
+<td style="text-align:right;">
+
+7.135920
+
+</td>
+
+<td style="text-align:right;">
+
+119
+
+</td>
+
+<td style="text-align:right;">
+
+4055
+
+</td>
+
+<td style="text-align:right;">
+
+0.9706535
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+BJA
+
+</td>
+
+<td style="text-align:right;">
+
+33.85
+
+</td>
+
+<td style="text-align:left;">
+
+journal\_3m
+
+</td>
+
+<td style="text-align:right;">
+
+14.966129
+
+</td>
+
+<td style="text-align:right;">
+
+7
+
+</td>
+
+<td style="text-align:right;">
+
+94
+
+</td>
+
+<td style="text-align:right;">
+
+0.9255319
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30513129
+
+</td>
+
+<td style="text-align:left;">
+
+10.1002/bjs5.86
+
+</td>
+
+<td style="text-align:left;">
+
+BJS Open
+
+</td>
+
+<td style="text-align:right;">
+
+56.50
+
+</td>
+
+<td style="text-align:left;">
+
+all
+
+</td>
+
+<td style="text-align:right;">
+
+8.085049
+
+</td>
+
+<td style="text-align:right;">
+
+300829
+
+</td>
+
+<td style="text-align:right;">
+
+13458902
+
+</td>
+
+<td style="text-align:right;">
+
+0.9776483
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30513129
+
+</td>
+
+<td style="text-align:left;">
+
+10.1002/bjs5.86
+
+</td>
+
+<td style="text-align:left;">
+
+BJS Open
+
+</td>
+
+<td style="text-align:right;">
+
+56.50
+
+</td>
+
+<td style="text-align:left;">
+
+journal\_all
+
+</td>
+
+<td style="text-align:right;">
+
+10.853254
+
+</td>
+
+<td style="text-align:right;">
+
+5
+
+</td>
+
+<td style="text-align:right;">
+
+170
+
+</td>
+
+<td style="text-align:right;">
+
+0.9705882
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:right;">
+
+30513129
+
+</td>
+
+<td style="text-align:left;">
+
+10.1002/bjs5.86
+
+</td>
+
+<td style="text-align:left;">
+
+BJS Open
+
+</td>
+
+<td style="text-align:right;">
+
+56.50
+
+</td>
+
+<td style="text-align:left;">
+
+journal\_3m
+
+</td>
+
+<td style="text-align:right;">
+
+15.022500
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+21
+
+</td>
+
+<td style="text-align:right;">
+
+0.9047619
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+#### **2 c). Almetric sources ($source)**
+
+The Altmetric score for a research output provides an indicator of the
+amount of attention that it has received from, and as such records both
+the type and amount of attention recieved. This data excludes any
+sources **not** recorded for any of the
+papers.
+
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+pmid
+
+</th>
+
+<th style="text-align:left;">
+
+doi
+
+</th>
+
+<th style="text-align:left;">
+
+source
+
+</th>
+
+<th style="text-align:right;">
+
+n
+
+</th>
+
+<th style="text-align:right;">
+
+total
+
+</th>
+
+<th style="text-align:right;">
+
+prop
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+twitter
+
+</td>
+
+<td style="text-align:right;">
+
+6
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+0.7500000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+fb
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+news\_media
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+wikipedia
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+blogs
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30656658
+
+</td>
+
+<td style="text-align:left;">
+
+10.1111/anae.14552
+
+</td>
+
+<td style="text-align:left;">
+
+readers
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+8
+
+</td>
+
+<td style="text-align:right;">
+
+0.2500000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+twitter
+
+</td>
+
+<td style="text-align:right;">
+
+58
+
+</td>
+
+<td style="text-align:right;">
+
+78
+
+</td>
+
+<td style="text-align:right;">
+
+0.7435897
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+fb
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+78
+
+</td>
+
+<td style="text-align:right;">
+
+0.0256410
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+news\_media
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+78
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+wikipedia
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+78
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+blogs
+
+</td>
+
+<td style="text-align:right;">
+
+0
+
+</td>
+
+<td style="text-align:right;">
+
+78
+
+</td>
+
+<td style="text-align:right;">
+
+0.0000000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+30579405
+
+</td>
+
+<td style="text-align:left;">
+
+10.1016/j.bja.2018.07.029
+
+</td>
+
+<td style="text-align:left;">
+
+readers
+
+</td>
+
+<td style="text-align:right;">
+
+18
+
+</td>
+
+<td style="text-align:right;">
+
+78
+
+</td>
+
+<td style="text-align:right;">
+
+0.2307692
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+**Plot of the proportion of almetric sources for each paper**
+
+``` r
+almetric$source %>% 
+  ggplot() +
+  aes(x = pmid, y = prop, colour = source, fill = source) +
+  geom_col() + coord_flip()+ theme_bw()
+```
+
+![](/tmp/Rtmpun2AyT/preview-5ffd3c70cf98.dir/vignette_5_altmetric_files/figure-gfm/plot_alm_source1a-1.png)<!-- -->
+
+<img src="plot/alm_plot2.png" align="center"/>
