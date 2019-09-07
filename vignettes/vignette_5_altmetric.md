@@ -2126,8 +2126,6 @@ alm\_score
 
 </table>
 
-**Plot of almetric score over time**
-
 ``` r
 almetric$temporal %>% 
   ggplot() +
@@ -2135,7 +2133,9 @@ almetric$temporal %>%
   geom_line() + geom_point() + theme_bw()
 ```
 
-![](/tmp/Rtmpun2AyT/preview-5ffd3c70cf98.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1a-1.png)<!-- -->
+![](/tmp/Rtmpun2AyT/preview-5ffd25f24490.dir/vignette_5_altmetric_files/figure-gfm/impact_almetric_plot1a-1.png)<!-- -->
+
+**Figure 1**: Plot of almetric score over time for each paper
 
 <img src="plot/alm_plot1.png" align="center"/>
 
@@ -3297,8 +3297,6 @@ readers
 
 </table>
 
-**Plot of the proportion of almetric sources for each paper**
-
 ``` r
 almetric$source %>% 
   ggplot() +
@@ -3306,6 +3304,8 @@ almetric$source %>%
   geom_col() + coord_flip()+ theme_bw()
 ```
 
-![](/tmp/Rtmpun2AyT/preview-5ffd3c70cf98.dir/vignette_5_altmetric_files/figure-gfm/plot_alm_source1a-1.png)<!-- -->
+![](/tmp/Rtmpun2AyT/preview-5ffd25f24490.dir/vignette_5_altmetric_files/figure-gfm/plot_alm_source1a-1.png)<!-- -->
+
+**Figure 2**: Plot of the proportion of almetric sources for each paper
 
 <img src="plot/alm_plot2.png" align="center"/>

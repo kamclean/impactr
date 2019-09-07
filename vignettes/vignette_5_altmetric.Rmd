@@ -93,13 +93,14 @@ almetric$temporal %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-**Plot of almetric score over time**
 ```{r impact_almetric_plot1a, echo=TRUE, results='hide'}
 almetric$temporal %>% 
   ggplot() +
   aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
   geom_line() + geom_point() + theme_bw()
 ```
+
+**Figure 1**: Plot of almetric score over time for each paper
 ```{r impact_almetric_plot1b, echo=FALSE}
 plot_alm_time <- almetric$temporal %>% 
   ggplot() +
@@ -129,7 +130,7 @@ For each category, almetric records the following measures:
  
  - The proportion of papers (`prop`) that the paper outranks (`rank` / `n`).
 
-```{r impact_alm_rank, warning=FALSE, echo=FALSE}
+```{r impact_alm_rank, warning=FALSE, echo=FALSE, fig.align="center"}
 almetric$rank %>%
   dplyr::mutate(journal = gsub(": The British Journal of Anaesthesia", "", journal)) %>%
   head(9) %>%
@@ -141,25 +142,26 @@ almetric$rank %>%
 
 The Altmetric score for a research output provides an indicator of the amount of attention that it has received from, and as such records both the type and amount of attention recieved. This data excludes any sources **not** recorded for any of the papers. 
 
-```{r impact_alm_source, warning=FALSE, echo=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+```{r impact_alm_source, warning=FALSE, echo=FALSE, message=FALSE}
 almetric$source %>%
   head(12) %>%
   knitr::kable(format="html") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-**Plot of the proportion of almetric sources for each paper**
 ```{r plot_alm_source1a, echo=TRUE, results='hide'}
 almetric$source %>% 
   ggplot() +
   aes(x = pmid, y = prop, colour = source, fill = source) +
   geom_col() + coord_flip()+ theme_bw()
 ```
+
+**Figure 2**: Plot of the proportion of almetric sources for each paper
 ```{r plot_alm_source1b, echo=FALSE}
 plot_alm_source <- almetric$source %>% 
   ggplot() +
   aes(x = pmid, y = prop, colour = source, fill = source) +
-  geom_col() + coord_flip()+ theme_bw()
+  geom_col() + coord_flip()+ theme_bw(base_size = 15)
 
 ggsave(plot_alm_source, filename="~/impactr/vignettes/plot/alm_plot2.png",height=5.76, width = 9.60, units ="in")
 ```
