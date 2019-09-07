@@ -94,63 +94,19 @@ almetric$temporal %>%
 ```
 
 **Plot of almetric score over time**
-```{r impact_almetric_plot1a, fig.align=, fig.height=5.76, fig.width=9.60, echo=TRUE, include=FALSE}
+```{r impact_almetric_plot1a, echo=TRUE, include=FALSE}
 almetric$temporal %>% 
   ggplot() +
   aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
   geom_line() + geom_point() + theme_bw()
 ```
-```{r impact_almetric_plot1b, fig.align=, fig.height=5.76, fig.width=9.60, }
-(almetric$temporal %>% 
+```{r impact_almetric_plot1b, echo=FALSE}
+plot_alm_time <- almetric$temporal %>% 
   ggplot() +
   aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
-  geom_line() + geom_point() + theme_bw()) %>%
-  ggsave(filename="~/impactr/vignettes/plot/alm_plot1.png",height=5.76, width = 9.60, units ="in")
+  geom_line() + geom_point() + theme_bw()
+
+ggsave(plot_alm_time, filename="~/impactr/vignettes/plot/alm_plot1.png",height=5.76, width = 9.60, units ="in")
 ```
 
 <img src="vignettes/plot/alm_plot1.png" align="center" width="159" height="174"/>
-
-#### **2 b). Almetric ranking ($rank)**
-
-The almetric score is not normalised, and so it is meaningless without context. As such, almetric allows you to see the score relative to other articles (whether from all indexed by almetric or those from the same journal at the same time). Within `$rank` these categories (alm_category) include:
-
- - **all**: All papers recorded by almetric.
- 
- - **journal_all**: All papers recorded by almetric **for that journal** 
- 
- - **journal_3m**: All papers recorded by almetric **for that journal within 3 month period** 
-
-For each category, almetric records the following measures:
-
- - The mean almetric score (`mean`).
- 
- - The number (`n`) of all papers, and the rank of the specific paper within those (`rank`). 
- 
- - The proportion of papers (`prop`) that the paper outranks (`rank` / `n`).
-
-```{r impact_alm_rank, warning=FALSE, echo=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-almetric$rank %>%
-  dplyr::mutate(journal = gsub(": The British Journal of Anaesthesia", "", journal)) %>%
-  head(9) %>%
-  knitr::kable(format="html") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
-```
-
-#### **2 c). Almetric sources ($source)**
-
-The Altmetric score for a research output provides an indicator of the amount of attention that it has received from, and as such records both the type and amount of attention recieved. This data excludes any sources **not** recorded for any of the papers. 
-
-```{r impact_alm_source, warning=FALSE, echo=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-almetric$source %>%
-  head(12) %>%
-  knitr::kable(format="html") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
-```
-
-**Plot of the proportion of almetric sources for each paper**
-```{r impact_almetric_plot2, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
-almetric$source %>% 
-  ggplot() +
-  aes(x = pmid, y = prop, colour = source, fill = source) +
-  geom_col() + coord_flip()+ theme_bw()
-```
