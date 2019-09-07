@@ -10,7 +10,7 @@ impact_almetric(list_pmid)
 \item{list_pmid}{Vector of unique PubMed identifier numbers (PMID)}
 }
 \value{
-Dataframe of data on social media engagment from the almetric repository
+Nested dataframe (1) df_output; Original dataset with appended almetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data almetric ranking (4) source; Long format data sources used to derive almetric.
 }
 \description{
 Extract impact data from social media engagment

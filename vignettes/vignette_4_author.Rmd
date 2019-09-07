@@ -12,9 +12,8 @@ vignette: >
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE)
-library(dplyr);library(purrr); library(magrittr)
-library(UpSetR);library(grid);library(ComplexHeatmap)
-library(ggplot2);library(ggalluvial)
+library(tidyverse);library(magrittr)
+library(UpSetR);library(grid);library(ComplexHeatmap);library(ggalluvial)
 ```
 
 # **Impact from from Co-authorship Network**
@@ -29,6 +28,7 @@ In collaborative research projects, there can be hundreds or even thousands of c
 However, with potentially thousands of collaborators involved, being able to easily compare authors across multiple publications is a challenging task.
 
 &nbsp;
+
 
 ## **impact_auth()**
 The `impact_auth()` function aims to simplify this process by providing an easy method to gain a comprehensive understanding of collaborator engagement using publication data.
@@ -110,14 +110,25 @@ impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>% kableExtra::kable
 #### b). UpSet plots / Venn diagrams 
 UpSet plots provide an efficient way to visualize intersections of multiple sets compared to the traditional approaches (e.g. Venn Diagram). The `data_upset` output can be used directly to make UpSet plots by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
 
-```{r impact_auth_upset3, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+```{r impact_auth_upset3ai, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
 data_auth$data_upset %>%
   ComplexHeatmap::make_comb_mat() %>%
   ComplexHeatmap::UpSet(m = ., set_order = c("STARSurg-1", "DISCOVER", "OAKS-1"))
+```
 
+
+```{r impact_auth_upset3bi, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
 data_auth$data_upset %>%
   UpSetR::upset(data = data_auth$data_upset, text.scale = 1.7)
 ```
+
+```{r impact_auth_upset3bi, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+plot_upset2 <- data_auth$data_upset %>%
+  UpSetR::upset(data = data_auth$data_upset, text.scale = 1.7)
+
+ggsave(plot_upset2, filename="~/impactr/vignettes/plot/alm_plot2.png",height=5.76, width = 9.60, units ="in")
+```
+
 
 &nbsp;
 

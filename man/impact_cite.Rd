@@ -4,24 +4,22 @@
 \alias{impact_cite}
 \title{Extract additional traditional metrics from Google Scholar}
 \usage{
-impact_cite(df, scholar_id = FALSE, var_journal = "journal",
-  var_citation = "", match_by_year = TRUE, h_index = TRUE)
+impact_cite(df, var_citation, var_year = "year", scholar_id = FALSE,
+  match_title_nchar = 50, metric = TRUE)
 }
 \arguments{
-\item{df}{Dataframe containing at least three columns: publictaion title ("title"), publication year ("year"), and journal name (var_journal) with each publication listed as a row.}
-
-\item{scholar_id}{Google scholar ID number linking to records in the dataframe.}
-
-\item{var_journal}{Column in dataframe which contains the full name of the journal (note google scholar requires specific name formats).}
+\item{df}{Dataframe containing at least two columns: publication year ("year") and  with each publication listed as a row.}
 
 \item{var_citation}{Column in dataframe which already contains number of citations for each publication (optional).}
+
+\item{scholar_id}{Google scholar ID number linking to records in the dataframe.}
 
 \item{match_by_year}{Argument to match publications by title and year, rather than just title (default = TRUE). See "unmatch" output.}
 
 \item{h_index}{Return H-index score (default = TRUE)}
 }
 \value{
-Nested dataframe of: (1)."output" - Amended dataframe with additional citaion metrics appended (2). "no_scholar" - Dataframe of publications with no scholar record (3). "unmatch" - Dataframe of publications that could not be matched to a journal. (4) "hindex" - H-Index score (if hindex = TRUE)
+Nested dataframe of: (1)."output" - Amended dataframe with additional citation metrics appended (2). "no_scholar" - Dataframe of publications with no scholar record (3). "unmatch" - Dataframe of publications that could not be matched to a journal. (4) "hindex" - H-Index score (if hindex = TRUE)
 }
 \description{
 Extract additional traditional metrics from Google Scholar
