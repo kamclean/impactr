@@ -15,14 +15,6 @@
 
 impact_cite <- function(df, var_citation, var_year = "year", scholar_id=FALSE, match_title_nchar = 50, metric=TRUE){
 
-  if(var_year=="year"){df <- df %>%
-    dplyr::mutate(var_citation = dplyr::pull(., var_citation),
-                  var_year = year)}else{df <- df %>%
-                    dplyr::mutate(var_citation = dplyr::pull(., var_citation),
-                                  var_year = dplyr::pull(., var_year))}
-
-
-
   scholar <- NULL
   #  add in citations from google scholar
   if(scholar_id!=FALSE){
@@ -31,15 +23,22 @@ impact_cite <- function(df, var_citation, var_year = "year", scholar_id=FALSE, m
     df <- scholar$out_df %>%
       dplyr::mutate(var_citation = cite_gs)}
 
+  if(var_year=="year"){df <- df %>%
+    dplyr::mutate(var_citation = dplyr::pull(., var_citation),
+                  var_year = year)}else{df <- df %>%
+                    dplyr::mutate(var_citation = dplyr::pull(., var_citation),
+                                  var_year = dplyr::pull(., var_year))}
+
   # add in citations from other sources
   # TBC
 
   # add in citation metrics
   df_metric <- NULL
-  if(metric==TRUE){df_metric <- impact_cite_metric(citations = df$var_citation, year = df$var_year)}
+  if(metric==TRUE){df_metric <- suppressWarnings(impact_cite_metric(citations = df$var_citation, year = df$var_year))}
 
 
-  df_out <- list("output" = df,
+  df_out <- list("output" = dplyr::select(df, -var_citation,-var_year),
                  "validation" = scholar$validation,
+                 "time" = scholar$out_cite,
                  "metric" = df_metric)
   return(df_out)}

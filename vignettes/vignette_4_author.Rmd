@@ -110,16 +110,13 @@ impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>% kableExtra::kable
 #### b). UpSet plots / Venn diagrams 
 UpSet plots provide an efficient way to visualize intersections of multiple sets compared to the traditional approaches (e.g. Venn Diagram). The `data_upset` output can be used directly to make UpSet plots by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
 
-```{r impact_auth_upset3, warning=FALSE, message=FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
-example$data_upset %>%
+```{r impact_auth_upset3, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+data_auth$data_upset %>%
   ComplexHeatmap::make_comb_mat() %>%
   ComplexHeatmap::UpSet(m = ., set_order = c("STARSurg-1", "DISCOVER", "OAKS-1"))
 
-example$data_upset %>%
-  UpSetR::upset(data = ., keep.order = T, group.by = "degree",
-                  sets = colnames(.), text.scale = 1.7,
-                  mainbar.y.label = "STARSurg Project Participation",
-                  sets.x.label = "Number of Collaborators")
+data_auth$data_upset %>%
+  UpSetR::upset(data = data_auth$data_upset, text.scale = 1.7)
 ```
 
 &nbsp;
@@ -128,7 +125,7 @@ example$data_upset %>%
 Alternatively, it can be used for Alluvial diagrams to provide a visualisation of author/collaborator involvement over time (variations of [Sankey diagrams](https://datavizcatalogue.com/methods/sankey_diagram.html)).
 
 ```{r impact_auth_alluvial, warning=FALSE, message=FALSE, echo = FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
-example$data_upset %>%
+data_auth$data_upset %>%
   # format data
   mutate_all(function(x){factor(x, levels = c(0, 1), labels = c("No", "Yes"))}) %>%
   table() %>% tibble::as_tibble() %>%
@@ -145,7 +142,7 @@ example$data_upset %>%
   ggalluvial::geom_flow(stat = "alluvium", lode.guidance = "rightleft", aes.flow = "backward", color = "black") +
   ggalluvial::geom_stratum(alpha = 0.7) +
   geom_text(stat = "stratum", size = 5) +
-  scale_x_discrete(name = "STARSurg Projects") +
+  scale_x_discrete(name = "Involvement in STARSurg Project") +
   scale_y_continuous(name = "Total Number of Collaborators") +
   theme_bw(base_size = 18) + guides(fill=FALSE)
   

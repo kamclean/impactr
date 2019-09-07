@@ -93,14 +93,14 @@ almetric$temporal %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
+**Figure 1**: Plot of almetric score over time for each paper
+
 ```{r impact_almetric_plot1a, echo=TRUE, results='hide'}
 almetric$temporal %>% 
   ggplot() +
   aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
   geom_line() + geom_point() + theme_bw()
 ```
-
-**Figure 1**: Plot of almetric score over time for each paper
 ```{r impact_almetric_plot1b, echo=FALSE}
 plot_alm_time <- almetric$temporal %>% 
   ggplot() +
@@ -149,14 +149,14 @@ almetric$source %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
+**Figure 2**: Plot of the proportion of almetric sources for each paper
+
 ```{r plot_alm_source1a, echo=TRUE, results='hide'}
 almetric$source %>% 
   ggplot() +
   aes(x = pmid, y = prop, colour = source, fill = source) +
   geom_col() + coord_flip()+ theme_bw()
 ```
-
-**Figure 2**: Plot of the proportion of almetric sources for each paper
 ```{r plot_alm_source1b, echo=FALSE}
 plot_alm_source <- almetric$source %>% 
   ggplot() +

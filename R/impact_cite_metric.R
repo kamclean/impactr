@@ -28,10 +28,11 @@ impact_cite_metric <- function(citations, year = ""){
     dplyr::filter(is.na(n_cite)==F) %>%
     tibble::rowid_to_column(var = "id") %>%
     dplyr::mutate(gindex_square = id^2,
-                  gindex_cumsum = cumsum(n_cite)) %>%
+                  gindex_cumsum = cumsum(n_cite),
+                  total_cite = sum(n_cite)) %>%
     dplyr::mutate(hindex = max(which(id<=n_cite)),
                   gindex = max(which(gindex_square<gindex_cumsum))) %>%
     dplyr::mutate(mquotient = unique(hindex)/(lubridate::year(Sys.Date())-min(year))) %>%
-    head(1) %>% dplyr::select(hindex:mquotient)
+    head(1) %>% dplyr::select(total_cite:mquotient)
 
   return(out)}
