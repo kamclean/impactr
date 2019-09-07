@@ -25,7 +25,7 @@ library(dplyr);library(ggplot2)
 
 source('~/impactr/R/impact_almetric.R')
 
-data_pub <- readRDS("~/starsurg_impact/data/data_pub.rds")
+pmid <- readRDS("~/starsurg_impact/data/data_pub.rds")$pmid
 ```
 
 ## **impact_almetric()**
@@ -42,7 +42,7 @@ Altmetric is a system that tracks the attention that research outputs such as sc
 The `impact_almetric()` function aims to provide easy access to this source of information in useful format. At present this required articles to a pubmed identfication number (pmid), however functionality to use DOI as an alternative is planned.
 
 ```{r impact_almetric, message=FALSE, warning=FALSE}
-almetric <- impact_almetric(data_pub$pmid)
+almetric <- impact_almetric(pmid)
 ```
 
 ## **Output**
@@ -94,12 +94,21 @@ almetric$temporal %>%
 ```
 
 **Plot of almetric score over time**
-```{r impact_almetric_plot1, warning=FALSE, message=FALSE, fig.height = 5.76, fig.width = 9.60, fig.align = "center"}
+```{r impact_almetric_plot1a, fig.align=, fig.height=5.76, fig.width=9.60, echo=TRUE, include=FALSE}
 almetric$temporal %>% 
   ggplot() +
   aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
   geom_line() + geom_point() + theme_bw()
 ```
+```{r impact_almetric_plot1b, fig.align=, fig.height=5.76, fig.width=9.60, }
+(almetric$temporal %>% 
+  ggplot() +
+  aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +
+  geom_line() + geom_point() + theme_bw()) %>%
+  ggsave(filename="~/impactr/vignettes/plot/alm_plot1.png",height=5.76, width = 9.60, units ="in")
+```
+
+<img src="vignettes/plot/alm_plot1.png" align="center" width="159" height="174"/>
 
 #### **2 b). Almetric ranking ($rank)**
 
