@@ -104,7 +104,7 @@ df_alm <- df %>%
                     "alm_journal_3m_n" = context.similar_age_journal_3m.count,
                     last_updated, published_on,added_on,journal) %>%
       dplyr::mutate_at(dplyr::vars(pmid, dplyr::starts_with("alm_")), as.numeric) %>%
-      dplyr::mutate(alm_all_prop = 1-(alm_all_rank/alm_all_n),
+      dplyr::mutate(alm_all_prop = 1-(alm_all_rank-1/alm_all_n),
                     alm_journal_all_prop = 1-(alm_journal_all_rank/alm_journal_all_n),
                     alm_journal_3m_prop = 1-(alm_journal_3m_rank/alm_journal_3m_n)) %>%
       dplyr::select(journal, pmid:alm_all_n, alm_all_prop,
