@@ -33,4 +33,4 @@ Vignettes
 
 [Impact from Co-authorship Network](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_4_author.md)
 
-[Impact from Social Media Engagement](...)
+[Impact from Social Media Engagement](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_5_altmetric.md)
