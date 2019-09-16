@@ -8,11 +8,11 @@ respositories on-line such as PubMed or CrossRef which store this
 information, and can already be accessed using an API in R in order to
 extract this data on an automatic basis.
 
-There are an excellent packages that already exist to access this data -
+There are excellent packages that already exist to access this data -
 [RISmed](https://cran.r-project.org/web/packages/RISmed/RISmed.pdf) for
 PubMed and [rcrossref](https://github.com/ropensci/rcrossref) for
 CrossRef. While these provide a vast quantity of useful information,
-this is often outwith a dataframe/tibble format and so requires a
+this is often without a dataframe/tibble format and so requires a
 significant quantity of post-processing to otherwise achieve an easily
 usable output.
 
@@ -56,7 +56,7 @@ authors).
 pmid
 </th>
 <th style="text-align:left;">
-author\_group
+author_group
 </th>
 <th style="text-align:left;">
 type
@@ -68,10 +68,10 @@ title
 year
 </th>
 <th style="text-align:left;">
-journal\_full
+journal_full
 </th>
 <th style="text-align:left;">
-journal\_abbr
+journal_abbr
 </th>
 <th style="text-align:left;">
 volume
@@ -86,13 +86,13 @@ pages
 doi
 </th>
 <th style="text-align:left;">
-journal\_issn
+journal_issn
 </th>
 <th style="text-align:right;">
-cite\_pm
+cite_pm
 </th>
 <th style="text-align:right;">
-auth\_n
+auth_n
 </th>
 <th style="text-align:left;">
 author
@@ -282,7 +282,7 @@ authorship less well (compared to PubMed).
 doi
 </th>
 <th style="text-align:left;">
-author\_group
+author_group
 </th>
 <th style="text-align:left;">
 title
@@ -291,7 +291,7 @@ title
 year
 </th>
 <th style="text-align:left;">
-journal\_abbr
+journal_abbr
 </th>
 <th style="text-align:left;">
 volume
@@ -303,19 +303,19 @@ issue
 pages
 </th>
 <th style="text-align:right;">
-cite\_cr
+cite_cr
 </th>
 <th style="text-align:right;">
-auth\_n
+auth_n
 </th>
 <th style="text-align:left;">
 author
 </th>
 <th style="text-align:left;">
-journal\_full
+journal_full
 </th>
 <th style="text-align:left;">
-journal\_issn
+journal_issn
 </th>
 </tr>
 </thead>
