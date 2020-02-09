@@ -18,8 +18,6 @@
 
 df_out <- list("df" = df_out, "time" = df_time, "metric" = df_metric, "gscholar_invalid" = gscholar_invalid)
 
-
-
 source('~/impactr/R/cite_cr.R')
 source('~/impactr/R/cite_dim.R')
 source('~/impactr/R/cite_scopus.R')
