@@ -25,11 +25,18 @@
 # Function-------------------
 
 # add network = TRUE!!!!!!!
+df = edisurg_10
+author_list = "author_list"
+pub_group = "pmid"
+max_inital = 1
+upset = T
+metric = FALSE
 
 impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
+  require(dplyr);require(tidyr);require(stringr);require(tibble);require(stringi)
   auth_out <- df %>%
-    dplyr::mutate(pub_group = pull(., pub_group)) %>%
-    dplyr::mutate(author = pull(., author_list)) %>%
+    dplyr::mutate(pub_group = dplyr::pull(., pub_group)) %>%
+    dplyr::mutate(author = dplyr::pull(., author_list)) %>%
     dplyr::select(pub_group, author) %>%
     dplyr::mutate(auth = stringr::str_split(author, ", ")) %>%
     tidyr::unnest(auth) %>%
@@ -51,20 +58,14 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
 
   data_upset <- NULL
   if(upset==TRUE){
-  group_val <- levels(unique(pull(df, pub_group)))
+  group_val <- levels(unique(dplyr::pull(df, pub_group)))
 
-  data_upset = auth_out
-  for(i in c(1:length(group_val))){
-    data_upset <- data_upset %>%
-      dplyr::mutate(grepl(group_val[i], pub_group))
-
-    colnames(data_upset) = c(names(data_upset)[1:ncol(data_upset)-1], eval(group_val[i]))}
-
-  data_upset <- data_upset %>%
-    dplyr::select(-author, -pub_n, -pub_group) %>%
-    dplyr::mutate_all(function(x){as.numeric(ifelse(x==TRUE, 1, ifelse(x==FALSE, 0, x)))}) %>%
-    as.data.frame()}
-
+  data_upset = auth_out %>%
+    tidyr::separate_rows(pub_group, sep = ", ") %>%
+    dplyr::mutate(name = author) %>%
+    tidyr::pivot_wider(names_from = "pub_group", values_from = "author") %>%
+    dplyr::select(-name, -pub_n) %>%
+    dplyr::mutate_all(function(x){as.numeric(ifelse(is.na(x)==T, 1, 0))})
 
   out_metric <- NULL
 

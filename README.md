@@ -27,7 +27,7 @@ Vignettes
 ---------
 [Extract Publication Data](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_1_extract.md)
 
-[Cite Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_2_cite.md)
+[Reference Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_2_cite.md)
 
 [Impact from Traditional Metrics](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_3_traditional.md)
 

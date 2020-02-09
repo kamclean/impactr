@@ -18,7 +18,7 @@
 
 # Function-------------------------------
 extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact= TRUE){
-
+  require(magrittr)
   "%ni%" <- Negate("%in%")
 
   pmid_original <- as.numeric(pmid)
@@ -28,18 +28,21 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact=
   pubmed_call <- RISmed::EUtilsSummary(paste0(paste(pmid, collapse = '[PMID] or '), '[PMID]')) %>%
     RISmed::EUtilsGet()
 
-  pmid_norecord <- as.character(pmid_original[which(pmid_original %ni% RISmed::PMID(pubmed_call))])
+  pmid_norecord <- as.character(pmid[which(pmid %ni% RISmed::PMID(pubmed_call))])
 
   type <-  pubmed_call %$%
     RISmed::PublicationType(.) %>%
-    purrr::map(function(x){paste0(as.vector(x), collapse = ", ")}) %>%
-    purrr::map_chr(function(x){ifelse(grepl("Journal Article", x)==T,
-                                  "Paper",
-                                  ifelse(grepl("Letter|Editorial", x)==T,
-                                         "Letter",
-                                         x))})
+    purrr::map_chr(function(x){paste0(as.vector(x), collapse = ", ")}) %>%
+    purrr::map_chr(function(x){ifelse(grepl("Clinical Trial|Randomized Controlled Trial", x)==T,
+                                      "Paper (Clinical Trial)",
+                                      ifelse(grepl("Letter|Editorial", x)==T,
+                                             "Letter",
+                                             ifelse(grepl("Review|Meta-Analysis", x)==T,
+                                                    "Paper (Review)",
+                                                    ifelse(grepl("Journal Article", x)==T,
+                                                           "Paper (Original)",x))))})
 
-  out_pubmed <- pubmed_call %$%
+   out_pubmed <- pubmed_call %$%
     tibble::tibble(pmid = RISmed::PMID(.), # pmid
                    author_group = gsub(" &amp;",";", RISmed::CollectiveName(.)),
                    type = type, # type of publication
@@ -51,9 +54,16 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact=
                    issue = RISmed::Issue(.),
                    pages = RISmed::MedlinePgn(.), # pagenumber
                    doi = tolower(RISmed::ELocationID(.)),  # doi
-                   journal_issn = RISmed::ISSN(.),  # issn
+                   journal_issn1 = trimws(RISmed::ISSN(.)),  # issn
+                   journal_issn2 = trimws(RISmed::ISSNLinking(.)),  # issn
                    # status = RISmed::PublicationStatus(.), # aheadofprint vs p/epub
-                   cite_pm = RISmed::Cited(.))
+                   cite_pm = RISmed::Cited(.),
+                   nlmid = RISmed::NlmUniqueID(.)) %>%
+     dplyr::mutate(journal_issn = ifelse(journal_issn1==journal_issn2,
+                                  journal_issn1,
+                                  paste0(journal_issn1, ", ", journal_issn2))) %>%
+     dplyr::select(-journal_issn1, -journal_issn2)
+
 
    if(get_almetric==TRUE){
      score_alm <- function(x) {unlist(lapply(x, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e) NA)}))}
@@ -70,18 +80,17 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact=
       dplyr::summarise(auth_n = n(),
                        author_list =  paste(name, collapse=", "))
 
-
     out_pubmed <- out_pubmed %>%
       dplyr::mutate(auth_n = pub_auth$auth_n,
              author = pub_auth$author_list)}
 
-  if(get_impact==TRUE){out_pubmed <- impactr::extract_impact_factor(out_pubmed)}
+  if(get_impact==TRUE){out_pubmed <- extract_impact_factor(out_pubmed)}
 
   if("journal_full.y" %in% names(out_pubmed)){
     out_pubmed <- out_pubmed %>%
       dplyr::rename("journal_full" = journal_full.x, "journal_full2" = journal_full.y)}
 
-  out_pubmed <- out_pubmed %>%
+  out_pubmed2 <- out_pubmed %>%
     dplyr::bind_rows(., head(., length(pmid_error)) %>%
                        dplyr::mutate(pmid = pmid_error) %>%
                        dplyr::mutate_if(names(.) %ni% "pmid", function(x){ifelse(is.na(x)==F, NA, x)})) %>%
@@ -91,4 +100,4 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact=
     dplyr::mutate(pmid = factor(pmid, levels = c(pmid_original))) %>%
     dplyr::arrange(pmid)
 
-  return(out_pubmed)}
+  return(out_pubmed2)}
