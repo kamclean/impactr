@@ -1,8 +1,0 @@
-"0"," out_doi %>%"
-"0","  # If a single-authorship collaborative publication (e.g. ""STARSurg Collaborative"") then display that"
-"0","  dplyr::mutate(author = ifelse(is.na(author_group)==TRUE, author, author_group)) %>%"
-"0","  impactr::cite_publication(journal = ""journal_full"", max_auth = 10,"
-"0","                   cite_format = ""author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi."") %>%"
-"0","  dplyr::mutate(citation = gsub(""\\]"", """", gsub(""\\["", """", as.character(citation)))) %>%"
-"0","  dplyr::select(citation) %>%"
-"0","  knitr::kable(format=""html"") %>% kableExtra::kable_styling(bootstrap_options = ""striped"", full_width = F)"

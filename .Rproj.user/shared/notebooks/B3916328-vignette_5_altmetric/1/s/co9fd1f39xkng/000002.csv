@@ -1,6 +1,0 @@
-"0","plot_alm_source <- almetric$source %>% "
-"0","  ggplot() +"
-"0","  aes(x = pmid, y = prop, colour = source, fill = source) +"
-"0","  geom_col() + coord_flip()+ theme_bw(base_size = 15)"
-"0",""
-"0","ggsave(plot_alm_source, filename=""~/impactr/vignettes/plot/alm_plot2.png"",height=5.76, width = 9.60, units =""in"")"

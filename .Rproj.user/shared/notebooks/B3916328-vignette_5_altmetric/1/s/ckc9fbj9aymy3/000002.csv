@@ -1,6 +1,0 @@
-"0","plot_alm_time <- almetric$temporal %>% "
-"0","  ggplot() +"
-"0","  aes(x = alm_time, y = alm_score, group = pmid, colour = pmid) +"
-"0","  geom_line() + geom_point() + theme_bw()"
-"0",""
-"0","ggsave(plot_alm_time, filename=""~/impactr/vignettes/plot/alm_plot1.png"",height=5.76, width = 9.60, units =""in"")"
