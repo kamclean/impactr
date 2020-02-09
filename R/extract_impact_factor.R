@@ -13,7 +13,6 @@
 #' @export
 
 # Function-------------------
-
 extract_impact_factor <- function(df, var_issn = "journal_issn"){
   update.packages("sjrdata")
 

@@ -66,10 +66,9 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_altmetric = TRUE, get_impact
 
 
    if(get_altmetric==TRUE){
-     score_alm <- function(x) {unlist(lapply(x, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e) NA)}))}
 
     out_pubmed <- out_pubmed %>%
-      mutate(altmetric = score_alm(doi))}
+      mutate(altmetric = impactr::score_alm(doi))}
 
   if(get_auth==TRUE){
     pub_auth <- pubmed_call %$%
@@ -84,7 +83,7 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_altmetric = TRUE, get_impact
       dplyr::mutate(auth_n = pub_auth$auth_n,
              author = pub_auth$author_list)}
 
-  if(get_impact==TRUE){out_pubmed <- extract_impact_factor(out_pubmed)}
+  if(get_impact==TRUE){out_pubmed <- impactr::extract_impact_factor(out_pubmed)}
 
   if("journal_full.y" %in% names(out_pubmed)){
     out_pubmed <- out_pubmed %>%
