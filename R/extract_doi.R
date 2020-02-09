@@ -4,7 +4,7 @@
 #' @description Extract publication data using doi / rcrossref
 #' @param doi Vector of Digital Object Identifiers (DOI)
 #' @param get_auth Extract authorship data (default = TRUE)
-#' @param get_almetric Extract overall altmetric score data (default = TRUE)
+#' @param get_altmetric Extract overall altmetric score data (default = TRUE)
 #' @param get_impact Extract journal impact factor and metrics (default = TRUE)
 #' @return Dataframe of essential publication data
 #' @import magrittr
@@ -17,7 +17,7 @@
 #' @export
 
 # Function-------------------------------
-extract_doi <- function(doi, get_auth = TRUE, get_almetric = TRUE, get_impact=TRUE){
+extract_doi <- function(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact=TRUE){
 
   "%ni%" <- Negate("%in%")
 
@@ -101,12 +101,12 @@ extract_doi <- function(doi, get_auth = TRUE, get_almetric = TRUE, get_impact=TR
     dplyr::select(doi, author_group, title:cite_cr, auth_n, "author" = auth_list, everything())}
 
 
-  if(get_almetric==TRUE){
+  if(get_altmetric==TRUE){
     score_alm <- function(x) {unlist(lapply(x, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e) NA)}))}
 
     out_crossref <- out_crossref %>%
-      dplyr::mutate(almetric = score_alm(doi)) %>%
-      dplyr::select(doi:cite_cr, almetric, everything())}
+      dplyr::mutate(altmetric = score_alm(doi)) %>%
+      dplyr::select(doi:cite_cr, altmetric, everything())}
 
   if(get_impact==TRUE){out_crossref <- extract_impact_factor(out_crossref)}
 

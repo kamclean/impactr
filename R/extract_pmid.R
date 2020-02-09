@@ -4,7 +4,7 @@
 #' @description Extract publication data using RISmed / pmid
 #' @param pmid Vector of unique PubMed identifier numbers (PMID)
 #' @param get_auth Extract authorship data (default = TRUE)
-#' @param get_almetric Extract overall altmetric score data (default = TRUE)
+#' @param get_altmetric Extract overall altmetric score data (default = TRUE)
 #' @param get_impact Extract journal impact factor and metrics (default = TRUE)
 #' @return Dataframe of essential publication data
 #' @import magrittr
@@ -17,7 +17,7 @@
 #' @export
 
 # Function-------------------------------
-extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact= TRUE){
+extract_pmid <- function(pmid, get_auth = TRUE, get_altmetric = TRUE, get_impact= TRUE){
   require(magrittr)
   "%ni%" <- Negate("%in%")
 
@@ -65,11 +65,11 @@ extract_pmid <- function(pmid, get_auth = TRUE, get_almetric = TRUE, get_impact=
      dplyr::select(-journal_issn1, -journal_issn2)
 
 
-   if(get_almetric==TRUE){
+   if(get_altmetric==TRUE){
      score_alm <- function(x) {unlist(lapply(x, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e) NA)}))}
 
     out_pubmed <- out_pubmed %>%
-      mutate(almetric = score_alm(doi))}
+      mutate(altmetric = score_alm(doi))}
 
   if(get_auth==TRUE){
     pub_auth <- pubmed_call %$%
