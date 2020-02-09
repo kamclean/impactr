@@ -17,9 +17,7 @@ library(tidyverse);library(magrittr)
 pmid <- readRDS("~/starsurg_impact/data/impact_pub.rds")$pmid
 
 data <- impactr::extract_pmid(pmid) %>%
-    # ensure the input journal name is correct (see extract_journal_metric()$unmatch)
-    dplyr::mutate(journal_edit = ifelse(is.na(journal_full2)==T, journal_full,journal_full2))  %>%
-    dplyr::mutate(journal_edit = ifelse(journal_edit=="The Lancet", "Lancet", journal_edit),
+    dplyr::mutate(journal_edit = ifelse(journal_full=="The Lancet", "Lancet", journal_full),
                   journal_edit = ifelse(journal_edit=="British Medical Journal", "BMJ-British Medical Journal", journal_edit))
 ```
 

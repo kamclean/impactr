@@ -25,8 +25,9 @@ cite_cr <- function(id){
       dplyr::filter(id_type=="doi") %>%
       dplyr::mutate(id_pmid = NA,
                     id_doi = id) %>%
-      dplyr::mutate(cite = as.integer(purrr::map_chr(id_doi,
-                                                     function(x){tryCatch(rcrossref::cr_citation_count(doi = x), error=function(e) NA)})))}
+      dplyr::mutate(cite = purrr::map_chr(id_doi, function(x){tryCatch(rcrossref::cr_citation_count(doi = x), error=function(e) NA) %>%
+                          dplyr::pull(count) %>%
+                          as.integer()}))}
 
   data_pmid <- NULL
   if("pmid" %in% id_class$id_type){
