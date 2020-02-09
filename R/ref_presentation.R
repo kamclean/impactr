@@ -14,7 +14,7 @@
 #' @param con_country String of column name with the country of the meeting/conference where the work was presented (mandatory)
 #' @param author String of column name with the authors of the work presented (mandatory).
 #'
-#' @param cite_format Customisable string specifying the exact format for the preferred referencing style. Note exact parameter names are required and are limited to those specified.
+#' @param ref_format Customisable string specifying the exact format for the preferred referencing style. Note exact parameter names are required and are limited to those specified.
 #' @return Dataframe with addition of citation variable.
 #' @import magrittr
 #' @import dplyr
@@ -27,7 +27,7 @@ ref_presentation <- function(df, type = "type", level = "level", title = "title"
                               con_org = "con_org",con_name = "con_name",
                               con_date_start = "con_date_start", con_date_end = "con_date_end",
                               con_city = "con_city", con_country = "con_country", author = "author",
-                              cite_format = "author. title. con_org con_name, con_date_range, con_city (con_country)."){
+                              ref_format = "author. title. con_org con_name, con_date_range, con_city (con_country)."){
   cite <- df %>%
     tibble::as_tibble() %>%
     dplyr::rename(type = type,
@@ -55,7 +55,7 @@ ref_presentation <- function(df, type = "type", level = "level", title = "title"
     dplyr::mutate(citation_na = ifelse(citation_na=="", NA, citation_na)) %>%
 
     # use format from function -> replace with current values
-    dplyr::mutate(citation = cite_format) %>%
+    dplyr::mutate(citation = ref_format) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "type", ifelse(is.na(as.character(type))==T, "NA",as.character(type)))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "level", ifelse(is.na(as.character(level))==T, "NA", as.character(level)))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "author", ifelse(is.na(author)==T, "NA", author))) %>%

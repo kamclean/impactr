@@ -14,7 +14,7 @@
 #' @param doi String of column name with publication journal name listed (optional).
 #'
 #' @param max_auth Argument to limit number of authors listed to the number specified. All n+1 authors will be replaced by a single "et al.". (default = FALSE e.g. no restriction).
-#' @param cite_format Customisable string specifying the exact format for the preferred referencing style (default is Vancouver style). Note exact parameter names are required and are limited to those specified.
+#' @param ref_format Customisable string specifying the exact format for the preferred referencing style (default is Vancouver style). Note exact parameter names are required and are limited to those specified.
 #'
 #' @return Dataframe with addition of citation variable.
 #' @import magrittr
@@ -27,7 +27,7 @@
 ref_publication <- function(df, author = "author", title = "title", journal = "journal",
                              year = "year",volume = "volume",issue = "issue", pages = "pages",
                              pmid = "pmid", doi = "doi", max_auth = FALSE,
-                             cite_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi."){
+                             ref_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi."){
   "%ni%" <- Negate("%in%")
   if(pmid  %ni%  names(df)){df <- df %>% dplyr::mutate(pmid = NA)}
 
@@ -72,7 +72,7 @@ ref_publication <- function(df, author = "author", title = "title", journal = "j
     dplyr::mutate(citation_na = ifelse(citation_na=="", NA, citation_na)) %>%
 
     # use format from function -> replace with current values
-    dplyr::mutate(citation = cite_format) %>%
+    dplyr::mutate(citation = ref_format) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "author", ifelse(is.na(author)==T, "NA", author))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "title", ifelse(is.na(title)==T, "NA", title))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "journal", ifelse(is.na(journal)==T, "NA", journal))) %>%
