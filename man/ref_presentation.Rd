@@ -9,7 +9,7 @@ ref_presentation(df, type = "type", level = "level", title = "title",
   con_date_start = "con_date_start", con_date_end = "con_date_end",
   con_city = "con_city", con_country = "con_country",
   author = "author",
-  cite_format = "author. title. con_org con_name, con_date_range, con_city (con_country).")
+  ref_format = "author. title. con_org con_name, con_date_range, con_city (con_country).")
 }
 \arguments{
 \item{df}{Dataframe with publications listed rowwise}
@@ -34,7 +34,7 @@ ref_presentation(df, type = "type", level = "level", title = "title",
 
 \item{author}{String of column name with the authors of the work presented (mandatory).}
 
-\item{cite_format}{Customisable string specifying the exact format for the preferred referencing style. Note exact parameter names are required and are limited to those specified.}
+\item{ref_format}{Customisable string specifying the exact format for the preferred referencing style. Note exact parameter names are required and are limited to those specified.}
 }
 \value{
 Dataframe with addition of citation variable.

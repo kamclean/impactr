@@ -8,7 +8,7 @@ ref_publication(df, author = "author", title = "title",
   journal = "journal", year = "year", volume = "volume",
   issue = "issue", pages = "pages", pmid = "pmid", doi = "doi",
   max_auth = FALSE,
-  cite_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi.")
+  ref_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi.")
 }
 \arguments{
 \item{df}{Dataframe with publications listed rowwise}
@@ -33,7 +33,7 @@ ref_publication(df, author = "author", title = "title",
 
 \item{max_auth}{Argument to limit number of authors listed to the number specified. All n+1 authors will be replaced by a single "et al.". (default = FALSE e.g. no restriction).}
 
-\item{cite_format}{Customisable string specifying the exact format for the preferred referencing style (default is Vancouver style). Note exact parameter names are required and are limited to those specified.}
+\item{ref_format}{Customisable string specifying the exact format for the preferred referencing style (default is Vancouver style). Note exact parameter names are required and are limited to those specified.}
 }
 \value{
 Dataframe with addition of citation variable.
