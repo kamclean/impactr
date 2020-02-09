@@ -1,0 +1,9 @@
+{
+    "path" : "~/starsurg_impact/data",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

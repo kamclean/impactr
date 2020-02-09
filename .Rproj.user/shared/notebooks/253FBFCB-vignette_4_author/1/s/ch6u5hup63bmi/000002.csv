@@ -1,0 +1,3 @@
+"0","upset_comb_mat <- ComplexHeatmap::make_comb_mat(example$upset)"
+"0",""
+"0","impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = ""striped"", full_width = F)"

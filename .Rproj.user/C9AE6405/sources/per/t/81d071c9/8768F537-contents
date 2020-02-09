@@ -1,0 +1,89 @@
+library(dplyr);library(stringr)
+redcap_project_uri = "https://bistc.redcap.bham.ac.uk/api/"
+redcap_project_token = "939C4264A6B6EFDB94E836DF69B362F4"
+
+df_record <- RCurl::postForm(uri=redcap_project_uri,
+                             token = redcap_project_token,
+                             content='record',
+                             exportDataAccessGroups = 'true',
+                             format='csv',
+                             raworLabel="raw") %>%
+  readr::read_csv()
+
+
+var_group <- c("dag_recon")
+
+col_fn <- names(df_record)[which(grepl("_fn", names(df_record)))]
+col_ln <- names(df_record)[which(grepl("_ln", names(df_record)))]
+col_email <- names(df_record)[which(grepl("_email", names(df_record)))]
+col_orcid <- names(df_record)[which(grepl("_orcid", names(df_record)))]
+
+# [-c(2,3)] to remove consultants (need to add orcid field)
+df_collab <- cbind.data.frame(fn = col_fn[-c(2,3)],
+                              ln = col_ln[-c(2,3)],
+                              email = col_email[-c(2,3)],
+                              orcid = col_orcid)
+
+df_fn <- df_record %>%
+  dplyr::select(var_group, as.character(df_collab$fn)) %>%
+  dplyr::group_by(dag_recon) %>%
+  tidyr::pivot_longer(as.character(df_collab$fn), names_to = "var_fn", values_to = "fn")
+
+df_ln <- df_record %>%
+  dplyr::select(var_group, as.character(df_collab$ln)) %>%
+  dplyr::group_by(dag_recon) %>%
+  tidyr::pivot_longer(as.character(df_collab$ln), names_to = "var_ln", values_to = "ln")
+
+df_email <- df_record %>%
+  dplyr::select(var_group, as.character(df_collab$email)) %>%
+  dplyr::group_by(dag_recon) %>%
+  tidyr::pivot_longer(as.character(df_collab$email), names_to = "var_email", values_to = "email")
+
+df_orcid <- df_record %>%
+  dplyr::select(var_group, as.character(df_collab$orcid)) %>%
+  dplyr::group_by(dag_recon) %>%
+  tidyr::pivot_longer(as.character(df_collab$orcid), names_to = "var_orcid", values_to = "orcid")
+
+
+df_collab <- cbind.data.frame(df_fn, select(df_ln, ln), select(df_email,email), select(df_orcid,orcid)) %>%
+  tibble::as_tibble() %>%
+  mutate(period = str_split_fixed(var_fn, "_", 4)[,1],
+         team = str_split_fixed(var_fn, "_", 4)[,2],
+         jd = str_split_fixed(var_fn, "_", 4)[,3]) %>%
+  mutate(role = ifelse(period=="hl", "Hospital Lead", ifelse(jd=="jd", "Junior Doctor", "Student"))) %>%
+  mutate(team = ifelse(period %in% c("hl"), NA, team),
+         period = ifelse(period %in% c("hl"), NA, period)) %>%
+  filter(orcid!="0000-0000-0000-0000") %>%
+  filter(is.na(email)==F&is.na(orcid)==F) %>%
+  select(-var_fn, -jd) %>%
+  left_join(., select(df_record, "region" = redcap_data_access_group, hospital, dag_recon), by = "dag_recon") %>%
+  distinct(dag_recon, role, team, period, email, orcid, .keep_all = T) %>%
+  mutate(period = factor(period,
+                         levels=c("p1", "p2", "p3", "p4", "bolton"),
+                         labels = c("Period 1", "Period 2", "Period 3", "Period 4", "RECON Bolt-On")),
+         team = factor(team,
+                       levels=c("gil", "vat", "gyn", "uro"),
+                       labels = c("Gastrointestinal and Liver", "Vascular and Transplant", "Gynaecology", "Urology"))) %>%
+  mutate(country = str_split_fixed(region, "_", 2)[,1],
+         university = str_split_fixed(region, "_", 2)[,2],
+         initials = paste0(substr(str_split_fixed(fn, " ", 3)[,1],1,1),substr(str_split_fixed(fn, " ", 3)[,2],1,1),substr(str_split_fixed(fn, " ", 3)[,3],1,1)),
+         name = paste0(fn," ", ln)) %>%
+  mutate(country = factor(country,
+                          levels = c("au", "ie", "uk"),
+                          labels = c("Australia", "Republic of Ireland", "United Kingdom"))) %>%
+  arrange(country, dag_recon) %>%
+  mutate(cen_con = paste0(hospital,", ", country),
+         role = factor(role, levels=c("Hospital Lead", "Junior Doctor", "Student")),
+         name_auth = paste0(ln, " ", initials)) %>%
+  mutate(cen_con = paste0(hospital,", ", country),
+         stu_jd = role,
+         role = forcats::fct_collapse(role, "Hospital Lead"="Hospital Lead", "Data Collector"=c("Junior Doctor", "Student")),
+         name_auth = paste0(ln, " ", initials))
+
+df_collab %>% 
+  distinct(orcid, .keep_all = T) %>%
+  pull(stu_jd) %>%
+  table(.)
+
+saveRDS(df_collab, "RECON/df_collab.rds")
+saveRDS(select(df_collab, -email), "RECON/recon_shiny/authorship/recon_authorship.rds")

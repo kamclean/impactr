@@ -1,0 +1,11 @@
+{
+    "dialog-state" : {
+        "caseSensitive" : false,
+        "filePatterns" : [
+        ],
+        "path" : "",
+        "projectRelative" : true,
+        "query" : "https://w3id.org/oc/index/coci/api/",
+        "regex" : false
+    }
+}

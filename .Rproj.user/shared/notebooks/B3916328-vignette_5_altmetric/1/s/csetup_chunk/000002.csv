@@ -1,0 +1,6 @@
+"0","knitr::opts_chunk$set(collapse = FALSE)"
+"0","library(dplyr);library(ggplot2)"
+"0",""
+"0","source('~/impactr/R/impact_almetric.R')"
+"0",""
+"0","pmid <- readRDS(""~/starsurg_impact/data/data_pub.rds"")$pmid"

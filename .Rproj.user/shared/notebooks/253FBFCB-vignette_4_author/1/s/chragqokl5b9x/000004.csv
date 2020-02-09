@@ -1,0 +1,6 @@
+"0","plot_upset1 <- example$upset %>%"
+"0","  ComplexHeatmap::make_comb_mat() %>%"
+"0","  "
+"0","  ComplexHeatmap::UpSet(m = ., set_order = c(""STARSurg-1"", ""DISCOVER"", ""OAKS-1""))"
+"0","ggsave(plot = grid::grid.draw(grid::grid.grabExpr(ComplexHeatmap::draw(plot_upset1))),"
+"0","       filename=""~/impactr/vignettes/plot/plot_upset1.png"",height=3.76, width = 7.60, units =""in"")"

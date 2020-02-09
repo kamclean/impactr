@@ -1,0 +1,67 @@
+id <- c(26445672, "10.1111/anae.14349")
+
+relative_citation
+_ratio
+The Relative Citation Ratio (RCR) indicates the relative citation
+performance of an article when comparing its citation rate to that of
+other articles in its area of research. A value of more than 1.0 shows a
+citation rate above average. The article’s area of research is defined by
+the articles that have been cited alongside it. The RCR is calculated for
+all PubMed publications which are at least 2 years old.
+
+
+Field_citation
+_ratio
+The Field Citation Ratio (FCR) is an article-level metric that indicates the
+relative citation performance of an article, when compared to
+similarly-aged articles in its subject area. A value of more than 1.0
+indicates higher than average citation, when defined by FoR Subject
+Code, publishing year and age. The FCR is calculated for all publications
+in Dimensions which are at least 2 years old and were published in 2000
+or later
+
+recent_citations The recent citations value is the number of citations that were received in
+the last two years. The citation date used in the calculations rolls over in
+the middle of the year. For example in 2019 the calculation looks at
+citations from 2017 for the months of 2019-01 till 2019-06 and switches
+to citations from 2018 from 2019-07 onwards.
+
+
+
+times_cited ‘Times cited’ indicates the number of times a publication was cited by
+other publications. We count citations from the reference list in all
+publications that are indexed in Dimensions. Times_cited is for all years
+
+cite_dimentions(id)
+library(dplyr)
+cite_dimentions <- function(id){
+  output <- id %>%
+    tibble::enframe() %>%
+    rename("id" = value) %>%
+    mutate(type = suppressWarnings(dplyr::if_else(nchar(id)==8&is.numeric(as.numeric(id))==T, "pmid", "doi"))) %>%
+    mutate(call = paste0("https://metrics-api.dimensions.ai/",type, "/",id)) %>%
+    pull(call) %>%
+    purrr::map(function(x){xml2::read_html(x) %>%
+        rvest::html_text() %>%
+        jsonlite::fromJSON() %>%
+        replace(., sapply(., is.null), NA) %>%
+        tibble::as_tibble() %>%
+        magrittr::set_colnames(c("id", colnames(.)[2:9])) %>%
+        dplyr::mutate(type = suppressWarnings(dplyr::if_else(nchar(id)==8&is.numeric(as.numeric(id))==T, "pmid", "doi")),
+                      id = as.character(id)) %>%
+        dplyr::select(id, type, times_cited:recent_citations, relative_citation_ratio:field_citation_ratio)}) %>%
+    dplyr::bind_rows() %>%
+
+    dplyr::mutate(relative_citation = times_cited / relative_citation_ratio,
+           field_citation = times_cited / field_citation_ratio) %>%
+
+    dplyr::rename("cite_dim_all" = times_cited, "cite_dim_2y" = recent_citations,
+           "rcr_dim" = relative_citation_ratio, "fcr_dim" = field_citation_ratio,
+           "rc_dim" = relative_citation, "fc_dim" = field_citation)
+
+  cite <- output %>%
+    tidyr::pivot_wider(names_from="type", values_from = "id") %>%
+    dplyr::select(pmid, doi, cite_dim_all,cite_dim_2y)
+
+  return(list("citation" = cite,
+              "all" = output))}

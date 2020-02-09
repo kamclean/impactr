@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1562677753037.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "9AE61F19",
+    "lastKnownWriteTime" : 8390039475646787423,
+    "last_content_update" : 1562677753037,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "3720A2BE",
+        "caption" : "recon_authorship",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=recon_authorship&cache_key=3720A2BE",
+        "displayedObservations" : 2939,
+        "environment" : "",
+        "expression" : "recon_authorship",
+        "object" : "recon_authorship",
+        "preview" : 0,
+        "totalObservations" : 2939,
+        "variables" : 15
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1562869592017.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "71A8EEE4",
+    "lastKnownWriteTime" : 94844954195728,
+    "last_content_update" : 1562869592017,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "3F833E72",
+        "caption" : "impactr::impact_almetric(28167380)",
+        "contentUrl" : "grid_resource/gridviewer.html?env=_rs_no_env&obj=&cache_key=3F833E72",
+        "displayedObservations" : "1",
+        "environment" : "_rs_no_env",
+        "expression" : "impactr::impact_almetric(28167380)",
+        "object" : "",
+        "preview" : "0",
+        "totalObservations" : "1",
+        "variables" : "41"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

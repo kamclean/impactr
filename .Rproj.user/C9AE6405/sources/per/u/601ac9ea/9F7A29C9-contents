@@ -1,0 +1,16 @@
+gcite::gcite_citation_page(url = "https://scholar.google.com/citations?user=MfGBD3EAAAAJ&hl=en&authuser=1#d=gs_md_cita-d&u=%2Fcitations%3Fview_op%3Dview_citation%26hl%3Den%26user%3DMfGBD3EAAAAJ%26authuser%3D1%26citation_for_view%3DMfGBD3EAAAAJ%3AYsMSGLbcyi4C%26tzom%3D-60")
+
+
+
+gcite::gcite_url(url = "https://scholar.google.com/citations?user=T9eqZgMAAAAJ", pagesize = 100, cstart = 5) %>%
+  gcite::gcite_citation_page("https://scholar.google.com/citations?user=T9eqZgMAAAAJ")
+
+https://scholar.google.com/citations?view_op=view_citation&hl=en&oe=ASCII&user=T9eqZgMAAAAJ&cstart=5&pagesize=100&citation_for_view=T9eqZgMAAAAJ:5bg8sr1QxYwC
+url = paste0("https://scholar.google.com/citations?view_op=view_citation&",
+"hl=en&oe=ASCII&user=T9eqZgMAAAAJ&pagesize=100&",
+"citation_for_view=T9eqZgMAAAAJ:W7OEmFMy1HYC")
+url = gcite::gcite_url(url = url, pagesize = 10, cstart = 0)
+
+
+packrat::clean()
+packrat::init()

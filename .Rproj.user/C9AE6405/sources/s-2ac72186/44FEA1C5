@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1581274662957.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "10|53|37|13|\n",
+    "hash" : "0",
+    "id" : "44FEA1C5",
+    "lastKnownWriteTime" : 1567770814,
+    "last_content_update" : 1581274673642,
+    "path" : "~/impactr/R/impact_cite_metric.R",
+    "project_path" : "R/impact_cite_metric.R",
+    "properties" : {
+        "cursorPosition" : "4,10",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
