@@ -1,9 +1,9 @@
-# impact_almetric----------------------
+# impact_altmetric----------------------
 # Documentation
-#' Extract almetric data on social media engagment
+#' Extract altmetric data on social media engagment
 #' @description Extract impact data from social media engagment
 #' @param list_pmid Vector of unique PubMed identifier numbers (PMID)
-#' @return Nested dataframe (1) df_output; Original dataset with appended almetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data almetric ranking (4) source; Long format data sources used to derive almetric.
+#' @return Nested dataframe (1) df_output; Original dataset with appended altmetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data altmetric ranking (4) source; Long format data sources used to derive altmetric.
 #' @import magrittr
 #' @import dplyr
 #' @import tibble
@@ -18,7 +18,7 @@
 
 # Function-------------------------------
 # aim to be able to use either pmid or doi
-impact_almetric <- function(list_pmid){
+impact_altmetric <- function(list_pmid){
   "%ni%" <- Negate("%in%")
   # https://api.altmetric.com/docs/call_citations.html
   # https://github.com/ropensci/rAltmetric/issues/27

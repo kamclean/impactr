@@ -25,13 +25,6 @@
 # Function-------------------
 
 # add network = TRUE!!!!!!!
-df = edisurg_10
-author_list = "author_list"
-pub_group = "pmid"
-max_inital = 1
-upset = T
-metric = FALSE
-
 impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
   require(dplyr);require(tidyr);require(stringr);require(tibble);require(stringi)
   auth_out <- df %>%
@@ -65,7 +58,7 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
     dplyr::mutate(name = author) %>%
     tidyr::pivot_wider(names_from = "pub_group", values_from = "author") %>%
     dplyr::select(-name, -pub_n) %>%
-    dplyr::mutate_all(function(x){as.numeric(ifelse(is.na(x)==T, 1, 0))})
+    dplyr::mutate_all(function(x){as.numeric(ifelse(is.na(x)==T, 1, 0))})}
 
   out_metric <- NULL
 
@@ -76,7 +69,7 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
       dplyr::group_by(level) %>%
       base::split(.$level) %>%
       purrr::map(., function(x){x %>%
-          dplyr::mutate(n_old = comb_name_size(comb_mat) %>%
+          dplyr::mutate(n_old = impactr::comb_name_size(comb_mat) %>%
                           dplyr::filter(grepl(paste0("&", x$level), combination)) %>%
                           dplyr::pull(n) %>% sum()) %>%
           dplyr::mutate(n_retain = comb_name_size(comb_mat) %>%
