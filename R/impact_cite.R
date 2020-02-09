@@ -16,15 +16,6 @@
 #' @return Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from impact_cite_metric() (4). Unmatched recorded (only for google scholar)
 #' @export
 
-df_out <- list("df" = df_out, "time" = df_time, "metric" = df_metric, "gscholar_invalid" = gscholar_invalid)
-
-source('~/impactr/R/cite_cr.R')
-source('~/impactr/R/cite_dim.R')
-source('~/impactr/R/cite_scopus.R')
-source('~/impactr/R/cite_oc.R')
-source('~/impactr/R/cite_gs.R')
-source('~/impactr/R/impact_cite_metric.R')
-
 impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = FALSE,
                         gscholar=FALSE, gscholar_title_nchar = 50, metric=TRUE){
 
@@ -34,7 +25,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
     df <- df %>%
       dplyr::select(doi) %>%
       dplyr::filter(is.na(doi)==F) %>%
-      dplyr::mutate(cite_cr = cite_cr(doi)$cite) %>%
+      dplyr::mutate(cite_cr = impactr::cite_cr(doi)$cite) %>%
       dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_cr")), by = "doi") %>%
       dplyr::select(-cite_cr, everything())}
 
@@ -42,7 +33,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
     df <- df %>%
       dplyr::select(doi) %>%
       dplyr::filter(is.na(doi)==F) %>%
-      dplyr::mutate(cite_dim = cite_dim(doi)$cite) %>%
+      dplyr::mutate(cite_dim = impactr::cite_dim(doi)$cite) %>%
       dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_dim")), by = "doi") %>%
       dplyr::select(-cite_dim, everything())} # to move cite_dim last
 
@@ -51,7 +42,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
       df <- df %>%
         dplyr::select(doi) %>%
         dplyr::filter(is.na(doi)==F) %>%
-        dplyr::mutate(cite_scopus = cite_scopus(doi)$cite) %>%
+        dplyr::mutate(cite_scopus = impactr::cite_scopus(doi)$cite) %>%
         dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_scopus")), by = "doi") %>%
         dplyr::select(-cite_scopus, everything())}}else{print("Please use rscopus::set_api_key() with a valid api")}
 
@@ -62,7 +53,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
       dplyr::filter(is.na(doi)==F) %>%
       dplyr::pull(doi)
 
-    data_oc <- cite_oc(doi_oc)
+    data_oc <- impactr::cite_oc(doi_oc)
 
     df <- df %>%
       dplyr::select(doi) %>%
@@ -75,7 +66,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
   gscholar_invalid <- NULL
   if(gscholar!=FALSE){
 
-    data_gs <- suppressMessages(suppressWarnings(cite_gs(df, gscholar_id = gscholar, match_title_nchar = gscholar_title_nchar)))
+    data_gs <- suppressMessages(suppressWarnings(impactr::cite_gs(df, gscholar_id = gscholar, match_title_nchar = gscholar_title_nchar)))
 
     df <- data_gs$df
 
