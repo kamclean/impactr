@@ -4,7 +4,7 @@
 \alias{extract_pmid}
 \title{Extract publication data using RISmed / pmid}
 \usage{
-extract_pmid(pmid, get_auth = TRUE, get_almetric = TRUE,
+extract_pmid(pmid, get_auth = TRUE, get_altmetric = TRUE,
   get_impact = TRUE)
 }
 \arguments{
@@ -12,7 +12,7 @@ extract_pmid(pmid, get_auth = TRUE, get_almetric = TRUE,
 
 \item{get_auth}{Extract authorship data (default = TRUE)}
 
-\item{get_almetric}{Extract overall altmetric score data (default = TRUE)}
+\item{get_altmetric}{Extract overall altmetric score data (default = TRUE)}
 
 \item{get_impact}{Extract journal impact factor and metrics (default = TRUE)}
 }
