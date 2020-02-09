@@ -11,12 +11,13 @@
 #' @importFrom stringr str_split str_split_fixed str_replace
 #' @importFrom purrr map map_df
 #' @export
+
 # Function-------------------
 
 extract_impact_factor <- function(df, var_issn = "journal_issn"){
   update.packages("sjrdata")
 
-  df <- data %>%
+  df <- df %>%
     dplyr::mutate(journal_issn = dplyr::pull(., var_issn)) %>%
     dplyr::mutate(journal_issn = gsub("-","", journal_issn)) %>%
     tidyr::separate_rows(., journal_issn, sep = ", ")  %>%
