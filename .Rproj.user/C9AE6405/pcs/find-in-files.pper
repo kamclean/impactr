@@ -5,7 +5,7 @@
         ],
         "path" : "",
         "projectRelative" : true,
-        "query" : "https://w3id.org/oc/index/coci/api/",
+        "query" : "packrat",
         "regex" : false
     }
 }
