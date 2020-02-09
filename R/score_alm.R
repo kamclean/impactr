@@ -9,6 +9,5 @@
 #' @export
 
 # Function-------------------------------
-score_alm <- function(doi){unlist(lapply(doi, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e){NA})}))}
-
-
+score_alm <- function(doi){out <- unlist(lapply(doi, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e){NA})}))
+return(out)}
