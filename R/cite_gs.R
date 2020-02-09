@@ -11,7 +11,7 @@
 #' @import purrr
 #' @importFrom tidyr pivot_longer
 #' @importFrom stringr str_sub
-#' @importFrom gcite gcite_user_info get_publications
+#' @importFrom gcite gcite_user_info
 #' @return Nested dataframe of: (1)."out_df" - Amended dataframe with additional total citations appended (2). "df_cite" - Dataframe of citations over time for google doc papers (3). "validation" - Dataframe of publications that could not be matched to a google scholar record (noscholar) or google scholar records that could not be matched to the dataframe (unmatched).
 #' @export
 
