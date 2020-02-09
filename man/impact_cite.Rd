@@ -4,22 +4,29 @@
 \alias{impact_cite}
 \title{Extract additional traditional metrics from Google Scholar}
 \usage{
-impact_cite(df, var_citation, var_year = "year", scholar_id = FALSE,
-  match_title_nchar = 50, metric = TRUE)
+impact_cite(df, crossref = TRUE, dimentions = TRUE, scopus = FALSE,
+  oc = FALSE, gscholar = FALSE, gscholar_title_nchar = 50,
+  metric = TRUE)
 }
 \arguments{
-\item{df}{Dataframe containing at least two columns: publication year ("year") and  with each publication listed as a row.}
+\item{df}{Dataframe containing at least two columns: publication year ("year") and DOI ("doi") with each publication listed as a row.}
 
-\item{var_citation}{Column in dataframe which already contains number of citations for each publication (optional).}
+\item{crossref}{Crossref database to be used for citation data (default=TRUE)}
 
-\item{scholar_id}{Google scholar ID number linking to records in the dataframe.}
+\item{dimentions}{Dimentions database to be used for citation data (default=TRUE)}
 
-\item{match_by_year}{Argument to match publications by title and year, rather than just title (default = TRUE). See "unmatch" output.}
+\item{scopus}{Scopus database to be used for citation data (default=FALSE). Requires Scopus API.}
 
-\item{h_index}{Return H-index score (default = TRUE)}
+\item{oc}{Open citations database to be used for citation data (default=FALSE due to sparse population at present).}
+
+\item{gscholar}{Google scholar database to be used for citation data (default=FALSE). Requires Google Scholar ID (and all relevent publications to be associated with this).}
+
+\item{gscholar_title_nchar}{Argument to specify how many characters the titles should be matched (default = 50). See "gscholar_invalid" output.}
+
+\item{metric}{Return common citation metrics (default = TRUE)}
 }
 \value{
-Nested dataframe of: (1)."output" - Amended dataframe with additional citation metrics appended (2). "no_scholar" - Dataframe of publications with no scholar record (3). "unmatch" - Dataframe of publications that could not be matched to a journal. (4) "hindex" - H-Index score (if hindex = TRUE)
+Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from impact_cite_metric() (4). Unmatched recorded (only for google scholar)
 }
 \description{
 Extract additional traditional metrics from Google Scholar
