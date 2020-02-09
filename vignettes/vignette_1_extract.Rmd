@@ -43,6 +43,7 @@ col_pubmed <- which(colnames(out_pubmed) %in% c("author", "title"))
 
 out_pubmed %>%
   dplyr::mutate(author = paste0(substr(author, 1, 50), "...")) %>%
+  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
   knitr::kable(format="html",escape = FALSE) %>%
   kableExtra::column_spec(col_pubmed, width_min="6in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
@@ -73,6 +74,7 @@ col_doi2 <- which(colnames(out_doi) %in% c("doi", "author_group","author"))
 
 out_doi %>%
   dplyr::mutate(author = ifelse(is.na(author)==F, paste0(substr(author, 1, 50), "..."), author)) %>%
+  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
   knitr::kable(format="html",escape = FALSE) %>%
   kableExtra::column_spec(col_doi1, width_min="7in") %>%
   kableExtra::column_spec(col_doi2, width_min="2.5in") %>%

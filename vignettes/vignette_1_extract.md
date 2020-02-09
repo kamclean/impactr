@@ -56,7 +56,7 @@ authors).
 pmid
 </th>
 <th style="text-align:left;">
-author\_group
+author group
 </th>
 <th style="text-align:left;">
 type
@@ -68,10 +68,10 @@ title
 year
 </th>
 <th style="text-align:left;">
-journal\_full
+journal full
 </th>
 <th style="text-align:left;">
-journal\_abbr
+journal abbr
 </th>
 <th style="text-align:left;">
 volume
@@ -86,16 +86,16 @@ pages
 doi
 </th>
 <th style="text-align:right;">
-cite\_pm
+cite pm
 </th>
 <th style="text-align:left;">
 nlmid
 </th>
 <th style="text-align:left;">
-journal\_issn
+journal issn
 </th>
 <th style="text-align:right;">
-auth\_n
+auth n
 </th>
 <th style="text-align:left;">
 author
@@ -295,7 +295,7 @@ authorship less well (compared to PubMed).
 doi
 </th>
 <th style="text-align:left;">
-author\_group
+author group
 </th>
 <th style="text-align:left;">
 title
@@ -304,7 +304,7 @@ title
 year
 </th>
 <th style="text-align:left;">
-journal\_abbr
+journal abbr
 </th>
 <th style="text-align:left;">
 volume
@@ -316,19 +316,19 @@ issue
 pages
 </th>
 <th style="text-align:right;">
-cite\_cr
+cite cr
 </th>
 <th style="text-align:right;">
-auth\_n
+auth n
 </th>
 <th style="text-align:left;">
 author
 </th>
 <th style="text-align:left;">
-journal\_full
+journal full
 </th>
 <th style="text-align:left;">
-journal\_issn
+journal issn
 </th>
 </tr>
 </thead>
