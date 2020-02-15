@@ -15,6 +15,8 @@
 #' @importFrom stringi stri_reverse
 #' @importFrom lubridate as_date as_datetime
 #' @export
+list_pmid =
+impact_altmetric(c(32026470, 30513129))
 
 # Function-------------------------------
 # aim to be able to use either pmid or doi
@@ -127,19 +129,21 @@ impact_altmetric <- function(list_pmid){
                       "alm_journal_3m_n" = context.similar_age_journal_3m.count,
                       last_updated, published_on,added_on,journal) %>%
         dplyr::mutate_at(dplyr::vars(pmid, dplyr::starts_with("alm_")), as.numeric) %>%
-        dplyr::mutate(alm_all_prop = 1-(alm_all_rank-1/alm_all_n),
-                      alm_journal_all_prop = 1-(alm_journal_all_rank/alm_journal_all_n),
-                      alm_journal_3m_prop = 1-(alm_journal_3m_rank/alm_journal_3m_n)) %>%
+        dplyr::mutate(alm_all_prop = 1-((alm_all_rank-1)/alm_all_n),
+                      alm_journal_all_prop = 1-((alm_journal_all_rank-1)/alm_journal_all_n),
+                      alm_journal_3m_prop = 1-((alm_journal_3m_rank-1)/alm_journal_3m_n)) %>%
         dplyr::select(journal, pmid:alm_all_n, alm_all_prop,
                       alm_journal_all_mean:alm_journal_all_n, alm_journal_all_prop,
                       alm_journal_3m_mean:alm_journal_3m_n, alm_journal_3m_prop,
                       last_updated, published_on,added_on) %>%
         dplyr::bind_cols(cited_by)}) %>%
+
     dplyr::bind_rows() %>% tibble::as_tibble() %>%
     dplyr::mutate(date_update = lubridate::as_date(lubridate::as_datetime(as.numeric(last_updated))),
                   date_pub = lubridate::as_date(lubridate::as_datetime(as.numeric(published_on))),
                   date_added = lubridate::as_date(lubridate::as_datetime(as.numeric(added_on)))) %>%
     dplyr::select(-last_updated, -published_on, -added_on)
+
 
   pmid_na <- df %>% dplyr::filter(pmid %ni% df_alm$pmid) %>% dplyr::pull(pmid) %>% as.numeric()
 
@@ -157,7 +161,7 @@ impact_altmetric <- function(list_pmid){
     dplyr::select(pmid, doi, alm_score_1w:alm_score_now, date_pub,date_added) %>%
     dplyr::filter(is.na(doi)==F) %>%
     tidyr::pivot_longer(cols = c(alm_score_1w:alm_score_now),
-                        names_to = "alm_time", values_to = "alm_score") %>%
+                        names_to = "alm_time") %>%
     dplyr::mutate(alm_time = ifelse(alm_time=="alm_score_1w", 7,
                                     ifelse(alm_time=="alm_score_1m", 30,
                                            ifelse(alm_time=="alm_score_3m", 90,
@@ -194,7 +198,9 @@ impact_altmetric <- function(list_pmid){
 
   df_alm_rank <- df_out %>%
     dplyr::select(pmid, doi, journal,alm_score_now,alm_all_mean:alm_journal_3m_prop) %>%
-    tidyr::pivot_longer(names(dplyr::select(., alm_all_mean:alm_journal_3m_prop)), names_to = "alm_category") %>%
+
+    tidyr::pivot_longer(names(dplyr::select(., alm_all_mean:alm_journal_3m_prop)),
+                        names_to = "alm_category") %>%
     dplyr::mutate(alm_category = gsub("alm_", "", alm_category),
                   journal = factor(journal)) %>%
     dplyr::mutate(alm_measure = stringr::str_split_fixed(stringi::stri_reverse(alm_category), "_", 2)[,1],
@@ -203,9 +209,8 @@ impact_altmetric <- function(list_pmid){
                   alm_category = factor(stringi::stri_reverse(alm_category))) %>%
     tidyr::pivot_wider(names_from = alm_measure, values_from = value) %>%
     dplyr::filter(is.na(mean)==F) %>%
-    dplyr::rename(alm_score = alm_score_now)
+    dplyr::rename("alm_score" = alm_score_now)
 
-
-  out <- list("df_output" = df_out, "temporal" = df_alm_time, "rank" = df_alm_rank, "source" = df_alm_source)
+  out <- list("df" = df_out, "temporal" = df_alm_time, "rank" = df_alm_rank, "source" = df_alm_source)
 
   return(out)}

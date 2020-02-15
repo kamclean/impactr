@@ -29,9 +29,9 @@ Citations are a common metric for determining the impact of research on the wide
 
 The function `impact_cite()` can also produce several metrics that can be used for the purposes of assessment of the more traditional research impact of publications. This includes:
 
-* Journal-Level: Impact Factor (IF) and Eigenfactor.
+* **Journal-Level**: Impact Factor (IF) and Eigenfactor.
 
-* Paper-Level: Citations from online repositories (in addition to PubMed):
+* **Paper-Level**: Citations from online repositories (in addition to PubMed):
 
   + **Google Scholar** (`cite_gs`): Accessed via the [gcite](https://cran.r-project.org/web/packages/gcite/index.html) package.  (requires the Google Scholar ID for an individual to be supplied to `gscholar` - does not support multiple IDs).
   
