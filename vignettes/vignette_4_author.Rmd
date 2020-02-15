@@ -1,5 +1,5 @@
 ---
-title: "Impact from from Co-authorship Network"
+title: "Impact from Co-authorship Network"
 date: "`r Sys.Date()`"
 always_allow_html: yes
 output:
@@ -17,7 +17,53 @@ library(UpSetR);library(grid);library(ComplexHeatmap);library(ggalluvial)
 ```
 
 # **Impact from from Co-authorship Network**
-In collaborative research projects, there can be hundreds or even thousands of collaborators involved who gain pubmed-citable authorship on the publications arising from data collected. Since the first inception of the [collaborative research model](https://www.bmj.com/content/345/bmj.e5084) in 2010, there has arisen numerous research collaboratives which have run multiple projects with resultant publications. In addition to more traditional research metrics, a measure of the success of these projects is reflected in:
+Authorship lists on publications can range from one to potentially hundreds or even thousands of co-authors (particularly in the case of [collaborative research](https://www.bmj.com/content/345/bmj.e5084) studies).
+
+## **impact_auth()**
+The `impact_auth()` function aims to simplify this process by providing an easy method to gain a comprehensive understanding of co-authorship networks using publication data.
+
+Both the `extract_pmid()` and `extract_doi()` functions extract a list of authors that can be used directly by `impact_auth()`. The only mandatory requirements are a dataframe of the grouping variable (`pub_group` e.g. "project") and the authors ("author").
+
+To track co-authors across publications, the author names must be matched between the groups (and dupliciates within groups excluded). Ideally authors would be matched on ORCID (or similar unique identifier). Unfortunalely, that information is rarely stored in on-line repositories and so authors dervied in this way can only be reliably matched by last name and initials. However, `max_inital` allows flexiblity in how restrictive matching authors will be.
+
+ - If `max_inital` = 3, then the authors will be matched on their last name and exact initials (up to 3). As a result, this **more** restrictive matching may overestimate the number of unique co-authors. For example, if the **same author** is listed as "Smith ABC" and "Smith AB" on 2 separate publications, these will be treated as **different authors**.
+
+ - If `max_inital` = 1, then the authors will be matched on their last name and first initial only. As a result, this **less** restrictive matching may underestimate the number of unique co-authors. For example, if **different authors** have the same last name and first initial (e.g. listed as "Smith AB" and "Smith AK") on 2 separate publications, these will be treated as the **same author**.
+ 
+
+## 1. Traditional Authorship Model
+```{r impact_auth_intro1a, warning=FALSE, message=FALSE}
+data_auth <- impactr::extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,
+                                              30850367, 31585971, 30793373), get_auth = TRUE) %>%
+  dplyr::mutate(project = factor(pmid)) %>%
+  dplyr::select(project, author)
+```
+```{r impact_auth_intro1b, warning=FALSE, message=FALSE, echo=FALSE}
+data_auth %>%
+  dplyr::mutate(author = paste0(substr(author, 1, 80), "...")) %>%
+  knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
+```
+
+```{r impact_auth_intro1c, warning=FALSE, message=FALSE}
+example_auth <- impactr::impact_auth(data_auth, pub_group = "project", max_inital = 1, upset = TRUE, metric = FALSE)
+```
+
+### a). List
+```{r impact_list, warning=FALSE, message=FALSE, echo=FALSE}
+example_auth$list %>%
+  knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
+```
+
+### b). List
+```{r impact_list, warning=FALSE, message=FALSE, echo=FALSE}
+example_auth$upset %>%
+  knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
+```
+
+
+## 2. Collaborative Authorship Model
+
+Since the first inception of the [collaborative research model](https://www.bmj.com/content/345/bmj.e5084) in 2010, there has arisen numerous research collaboratives which have run multiple projects with resultant publications. Those involved who gain pubmed-citable authorship on the publications arising from data collected. In addition to more traditional research metrics, a measure of the success of these projects is reflected in:
 
   1. The number of new collaborators involved in each project (aka growth). 
 
@@ -30,13 +76,8 @@ However, with potentially thousands of collaborators involved, being able to eas
 &nbsp;
 
 
-## **impact_auth()**
-The `impact_auth()` function aims to simplify this process by providing an easy method to gain a comprehensive understanding of collaborator engagement using publication data.
-
-Both the `extract_pmid()` and `extract_doi()` functions extract a list of authors that can be used directly by `impact_auth()`. The only mandatory requirements are a dataframe of the grouping variable (`pub_group` e.g. "project") and the authors ("author").
-
 ```{r impact_auth_intro1, warning=FALSE, message=FALSE}
-data <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%
+data_collab <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%
   dplyr::mutate(project = factor(pmid,
                                  levels = c(25091299, 27321766, 30513129),
                                  labels =c("STARSurg-1", "DISCOVER", "OAKS-1"))) %>%
@@ -44,17 +85,11 @@ data <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth =
 ```
 
 ```{r impact_auth_intro2, warning=FALSE, message=FALSE, echo=FALSE}
-data %>%
+data_collab %>%
   dplyr::mutate(author = paste0(substr(author, 1, 80), "...")) %>%
   knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-To track collaborator involvement over time, the author names must be matched between the groups (and dupliciates within groups excluded). Ideally authors would be matched on orcid (or similar unique identifier). Unfortunalely, that information is rarely stored in on-line repositories and so authors dervied in this way must be matched by last name and initials. However, `max_inital` allows flexiblity in how restrictive matching authors will be.
-
- - If `max_inital` = 3, then the authors will be matched on their last name and exact initials (up to 3). This **more** restrictive matching will **overestimate** growth and **underestimate** retention (as the same person with a middle initial in one authorship list will be counted as two).
-
- - If `max_inital` = 1, then the authors will be matched on their last name and first initial only. This **less** restrictive matching will **underestimate** growth and **overestimate** retention (as people with the same last name and first initial will be combined).
- 
 ```{r impact_auth_intro, warning=FALSE, message=FALSE}
 example <- impactr::impact_auth(data, pub_group = "project", max_inital = 1, upset = TRUE, metric = TRUE)
 ```
@@ -127,12 +162,12 @@ ggsave(plot = grid::grid.draw(grid::grid.grabExpr(ComplexHeatmap::draw(plot_upse
 
 
 ```{r impact_auth_upset3bi, echo=TRUE, results='hide'}
-example$upset %>%
+as.data.frame(example$upset) %>%
   UpSetR::upset(text.scale = 1.7)
 ```
 
 ```{r impact_auth_upset3bii, echo=FALSE, message=FALSE, error=FALSE,include=FALSE, warning = FALSE}
-plot_upset2 <- example$upset %>%
+plot_upset2 <- example$upset %>% as.data.frame() %>%
   UpSetR::upset(text.scale = 1.7)
 
 png(file="~/impactr/vignettes/plot/plot_upset2.png", height = 3.76, width = 7.60, units = "in", res=300)

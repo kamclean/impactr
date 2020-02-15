@@ -23,7 +23,6 @@
 #' @export
 
 # Function-------------------
-
 # add network = TRUE!!!!!!!
 impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
   require(dplyr);require(tidyr);require(stringr);require(tibble);require(stringi)
@@ -58,7 +57,7 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
     dplyr::mutate(name = author) %>%
     tidyr::pivot_wider(names_from = "pub_group", values_from = "author") %>%
     dplyr::select(-name, -pub_n) %>%
-    dplyr::mutate_all(function(x){as.numeric(ifelse(is.na(x)==T, 1, 0))})}
+    dplyr::mutate_all(function(x){as.numeric(ifelse(is.na(x)==T, 0, 1))})}
 
   out_metric <- NULL
 

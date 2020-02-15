@@ -2,7 +2,7 @@
 
 On-line attention and engagement for research is now well recognised as
 important alternative metrics to traditional metrics (although there are
-well recognised concerns regarding potential for manipuation), and has
+well recognised concerns regarding potential for manipulation), and has
 been repeatedly found to be positively correlated with article
 citations.
 
@@ -14,8 +14,8 @@ incorporate this data.
 
 **Note**: At present this package only includes Altmetric data. PlumX is
 the other major source of alternative metrics, however there is no open
-API avialable for this product (it requires an authentication token) and
-so has not been incorportated at present.
+API available for this product (it requires an authentication token) and
+so has not been incorporated at present.
 
 ## **impact\_altmetric()**
 
@@ -35,7 +35,7 @@ from:
 
 The `impact_altmetric()` function aims to provide easy access to this
 source of information in useful format. At present this required
-articles to a pubmed identfication number (pmid), however functionality
+articles to a pubmed identification number (pmid), however functionality
 to use DOI as an alternative is planned.
 
 ``` r
@@ -45,9 +45,9 @@ altmetric <- impactr::impact_altmetric(pmid)
 ## **Output**
 
 There are 4 outputs from `impact_altmetric()` as nested dataframes:
-`$df_output`, `$temporal`, `$rank`, and `$source`.
+`$df`, `$temporal`, `$rank`, and `$source`.
 
-### **1. Original dataset ($df\_output)**
+### **1. Original dataset ($df)**
 
 This will return the original dataset with data from altmetric appended
 as columns. There are 4 broad groups that describes the:
@@ -450,7 +450,7 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-\-3916613
+0.7239740
 
 </td>
 
@@ -474,7 +474,7 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-0.5372460
+0.5375282
 
 </td>
 
@@ -498,7 +498,7 @@ Kamarajah…
 
 <td style="text-align:right;">
 
-0.2989691
+0.3092784
 
 </td>
 
@@ -720,7 +720,7 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-\-582310
+0.9593436
 
 </td>
 
@@ -744,7 +744,7 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-0.9610420
+0.9612767
 
 </td>
 
@@ -768,7 +768,7 @@ Choi, R. G…
 
 <td style="text-align:right;">
 
-0.9052632
+0.9157895
 
 </td>
 
@@ -990,7 +990,7 @@ NA
 
 <td style="text-align:right;">
 
-\-334118
+0.9762516
 
 </td>
 
@@ -1014,7 +1014,7 @@ NA
 
 <td style="text-align:right;">
 
-0.9700000
+0.9750000
 
 </td>
 
@@ -1038,7 +1038,7 @@ NA
 
 <td style="text-align:right;">
 
-0.9047619
+0.9523810
 
 </td>
 
@@ -1262,7 +1262,7 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-\-124853
+0.9912821
 
 </td>
 
@@ -1286,7 +1286,7 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-0.9789739
+0.9792543
 
 </td>
 
@@ -1310,7 +1310,7 @@ Griffiths, Reb…
 
 <td style="text-align:right;">
 
-0.9135802
+0.9259259
 
 </td>
 
@@ -1531,7 +1531,7 @@ NA
 
 <td style="text-align:right;">
 
-\-114368
+0.9919908
 
 </td>
 
@@ -1555,7 +1555,7 @@ NA
 
 <td style="text-align:right;">
 
-0.9963145
+0.9969287
 
 </td>
 
@@ -1579,7 +1579,7 @@ NA
 
 <td style="text-align:right;">
 
-0.9824561
+1.0000000
 
 </td>
 
@@ -1702,8 +1702,8 @@ NA
 ### **2. Focussed Altmetric datasets**
 
 The following outputs do not contain additional information beyond what
-is already provided in `$df_output`. However, these provide long format
-and focussed aspects of data to facilitate easier visualisation and
+is already provided in `$df`. However, these provide long format and
+focussed aspects of data to facilitate easier visualisation and
 analysis. These exclude any publications not tracked by altmetric.
 
 #### **2. a). altmetric score over time ($temporal)**
@@ -2151,7 +2151,7 @@ same journal at the same time). Within `$rank` these categories
     journal**
 
   - **journal\_3m**: All papers recorded by altmetric **for that journal
-    within 3 month period**
+    within a 3 month period**
 
 For each category, altmetric records the following measures:
 
@@ -2281,7 +2281,7 @@ all
 
 <td style="text-align:right;">
 
-\-3.916613e+06
+0.7239740
 
 </td>
 
@@ -2339,7 +2339,7 @@ journal\_all
 
 <td style="text-align:right;">
 
-5.372460e-01
+0.5375282
 
 </td>
 
@@ -2397,7 +2397,7 @@ journal\_3m
 
 <td style="text-align:right;">
 
-2.989691e-01
+0.3092784
 
 </td>
 
@@ -2455,7 +2455,7 @@ all
 
 <td style="text-align:right;">
 
-\-5.823100e+05
+0.9593436
 
 </td>
 
@@ -2513,7 +2513,7 @@ journal\_all
 
 <td style="text-align:right;">
 
-9.610420e-01
+0.9612767
 
 </td>
 
@@ -2571,7 +2571,7 @@ journal\_3m
 
 <td style="text-align:right;">
 
-9.052632e-01
+0.9157895
 
 </td>
 
@@ -2629,7 +2629,7 @@ all
 
 <td style="text-align:right;">
 
-\-3.341180e+05
+0.9762516
 
 </td>
 
@@ -2687,7 +2687,7 @@ journal\_all
 
 <td style="text-align:right;">
 
-9.700000e-01
+0.9750000
 
 </td>
 
@@ -2745,7 +2745,7 @@ journal\_3m
 
 <td style="text-align:right;">
 
-9.047619e-01
+0.9523810
 
 </td>
 
@@ -2755,24 +2755,20 @@ journal\_3m
 
 </table>
 
+**Figure 2**: Plot of the percentage rank of each publication within
+each altmetric category.
+
 ``` r
 altmetric$rank %>%
   dplyr::mutate(journal = gsub(": The British Journal of Anaesthesia", "", journal),
                 pmid = as.character(pmid)) %>%
-  dplyr::mutate("Altmetric Ranking (%)" = round((1 - (rank-1)/n)*100, 1),
-                "Altmetric Category" = factor(as.character(alm_category),
-                                      levels=c("all", "journal_all", "journal_3m"),
-                                      labels=c("All Altmetric",
-                                               "All from Journal",
-                                               "All from Journal within 3 months"))) %>%
+  dplyr::mutate("Altmetric Ranking (%)" = round(prop*100, 1),
+                "Altmetric Category" = factor(as.character(alm_category), levels=c("all", "journal_all", "journal_3m"))) %>%
   ggplot() +
   aes(x = `Altmetric Category`, y = `Altmetric Ranking (%)`) +
   geom_point() + geom_boxplot() +
   theme_bw()
 ```
-
-**Figure 3**: Plot of the percentage rank of each publication within
-each altmetric category.
 
 <img src="plot/alm_plot2.png" align="center"/>
 
