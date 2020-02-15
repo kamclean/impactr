@@ -46,9 +46,9 @@ altmetric <- impactr::impact_altmetric(pmid)
 ```
 
 ## **Output**
-There are 4 outputs from `impact_altmetric()` as nested dataframes: `$df_output`, `$temporal`, `$rank`, and `$source`.
+There are 4 outputs from `impact_altmetric()` as nested dataframes: `$df`, `$temporal`, `$rank`, and `$source`.
 
-### **1. Original dataset ($df_output)**
+### **1. Original dataset ($df)**
 This will return the original dataset with data from altmetric appended as columns. There are 4 broad groups that describes the:
 
  - **"alm_score_" prefix**: Overall altmetric score over time (see `$temporal` output below).
@@ -61,11 +61,11 @@ This will return the original dataset with data from altmetric appended as colum
 
 ```{r impact_df_output, echo=FALSE, include=TRUE, max_height = "200px"}
 
-col_set1 <- which(colnames(altmetric$df_output) %in% c("title"))
-col_set2 <- which(colnames(altmetric$df_output) %in% c("author_list"))
-col_set3 <- which(colnames(altmetric$df_output) %in% c("doi", "date_update", "date_pub", "date_added"))
+col_set1 <- which(colnames(altmetric$df) %in% c("title"))
+col_set2 <- which(colnames(altmetric$df) %in% c("author_list"))
+col_set3 <- which(colnames(altmetric$df) %in% c("doi", "date_update", "date_pub", "date_added"))
 
-altmetric$df_output %>%
+altmetric$df %>%
   dplyr::mutate(author_list = ifelse(author_list!="NA", paste0(substr(author_list, 1, 80), "..."), author_list),
                 journal = gsub(": The British Journal of Anaesthesia", "", journal)) %>%
   
@@ -81,7 +81,7 @@ altmetric$df_output %>%
 ```
 
 ### **2. Focussed Altmetric datasets**
-The following outputs do not contain additional information beyond what is already provided in `$df_output`. However, these provide long format and focussed aspects of data to facilitate easier visualisation and analysis. These exclude any publications not tracked by altmetric. 
+The following outputs do not contain additional information beyond what is already provided in `$df`. However, these provide long format and focussed aspects of data to facilitate easier visualisation and analysis. These exclude any publications not tracked by altmetric. 
 
 #### **2. a). altmetric score over time ($temporal)**
 
@@ -146,12 +146,8 @@ altmetric$rank %>%
 altmetric$rank %>%
   dplyr::mutate(journal = gsub(": The British Journal of Anaesthesia", "", journal),
                 pmid = as.character(pmid)) %>%
-  dplyr::mutate("Altmetric Ranking (%)" = round((1 - (rank-1)/n)*100, 1),
-                "Altmetric Category" = factor(as.character(alm_category),
-                                      levels=c("all", "journal_all", "journal_3m"),
-                                      labels=c("All Altmetric",
-                                               "All from Journal",
-                                               "All from Journal within 3 months"))) %>%
+  dplyr::mutate("Altmetric Ranking (%)" = round(prop*100, 1),
+                "Altmetric Category" = factor(as.character(alm_category), levels=c("all", "journal_all", "journal_3m"))) %>%
   ggplot() +
   aes(x = `Altmetric Category`, y = `Altmetric Ranking (%)`) +
   geom_point() + geom_boxplot() +
@@ -161,12 +157,8 @@ altmetric$rank %>%
 plot_alm_rank <- altmetric$rank %>%
   dplyr::mutate(journal = gsub(": The British Journal of Anaesthesia", "", journal),
                 pmid = as.character(pmid)) %>%
-  dplyr::mutate("Altmetric Ranking (%)" = round((1 - (rank-1)/n)*100, 1),
-                "Altmetric Category" = factor(as.character(alm_category),
-                                      levels=c("all", "journal_all", "journal_3m"),
-                                      labels=c("All Altmetric",
-                                               "All from Journal",
-                                               "All from Journal within 3 months"))) %>%
+  dplyr::mutate("Altmetric Ranking (%)" = round(prop*100, 1),
+                "Altmetric Category" = factor(as.character(alm_category), levels=c("all", "journal_all", "journal_3m"))) %>%
   ggplot() +
   aes(x = `Altmetric Category`, y = `Altmetric Ranking (%)`) +
   geom_point() + geom_boxplot() +
