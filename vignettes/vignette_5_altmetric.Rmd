@@ -23,8 +23,6 @@ Altmetric is one such system that tracks the attention research outputs receive 
 knitr::opts_chunk$set(collapse = FALSE)
 library(dplyr);library(ggplot2)
 
-source('~/impactr/R/impact_altmetric.R')
-
 pmid <- readRDS("~/starsurg_impact/data/data_pub.rds")$pmid
 ```
 

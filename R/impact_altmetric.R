@@ -3,7 +3,7 @@
 #' Extract altmetric data on social media engagment
 #' @description Extract impact data from social media engagment
 #' @param list_pmid Vector of unique PubMed identifier numbers (PMID)
-#' @return Nested dataframe (1) df_output; Original dataset with appended altmetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data altmetric ranking (4) source; Long format data sources used to derive altmetric.
+#' @return Nested dataframe (1) df; Original dataset with appended altmetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data altmetric ranking (4) source; Long format data sources used to derive altmetric.
 #' @import magrittr
 #' @import dplyr
 #' @import tibble
@@ -159,7 +159,7 @@ impact_altmetric <- function(list_pmid){
     dplyr::select(pmid, doi, alm_score_1w:alm_score_now, date_pub,date_added) %>%
     dplyr::filter(is.na(doi)==F) %>%
     tidyr::pivot_longer(cols = c(alm_score_1w:alm_score_now),
-                        names_to = "alm_time") %>%
+                        names_to = "alm_time", values_to = "alm_score") %>%
     dplyr::mutate(alm_time = ifelse(alm_time=="alm_score_1w", 7,
                                     ifelse(alm_time=="alm_score_1m", 30,
                                            ifelse(alm_time=="alm_score_3m", 90,
