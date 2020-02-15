@@ -27,20 +27,34 @@ Citations are a common metric for determining the impact of research on the wide
 
 ## **`impact_cite()`**
 
-The function `impact_cite()` can also produce several metrics that can be used for the purposes of assessment of the more traditional research impact of publications (using the [Scholar](https://cran.r-project.org/web/packages/scholar/index.html) package). This includes:
+The function `impact_cite()` can also produce several metrics that can be used for the purposes of assessment of the more traditional research impact of publications. This includes:
 
-- Journal-Level: Impact Factor (IF) and Eigenfactor.
+* Journal-Level: Impact Factor (IF) and Eigenfactor.
 
-- Paper-Level: Citations (including H-Index) in both Google Scholar (`cite_gs`) and CrossRef / Pubmed repositories (`cite_cr` or `cite_pm`)
+* Paper-Level: Citations from online repositories (in addition to PubMed):
+
+  + **Google Scholar** (`cite_gs`): Accessed via the [gcite](https://cran.r-project.org/web/packages/gcite/index.html) package.  (requires the Google Scholar ID for an individual to be supplied to `gscholar` - does not support multiple IDs).
+  
+  + **CrossRef** (`cite_cr`): Accessed via the [rcrossref](https://github.com/ropensci/rcrossref) package. (requires crossref=TRUE).
+  
+  + **Dimentions** (`cite_dim`): Accessed via the [Dimentions API](https://app.dimensions.ai/discover/publication) (requires dimentions=TRUE).
+  
+  + **Scopus** (`cite_scopus`): Accessed via the [rscopus](https://cran.r-project.org/web/packages/rscopus/index.html) package (requires scopus=TRUE and valid scopus API set via `rscopus::set_api_key()`). 
+  
+  + **Open Citations** (`cite_oc`): Accessed via the [Open Citations API](https://opencitations.net/index/coci/api/v1) (requires oc=TRUE). Note: this is felt to be too sparcely populated at present  (Feb 2020) to be of practical use.
 
 ```{r cite_data, warning=FALSE, message=FALSE}
-data_cite <- impactr::impact_cite(df = data, scholar_id = "Ol5uNSwAAAAJ&hl", var_citation = "cite_gs")
-                             
+data_cite <- impactr::impact_cite(df = data, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = TRUE,
+                     gscholar = "Ol5uNSwAAAAJ&hl", metric=TRUE)
 ```
+
 ```{r cite_data_out, warning=FALSE, message=FALSE, echo=FALSE}
-data_cite$output %>%
+data_cite$df %>%
   dplyr::select(doi, title, journal_edit, journal_if,
                 cite_pm,	cite_gs) %>%
+  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
+  dplyr::mutate(`journal edit` = ifelse(`journal edit`=="The British journal of surgery", "BJS", `journal edit`),
+                `journal edit` = ifelse(`journal edit`=="Colorectal disease : the official journal of the Association of Coloproctology of Great Britain and Ireland", "Colorectal Disease", `journal edit`)) %>%
   knitr::kable(format="html") %>%
   kableExtra::column_spec(which(colnames(.) %in% c("title")), width_min="7in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
@@ -51,23 +65,44 @@ data_cite$output %>%
 
 ## **Impact Metrics**
 ### **Citations**
-Citations (e.g. `cite_total`) can be used to either provide summary statistics or visualisations.
+Citations (e.g. `cite_max`) can be used to either provide summary statistics or visualisations.
 
 **Note**: Google Scholar is typically being more sensitive but less specific in estimating citation count than Crossref / PubMed repositories.
 
 ```{r cite_plot1, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
-cite_max <- data_cite$output %$% max(cite_gs, na.rm=TRUE)
+cite_max <- data_cite$df %$% max(cite_gs, na.rm=TRUE)
 
-data_cite$output %>%
-  dplyr::select(cite_gs, cite_pm) %>%
+data_cite$df %>%
+  dplyr::select(cite_gs, cite_cr) %>%
   ggplot() +
-  geom_point(aes(x = cite_pm, y = cite_gs)) + 
+  geom_point(aes(x = cite_cr, y = cite_gs)) + 
   scale_x_continuous(breaks=c(seq(0, cite_max, by=5)),
-                     limits = c(0, max(data_cite$output$cite_gs, na.rm=TRUE)), expand = c(0, 0.5)) +
+                     limits = c(0, max(data_cite$df$cite_cr, na.rm=TRUE)), expand = c(0, 0.5)) +
   scale_y_continuous(breaks=c(seq(0, cite_max, by=5)),
-                     limits = c(0, max(data_cite$output$cite_gs, na.rm=TRUE)), expand = c(0, 0.5)) + 
-  labs(x = "Citations per publication on PubMed", y = "Citations per publication on Google Scholar") +
+                     limits = c(0, max(data_cite$df$cite_gs, na.rm=TRUE)), expand = c(0, 0.5)) + 
+  labs(x = "Citations per publication on CrossRef", y = "Citations per publication on Google Scholar") +
   theme_bw()
+```
+
+Only Google Scholar and [Open Citations](https://opencitations.net/) allow exporation of the citations over time. This will be included in the output of `impact_cite()` if either of those sources are selected.
+
+This can be used to plot the longitudinal impact of the paper through citations over time.
+
+```{r cite_plot2, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
+cite_max <- data_cite$df %$% max(cite_gs, na.rm=TRUE)
+
+data_cite$time %>%
+  dplyr::filter(source == "gs") %>% 
+  dplyr::filter(is.na(cite_cumsum)==F) %>%
+  dplyr::mutate(cite_year = forcats::fct_drop(cite_year)) %>%
+  # dplyr::group_by(source) %>% 
+  ggplot() +
+  aes(x = cite_year, y = cite_cumsum, group = doi, fill = doi) + 
+  # geom_line() + 
+  geom_area(position = 'stack', colour = "black") + 
+  labs(x = "Year of Citation", y = "Cumulative total of citations per publication") +
+  guides(fill=FALSE) +
+  theme_bw(base_size = 13)
 ```
 
 &nbsp;
@@ -78,26 +113,27 @@ As journal-level information is also extracted using `impact_cite()` (e.g. impac
 For example, the plot below demonstrates the ratio of Paper Citations : Journal Impact Factor - any point above the horizontal line (ratio of 1:1) indicates the paper has gathered more citations than typical for that journal.
 
 ```{r journal_plot, warning=FALSE, message=FALSE, echo=FALSE,fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
-cite_max <- data_cite$output %$% max(cite_gs/journal_if, na.rm=TRUE)
+cite_if_max <- data_cite$df %$% max(cite_max/journal_if, na.rm=TRUE)
 
-data_cite$output %>%
+data_cite$df %>%
   dplyr::filter(is.na(journal_if)==F) %>%
-  dplyr::mutate(cite_year = cite_gs/(lubridate::year(Sys.Date())-year)) %>%
-  dplyr::mutate(cite_if = cite_gs / journal_if,
+  dplyr::mutate(cite_year = cite_max/(lubridate::year(Sys.Date())-year)) %>%
+  dplyr::mutate(cite_if = cite_max / journal_if,
                 cite_if_year = cite_year / journal_if) %>%
-  dplyr::filter(type=="Paper") %>%
-  dplyr::select("Journal" = journal_full2, journal_if,
-                cite_gs, cite_year, cite_if, cite_if_year, year, almetric) %>%
-  dplyr::group_by(Journal, journal_if, cite_gs,
-                  cite_year, cite_if, cite_if_year, year, almetric) %>%
+  dplyr::filter(grepl("Paper",type)) %>%
+  dplyr::select("Journal" = journal_full, journal_if,
+                cite_max, cite_year, cite_if, cite_if_year, year, altmetric) %>%
+    dplyr::mutate(Journal = ifelse(Journal=="Colorectal disease : the official journal of the Association of Coloproctology of Great Britain and Ireland", "Colorectal disease", Journal)) %>%
+dplyr::group_by(Journal, journal_if, cite_max,
+                  cite_year, cite_if, cite_if_year, year, altmetric) %>%
   dplyr::summarise(n = n()) %>%
   ggplot() + 
   aes(x = year, y = cite_if, group = Journal, colour = Journal, fill = Journal) +
   geom_point() +
-  scale_y_continuous(breaks=c(0, 1, seq(5, cite_max, by=5)),minor_breaks=NULL) +
+  scale_y_continuous(breaks=c(0, 1, seq(5, cite_if_max, by=5)),minor_breaks=NULL) +
   geom_hline(aes(yintercept=1), colour = "dark grey", linetype = "dashed") +
   labs(x = "Year of Publication", y = "Ratio of Paper Citations : Journal Impact Factor") +
-  theme_bw()
+  theme_bw(base_size = 13)
 
 ```
 
@@ -117,7 +153,7 @@ Citation metrics are author-level measures that attempts to assess both the prod
 `impact_cite()` will produce common citation metrics automatically based on the papers included in the dataframe supplied. Alternatively this can be calculated directly using `impact_cite_metric()`. 
 
 ```{r cite_hindex, warning=FALSE, message=FALSE}
-data_cite$metric; impactr::impact_cite_metric(data_cite$output$cite_gs, data_cite$output$year)
+data_cite$metric; impactr::impact_cite_metric(data_cite$df$cite_max, data_cite$df$year)
 ```
 
 &nbsp;

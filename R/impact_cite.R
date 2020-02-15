@@ -37,7 +37,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
       dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_dim")), by = "doi") %>%
       dplyr::select(-cite_dim, everything())} # to move cite_dim last
 
-  if(rscopus::have_api_key()){
+  if(scopus==T&rscopus::have_api_key()){
     if(scopus==T&"doi" %in% names(df)){
       df <- df %>%
         dplyr::select(doi) %>%

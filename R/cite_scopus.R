@@ -1,4 +1,4 @@
-# cite_cr------------------------------
+# cite_scopus------------------------------
 # Documentation
 #' Derive citation data from the Crossref database via rcrossref
 #' @description Derive citation data from the Crossref database
