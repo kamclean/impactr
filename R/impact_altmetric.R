@@ -15,8 +15,6 @@
 #' @importFrom stringi stri_reverse
 #' @importFrom lubridate as_date as_datetime
 #' @export
-list_pmid =
-impact_altmetric(c(32026470, 30513129))
 
 # Function-------------------------------
 # aim to be able to use either pmid or doi
