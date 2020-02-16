@@ -1,4 +1,4 @@
-# Research Impact
+# Impact from Traditional Metrics
 
 Citations are a common metric for determining the impact of research on
 the wider academic field. Both `extract_pmid()` and `extract_doi()` will
@@ -1168,12 +1168,12 @@ data_cite$metric; impactr::impact_cite_metric(data_cite$df$cite_max, data_cite$d
     ## # A tibble: 1 x 4
     ##   total_cite hindex gindex mquotient
     ##        <dbl>  <int>  <int>     <dbl>
-    ## 1        409     10     20   0.00495
+    ## 1        409     10     20         5
 
     ## # A tibble: 1 x 4
     ##   total_cite hindex gindex mquotient
     ##        <dbl>  <int>  <int>     <dbl>
-    ## 1        409     10     20   0.00495
+    ## 1        409     10     20         5
 
  
 
