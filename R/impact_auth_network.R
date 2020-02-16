@@ -19,7 +19,7 @@
 #' @import stringi
 #' @importFrom purrr map
 #' @export
-#'
+
 impact_auth_network <- function(df, author = "author", id="pmid", auth_interest="",
                                 initial_right = TRUE, initial_num = 1, edge_min = 1){
 
