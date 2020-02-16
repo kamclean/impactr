@@ -2,8 +2,9 @@
 title: "1 - Extract Publication Data"
 date: "`r Sys.Date()`"
 always_allow_html: yes
-output: md_document
-  
+output:
+  md_document:
+    variant: gfm
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}

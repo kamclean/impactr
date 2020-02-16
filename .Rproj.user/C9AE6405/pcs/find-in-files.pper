@@ -3,9 +3,8 @@
         "caseSensitive" : false,
         "filePatterns" : [
         ],
-        "path" : "",
-        "projectRelative" : true,
-        "query" : "packrat",
+        "path" : "~",
+        "query" : "ASCII",
         "regex" : false
     }
 }
