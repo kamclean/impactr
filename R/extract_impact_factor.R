@@ -12,7 +12,6 @@
 #' @importFrom purrr map map_df
 #' @export
 
-var_id = "doi"
 # Function-------------------
 extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"){
   update.packages("sjrdata")
