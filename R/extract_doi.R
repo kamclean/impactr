@@ -95,20 +95,18 @@ extract_doi <- function(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact=T
     dplyr::mutate(doi = tolower(doi)) %>%
     dplyr::select(doi, title, year, journal_abbr,volume,issue,pages,cite_cr, everything())
 
-  if(get_auth==TRUE){crossref_auth <- extract_doi_auth(doi)
+  if(get_auth==TRUE){crossref_auth <- impactr::extract_doi_auth(doi)
 
   out_crossref <- dplyr::left_join(out_crossref, crossref_auth, by=c("doi")) %>%
     dplyr::select(doi, author_group, title:cite_cr, auth_n, "author" = auth_list, everything())}
 
 
   if(get_altmetric==TRUE){
-    score_alm <- function(x) {unlist(lapply(x, function(x){tryCatch(rAltmetric::altmetric_data(rAltmetric::altmetrics(doi = x))$score, error=function(e) NA)}))}
-
     out_crossref <- out_crossref %>%
-      dplyr::mutate(altmetric = score_alm(doi)) %>%
+      dplyr::mutate(altmetric = impactr::score_alm(doi)) %>%
       dplyr::select(doi:cite_cr, altmetric, everything())}
 
-  if(get_impact==TRUE){out_crossref <- extract_impact_factor(out_crossref)}
+  if(get_impact==TRUE){out_crossref <- impactr::extract_impact_factor(out_crossref, var_id="doi")}
 
   out_crossref <- out_crossref %>%
     dplyr::mutate_all(function(x){x <- ifelse(x=="", NA, x)}) %>%

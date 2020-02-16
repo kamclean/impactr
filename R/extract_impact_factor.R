@@ -12,12 +12,14 @@
 #' @importFrom purrr map map_df
 #' @export
 
+var_id = "doi"
 # Function-------------------
-extract_impact_factor <- function(df, var_issn = "journal_issn"){
+extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"){
   update.packages("sjrdata")
 
   df <- df %>%
-    dplyr::mutate(journal_issn = dplyr::pull(., var_issn)) %>%
+    dplyr::mutate(journal_issn = dplyr::pull(., var_issn),
+                  var_id = dplyr::pull(., var_id)) %>%
     dplyr::mutate(journal_issn = gsub("-","", journal_issn)) %>%
     tidyr::separate_rows(., journal_issn, sep = ", ")  %>%
     dplyr::mutate(journal_issn = trimws(journal_issn))
@@ -55,11 +57,12 @@ extract_impact_factor <- function(df, var_issn = "journal_issn"){
     dplyr::bind_rows(df_missing_max, df_missing_min) %>%
     dplyr::select(-journal_full) %>%
     dplyr::left_join(df, ., by=c("year", "journal_issn")) %>%
-    dplyr::arrange(pmid, journal_if) %>%
+    dplyr::arrange(var_id, journal_if) %>%
     dplyr::mutate(journal_if = zoo::na.locf(journal_if)) %>%
-    dplyr::group_by(pmid) %>%
+    dplyr::group_by(var_id) %>%
     dplyr::mutate(journal_issn = paste(journal_issn, collapse=", ")) %>%
-    dplyr::distinct(pmid, journal_issn, .keep_all = TRUE) %>%
-    dplyr::ungroup(pmid)
+    dplyr::distinct(var_id, journal_issn, .keep_all = TRUE) %>%
+    dplyr::ungroup(var_id) %>%
+    dplyr::select(-var_id)
 
   return(out2)}
