@@ -19,7 +19,7 @@
 #' @import stringi
 #' @importFrom purrr map
 #' @export
-
+#'
 impact_auth_network <- function(df, author = "author", id="pmid", auth_interest="",
                                 initial_right = TRUE, initial_num = 1, edge_min = 1){
 
@@ -132,10 +132,12 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
     dplyr::select(auth1_id, auth2_id, "auth1_name" = auth1, "auth2_name" = auth2,
                   weight)
 
+  node <- node %>%
+    dplyr::filter(id %in% c(edge_data$auth1_id, edge_data$auth2_id))
+
   suppressWarnings(
     if(auth_interest!=""){
       node <- node %>%
-        dplyr::filter(id %in% c(edge_data$auth1_id, edge_data$auth2_id)) %>%
         dplyr::mutate(author = ifelse(c(author %in% auth_interest)==T, author, ""))})
 
   out <- list("node" = node, "edge" = edge_data)
