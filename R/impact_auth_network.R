@@ -40,7 +40,8 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
   # Create nodes (full dataset)
   df <- df %>%
     dplyr::mutate(id = dplyr::pull(., id),
-                  author = dplyr::pull(., author))
+                  author = dplyr::pull(., author)) %>%
+    dplyr::mutate(author_n = stringr::str_count(author, ", ")+1)
 
   node <- impactr::impact_auth(df)$list %>%
     dplyr::select(author) %>%
@@ -59,7 +60,7 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
   # Create edges (full dataset)
 
   edge <- df %>%
-    dplyr::filter(auth_n>1) %>% # exclude single author papers
+    dplyr::filter(author_n>1) %>% # exclude single author papers
 
     # ensure no special characters
     dplyr::mutate(author = iconv(tolower(author), to ="ASCII//TRANSLIT")) %>%
