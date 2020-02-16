@@ -9,14 +9,14 @@
 
 # Function-------------------------------
 impact_cite_metric <- function(citations, year = ""){
-
+require(dplyr)
   if(length(citations)==length(year)){df <- dplyr::bind_cols("n_cite" = citations,
                                                              "year" = as.numeric(year))}
 
   if(length(citations)!=length(year)){df <- dplyr::bind_cols("n_cite" = citations,
                                                              "year" = rep(min(as.numeric(year)),
                                                                           length(citations)))}
-
+table(df$year)
   if(year==""){df <- dplyr::bind_cols("n_cite" = citations,
                                       "year" = rep(NA,
                                                    length(citations)))}
@@ -32,7 +32,7 @@ impact_cite_metric <- function(citations, year = ""){
                   total_cite = sum(n_cite)) %>%
     dplyr::mutate(hindex = max(which(id<=n_cite)),
                   gindex = max(which(gindex_square<gindex_cumsum))) %>%
-    dplyr::mutate(mquotient = unique(hindex)/(lubridate::year(Sys.Date())-min(year))) %>%
+    dplyr::mutate(mquotient = unique(hindex)/(year)) %>%
     head(1) %>% dplyr::select(total_cite:mquotient)
 
   return(out)}

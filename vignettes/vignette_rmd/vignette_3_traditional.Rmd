@@ -21,7 +21,7 @@ data <- impactr::extract_pmid(pmid) %>%
                   journal_edit = ifelse(journal_edit=="British Medical Journal", "BMJ-British Medical Journal", journal_edit))
 ```
 
-# Research Impact
+# Impact from Traditional Metrics
 
 Citations are a common metric for determining the impact of research on the wider academic field. Both `extract_pmid()` and `extract_doi()` will provide data on citations (based on PubMed/Crossref repositories) and journal impact factor (based on [Scimago Scientific Journal Rankings](https://www.scimagojr.com)).
 
