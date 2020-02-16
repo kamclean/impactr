@@ -4,7 +4,7 @@
         "filePatterns" : [
         ],
         "path" : "~",
-        "query" : "ASCII",
+        "query" : "var_id.rd",
         "regex" : false
     }
 }
