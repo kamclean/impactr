@@ -135,11 +135,6 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
   node <- node %>%
     dplyr::filter(id %in% c(edge_data$auth1_id, edge_data$auth2_id))
 
-  suppressWarnings(
-    if(auth_interest!=""){
-      node <- node %>%
-        dplyr::mutate(author = ifelse(c(author %in% auth_interest)==T, author, ""))})
-
-  out <- list("node" = node, "edge" = edge_data)
+   out <- list("node" = node, "edge" = edge_data)
 
   return(out)}
