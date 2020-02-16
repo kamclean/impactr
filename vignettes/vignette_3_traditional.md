@@ -48,8 +48,6 @@ data_cite <- impactr::impact_cite(df = data, crossref=TRUE, dimentions=TRUE, sco
                      gscholar = "Ol5uNSwAAAAJ&hl", metric=TRUE)
 ```
 
-    ## [1] "Please use rscopus::set_api_key() with a valid api"
-
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:1000px; ">
 
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -1108,17 +1106,16 @@ statistics or visualisations.
 specific in estimating citation count than Crossref / PubMed
 repositories.
 
-<img src="/tmp/RtmpM0bdUc/preview-24ab1e6f8223.dir/vignette_3_traditional_files/figure-gfm/cite_plot1-1.png" style="display: block; margin: auto;" />
+<img src="plot/plot_cite_difference.png" align="center"/>
 
 Only Google Scholar and [Open Citations](https://opencitations.net/)
 allow exporation of the citations over time. This will be included in
 the output of `impact_cite()` if either of those sources are selected.
 
 This can be used to plot the longitudinal impact of the paper through
-citations over
-time.
+citations over time.
 
-<img src="/tmp/RtmpM0bdUc/preview-24ab1e6f8223.dir/vignette_3_traditional_files/figure-gfm/cite_plot2-1.png" style="display: block; margin: auto;" />
+<img src="plot/plot_cite_time.png" align="center"/>
 
  
 
@@ -1131,12 +1128,9 @@ of impact of the articles in relation to the journal benchmark.
 For example, the plot below demonstrates the ratio of Paper Citations :
 Journal Impact Factor - any point above the horizontal line (ratio of
 1:1) indicates the paper has gathered more citations than typical for
-that
-journal.
+that journal.
 
-<img src="/tmp/RtmpM0bdUc/preview-24ab1e6f8223.dir/vignette_3_traditional_files/figure-gfm/journal_plot-1.png" style="display: block; margin: auto;" />
-
- 
+<img src="plot/plot_cite_cif.png" align="center"/>  
 
 ### **Metrics**
 
