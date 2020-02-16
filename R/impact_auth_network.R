@@ -8,6 +8,7 @@
 #' @param auth_interest = List of authors of interest (will exclude all vertices *not* involving these authors)
 #' @param initial_right = Are the initials to the right of the last name? (default = TRUE)
 #' @param initial_n = Number of initials to match authors on (default = 1).
+#' @param edge_min = The minimum number of edges (weight) desired (default = 1)
 #' @return Nested dataframe of: (1) Nodes (2) Vertices for network analysis
 #'
 #' @import magrittr
@@ -19,7 +20,8 @@
 #' @importFrom purrr map
 #' @export
 
-impact_auth_network <- function(df, author = "author", id="pmid", auth_interest="", initial_right = TRUE, initial_num = 1){
+impact_auth_network <- function(df, author = "author", id="pmid", auth_interest="",
+                                initial_right = TRUE, initial_num = 1, edge_min = 1){
 
   # if authors of interest, ensure matches authors
   auth_interest <- stringi::stri_enc_toascii(tolower(auth_interest))
@@ -119,7 +121,8 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
     dplyr::group_by(auth1, auth2) %>%
     dplyr::summarise(weight = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::arrange(-weight)
+    dplyr::arrange(-weight) %>%
+    dplyr::filter(weight>=edge_min)
 
   edge_data <- n_edge %>%
     dplyr::left_join(node, by = c("auth1" = "author")) %>%
