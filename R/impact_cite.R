@@ -37,14 +37,14 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
       dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_dim")), by = "doi") %>%
       dplyr::select(-cite_dim, everything())} # to move cite_dim last
 
-  if(scopus==T&rscopus::have_api_key()){
-    if(scopus==T&"doi" %in% names(df)){
+  if(scopus==T){
+    if(scopus==T&"doi" %in% names(df)&rscopus::have_api_key()==T){
       df <- df %>%
         dplyr::select(doi) %>%
         dplyr::filter(is.na(doi)==F) %>%
         dplyr::mutate(cite_scopus = impactr::cite_scopus(doi)$cite) %>%
         dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_scopus")), by = "doi") %>%
-        dplyr::select(-cite_scopus, everything())}}else{print("Please use rscopus::set_api_key() with a valid api")}
+        dplyr::select(-cite_scopus, everything())}else{print("Please use rscopus::set_api_key() with a valid api")}}
 
   data_oc <- NULL
   if(oc==T&"doi" %in% names(df)){

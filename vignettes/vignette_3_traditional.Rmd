@@ -69,10 +69,10 @@ Citations (e.g. `cite_max`) can be used to either provide summary statistics or 
 
 **Note**: Google Scholar is typically being more sensitive but less specific in estimating citation count than Crossref / PubMed repositories.
 
-```{r cite_plot1, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
+```{r cite_plot1, warning=FALSE, message=FALSE, echo=FALSE}
 cite_max <- data_cite$df %$% max(cite_gs, na.rm=TRUE)
 
-data_cite$df %>%
+plot_cite_difference <- data_cite$df %>%
   dplyr::select(cite_gs, cite_cr) %>%
   ggplot() +
   geom_point(aes(x = cite_cr, y = cite_gs)) + 
@@ -82,7 +82,12 @@ data_cite$df %>%
                      limits = c(0, max(data_cite$df$cite_gs, na.rm=TRUE)), expand = c(0, 0.5)) + 
   labs(x = "Citations per publication on CrossRef", y = "Citations per publication on Google Scholar") +
   theme_bw()
+
+ggsave(plot_cite_difference, filename = "~/impactr/vignettes/plot/plot_cite_difference.png",
+       height = 5.76*0.75, width = 9.60*0.75)
 ```
+
+<img src="plot/plot_cite_difference.png" align="center"/>
 
 Only Google Scholar and [Open Citations](https://opencitations.net/) allow exporation of the citations over time. This will be included in the output of `impact_cite()` if either of those sources are selected.
 
@@ -91,7 +96,7 @@ This can be used to plot the longitudinal impact of the paper through citations 
 ```{r cite_plot2, warning=FALSE, message=FALSE, echo=FALSE, fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
 cite_max <- data_cite$df %$% max(cite_gs, na.rm=TRUE)
 
-data_cite$time %>%
+plot_cite_time <- data_cite$time %>%
   dplyr::filter(source == "gs") %>% 
   dplyr::filter(is.na(cite_cumsum)==F) %>%
   dplyr::mutate(cite_year = forcats::fct_drop(cite_year)) %>%
@@ -103,7 +108,13 @@ data_cite$time %>%
   labs(x = "Year of Citation", y = "Cumulative total of citations per publication") +
   guides(fill=FALSE) +
   theme_bw(base_size = 13)
+
+ggsave(plot_cite_time, filename = "~/impactr/vignettes/plot/plot_cite_time.png",
+       height = 5.76*0.75, width = 9.60*0.75)
 ```
+
+<img src="plot/plot_cite_time.png" align="center"/>
+
 
 &nbsp;
 
@@ -115,7 +126,7 @@ For example, the plot below demonstrates the ratio of Paper Citations : Journal 
 ```{r journal_plot, warning=FALSE, message=FALSE, echo=FALSE,fig.height = 5.76*0.75, fig.width = 9.60*0.75, fig.align = "center"}
 cite_if_max <- data_cite$df %$% max(cite_max/journal_if, na.rm=TRUE)
 
-data_cite$df %>%
+plot_cite_cif <- data_cite$df %>%
   dplyr::filter(is.na(journal_if)==F) %>%
   dplyr::mutate(cite_year = cite_max/(lubridate::year(Sys.Date())-year)) %>%
   dplyr::mutate(cite_if = cite_max / journal_if,
@@ -135,8 +146,11 @@ dplyr::group_by(Journal, journal_if, cite_max,
   labs(x = "Year of Publication", y = "Ratio of Paper Citations : Journal Impact Factor") +
   theme_bw(base_size = 13)
 
+ggsave(plot_cite_cif, filename = "~/impactr/vignettes/plot/plot_cite_cif.png",
+       height = 5.76*0.75, width = 9.60*0.75)
 ```
 
+<img src="plot/plot_cite_cif.png" align="center"/>
 &nbsp;
 
 ### **Metrics**
