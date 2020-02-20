@@ -1,0 +1,87 @@
+---
+title: "1 - Extract Publication Data"
+date: "`r Sys.Date()`"
+always_allow_html: yes
+output:
+  md_document:
+    variant: gfm
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+library(dplyr);library(impactr)
+```
+
+# **Extract Publication Data**
+Keeping accurate and up-to-date information regarding the output from an author / research group can be a time-consuming task, however remains essential in order to evaluate the research impact. There are multiple repositories on-line such as PubMed or CrossRef which store this information, and can already be accessed using an API in R in order to extract this data on an automatic basis.
+
+There are excellent packages that already exist to access this data - [RISmed](https://cran.r-project.org/web/packages/RISmed/RISmed.pdf) for PubMed and [rcrossref](https://github.com/ropensci/rcrossref) for CrossRef. While these provide a vast quantity of useful information, this is often outwith a dataframe/tibble format and so requires a significant quantity of post-processing to otherwise achieve an easily usable output.
+
+&nbsp;
+
+## **1. Extract Data**
+The functions `extract_pmid()` (PubMed) and `extract_doi()` (CrossRef) use unique identifiers to extract important information regarding publications. This can be used for the purposes of citation, cataloguing publications, or for further evaluation of impact (see **ImpactR: Citations**). 
+
+However, it should be noted that the information extracted is dependent on the accuracy and completeness of the information within these repositories. Therefore, some additional editing may be required to remove heterogeneity / make corrections / supply missing data. 
+
+### **a). `extract_pmid()`**
+The `extract_pmid()` function only requires a vector/list of PubMed identification numbers, and uses the [RISmed](https://cran.r-project.org/web/packages/RISmed/RISmed.pdf) package to extract publication information.
+
+The function will automatically extract the authors (`auth_group`, `auth_n`, `authors`), and the associated altmetric score (`altmetric`). However, this functionality has been made optional as it can extend the run time of the function (particularly in the case of a large number of authors).
+
+```{r extract_pmid, warning=FALSE, message=FALSE}
+out_pubmed <- impactr::extract_pmid(pmid = c(26769786, 26195471, 30513129),
+                            get_auth = TRUE, get_altmetric = FALSE, get_impact = FALSE)
+
+```
+
+```{r extract_pmid2, warning=FALSE, message=FALSE, echo=FALSE}
+col_pubmed <- which(colnames(out_pubmed) %in% c("author", "title"))
+
+out_pubmed %>%
+  dplyr::mutate(author = paste0(substr(author, 1, 50), "...")) %>%
+  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
+  knitr::kable(format="html",escape = FALSE) %>%
+  kableExtra::column_spec(col_pubmed, width_min="6in") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
+  kableExtra::scroll_box(width = "1000px")
+
+```
+
+In general, it appears that the information on PubMed tends to be the most accurate/up-to-date, however the Digital Object Identifier (DOI) occasionally is not updated to reflect the final DOI for the paper (this can either be amended or the publisher contacted to correct).
+
+&nbsp;
+
+### **b). `extract_doi()`**
+The `extract_doi()` function only requires a vector/list of Digital Object Identifiers (DOI), and uses the [rcrossref](https://github.com/ropensci/rcrossref) package to extract publication information.
+
+The function will automatically extract the authors (`auth_group`, `auth_n`, `authors`), and the associated altmetric score (`altmetric`). However, this functionality has been made optional as it can extend the run time of the function (particularly in the case of a large number of authors). It should be also noted that crossref tends to record authorship less well (compared to PubMed).
+
+
+```{r extract_doi1, warning=FALSE, message=FALSE}
+# Example output from user_roles_n()
+out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
+                       get_auth = TRUE, get_altmetric = FALSE, get_impact = FALSE)
+```
+
+```{r extract_doi2, warning=FALSE, message=FALSE, echo=FALSE}
+
+col_doi1 <- which(colnames(out_doi) %in% c("title"))
+col_doi2 <- which(colnames(out_doi) %in% c("doi", "author_group","author"))
+
+out_doi %>%
+  dplyr::mutate(author = ifelse(is.na(author)==F, paste0(substr(author, 1, 50), "..."), author)) %>%
+  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
+  knitr::kable(format="html",escape = FALSE) %>%
+  kableExtra::column_spec(col_doi1, width_min="7in") %>%
+  kableExtra::column_spec(col_doi2, width_min="2.5in") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
+  kableExtra::scroll_box(width = "1000px")
+
+```
+
+&nbsp;

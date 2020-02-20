@@ -1,0 +1,11 @@
+.Rproj.user
+.Rproj.user/
+.Rhistory
+.Rprofile
+.RData
+.Ruserdata
+.Ruserdata/
+inst/doc
+packrat/lib*/
+.httr-oauth
+.Rbuildignore
