@@ -1,5 +1,0 @@
-"0","data <- extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%"
-"0","  dplyr::mutate(project = factor(pmid,"
-"0","                                 levels = c(25091299, 27321766, 30513129),"
-"0","                                 labels =c(""STARSurg-1"", ""DISCOVER"", ""OAKS-1""))) %>%"
-"0","  dplyr::select(project, author)"

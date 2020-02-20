@@ -1,3 +1,0 @@
-"0","example$auth_out %>%"
-"0","  dplyr::slice(., sample(1:nrow(.),5,replace=F)) %>%"
-"0","  knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = ""striped"", full_width = F)"

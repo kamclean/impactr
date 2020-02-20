@@ -1,3 +1,0 @@
-View(impactr::impact_almetric(c("28648795", "28549995", "30476553", "28167380")))
-
-View(impactr::impact_almetric(28167380))

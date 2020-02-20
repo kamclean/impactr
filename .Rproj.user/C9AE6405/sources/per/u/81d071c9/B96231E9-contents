@@ -1,4 +1,0 @@
-View(recon_authorship)
-
-recon_authorship %>%
-  filter()

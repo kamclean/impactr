@@ -3,7 +3,7 @@ Type: Deriving and quantifying the impact of biomedical research publications
 Title: What the Package Does (Title Case)
 Version: 0.1.0
 Authors@R: as.person(c(
-    "Kenneth McLean <v1kmcle6@ed.ac.uk> [aut, cre]"))
+    "Kenneth McLean <k.a.mclean@ed.ac.uk> [aut, cre]"))
 Description: The impactr package consolidates functionality from a range of existing packages
     (including RISMed, rcrossref, rAltmetric, scholar) into holistic and practical quantifications
     of biomedical research impact. These functions have a range of applications from generating publication
