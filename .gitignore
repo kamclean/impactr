@@ -1,8 +1,10 @@
 .Rproj.user
+.Rproj.user/
 .Rhistory
+.Rhistory/
 .RData
 .Ruserdata
+.Ruserdata/
 inst/doc
 packrat/lib*/
 .httr-oauth
-.Rproj.user
