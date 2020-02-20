@@ -1,10 +1,11 @@
 .Rproj.user
 .Rproj.user/
 .Rhistory
-.Rhistory/
+.Rprofile/
 .RData
 .Ruserdata
 .Ruserdata/
 inst/doc
 packrat/lib*/
 .httr-oauth
+.Rbuildignore
