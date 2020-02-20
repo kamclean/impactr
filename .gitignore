@@ -1,8 +1,7 @@
-.Rproj.user/**
-.Ruserdata/C9AE6405/**
-.Ruserdata/kmclean/**
+.Rproj.user
 .Rhistory
 .RData
+.Ruserdata
 inst/doc
 packrat/lib*/
 .httr-oauth
