@@ -2,7 +2,7 @@
 # Documentation
 #' Derive citation data from the Dimentions database (https://app.dimensions.ai/discover/publication)
 #' @description Derive citation data from the Dimentions database
-#' @param id Vector of pmid / doi
+#' @param id_list Vector of pmid / doi
 #' @return Dataframe
 #' @import magrittr
 #' @import dplyr
@@ -26,11 +26,11 @@
 # when defined by FoR Subject Code, publishing year and age. The FCR is calculated for all publications
 # in Dimensions which are at least 2 years old and were published in 2000 or later
 
-cite_dim <- function(id){
+cite_dim <- function(id_list){
   require(dplyr)
 
   # Classify ID supplied
-  id_class <- id %>%
+  id_class <- id_list %>%
     tibble::enframe(name = "n", value = "id") %>%
     # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
     dplyr::mutate(id_type = suppressWarnings(dplyr::if_else(grepl("^10\\.\\d{4,9}/", id)==T,
@@ -60,25 +60,22 @@ cite_dim <- function(id){
   output <- id_class %>%
     dplyr::filter(id_type!="invalid"&id_call!="invalid") %>%
     dplyr::pull(call) %>%
-    purrr::map(function(x){xml2::read_html(x) %>%
+    purrr::map_df(function(x){xml2::read_html(x) %>%
         rvest::html_text() %>%
         jsonlite::fromJSON() %>%
         replace(., sapply(., is.null), NA) %>%
         tibble::as_tibble() %>%
-        magrittr::set_colnames(c("id", colnames(.)[2:9])) %>%
-        dplyr::mutate(id_type = suppressWarnings(dplyr::if_else(nchar(id)==8&is.numeric(as.numeric(id))==T, "pmid", "doi")),
-                      id = as.character(id)) %>%
-        dplyr::select(id, id_type, times_cited:recent_citations, relative_citation_ratio:field_citation_ratio)}) %>%
-    dplyr::bind_rows() %>%
+        magrittr::set_colnames(c("id", colnames(.)[2:ncol(.)])) %>%
+        dplyr::mutate(id = as.character(id)) %>%
+        dplyr::select(-license)}) %>%
     dplyr::rename("cite" = times_cited, "cite_2y" = recent_citations,
            "rcr" = relative_citation_ratio, "fcr" = field_citation_ratio)
 
   # Output
   cite <- id_class %>%
-    dplyr::left_join(output, by=c("id", "id_type")) %>%
+    dplyr::left_join(output, by=c("id")) %>%
     dplyr::mutate(id_pmid = ifelse(id_type=="pmid", id, NA),
                   id_doi = ifelse(id_type=="doi", id, NA)) %>%
     dplyr::select(n:id_call, id_pmid, id_doi, cite:fcr)
 
   return(cite)}
-# cite_dim(c("hshdsd","10.1002/bjs5.86", "20092384", 26769786))

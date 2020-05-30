@@ -1,4 +1,4 @@
-# impact_cite_metric--------------------------------
+# cite_metric--------------------------------
 # Documentation
 #' Calculate several common citation metrics (H-Index, G-Index, M-Quotient).
 #' @description Calculate several common citation metrics (H-Index, G-Index, M-Quotient).
@@ -8,7 +8,7 @@
 #' @export
 
 # Function-------------------------------
-impact_cite_metric <- function(citations, year = ""){
+cite_metric <- function(citations, year = ""){
 require(dplyr)
   if(length(citations)==length(year)){df <- dplyr::bind_cols("n_cite" = citations,
                                                              "year" = as.numeric(year))}
