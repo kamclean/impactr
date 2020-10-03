@@ -13,8 +13,8 @@
 #' @import tibble
 #' @import stringr
 #' @import lubridate
-#' @importFrom furrr map_chr map_lgl
-#' @importFrom purrr future_map2_dfr
+#' @importFrom furrr future_map2_dfr
+#' @importFrom purrr map_chr map_lgl
 #' @export
 
 # Function-------------------------------
