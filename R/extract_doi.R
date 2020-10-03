@@ -12,8 +12,7 @@
 #' @import tibble
 #' @importFrom rcrossref cr_cn
 #' @importFrom rAltmetric altmetric_data altmetrics
-#' @importFrom purrr map
-#' @importFrom data.table rbindlist
+#' @importFrom purrr map_df
 #' @export
 
 # Function-------------------------------
@@ -28,7 +27,7 @@ extract_doi <- function(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact=T
 
   if(length(doi)>1){
     out_crossref <- rcrossref::cr_cn(dois = doi, format = "citeproc-json") %>%
-      purrr::map(., function(x){
+      purrr::map_df(function(x){
 
         x <- x[which(names(x) %in% extract_var)]
 
@@ -58,8 +57,7 @@ extract_doi <- function(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact=T
           dplyr::select("doi" = "DOI", "journal_abbr" = `container-title-short`,"journal_full" = `container-title`,
                         "journal_issn" = ISSN,"title" = title, "year" = year, "volume" = volume,
                         "issue" = issue, "pages" = page, "cite_cr" = `is-referenced-by-count`)
-        return(y)}) %>%
-      data.table::rbindlist(.) %>% as_tibble()}else{
+        return(y)})}else{
         x <- rcrossref::cr_cn(dois = doi, format = "citeproc-json")
         x <- x[which(names(x) %in% extract_var)]
 

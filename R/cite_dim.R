@@ -27,16 +27,18 @@
 # in Dimensions which are at least 2 years old and were published in 2000 or later
 
 cite_dim <- function(id_list){
-  require(dplyr)
+  require(magrittr);require(tibble);require(stringr);require(purrr);require(dplyr)
+  require(xml2);require(rvest);require(xml2);require(rcrossref);require(jsonlite);
 
   # Classify ID supplied
-  id_class <- id_list %>%
+
+  id_class <- as.character(id_list) %>%
     tibble::enframe(name = "n", value = "id") %>%
     # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-    dplyr::mutate(id_type = suppressWarnings(dplyr::if_else(grepl("^10\\.\\d{4,9}/", id)==T,
-                                                         "doi",
-                                                         if_else(nchar(id)==8&is.numeric(as.numeric(id))==T,
-                                                         "pmid", "invalid"))))
+    dplyr::mutate(id_type = dplyr::case_when(stringr::str_detect(id, "^10\\.\\d{4,9}/")==T ~  "doi",
+                                             nchar(id)==8&is.numeric(as.numeric(id))==T ~ "pmid",
+                                             TRUE ~ "invalid"))
+
 
   # Create Dimentions call
   call <- id_class %>%

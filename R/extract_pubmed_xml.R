@@ -10,9 +10,9 @@ extract_pubmed_xml <- function(xml_pubmed, var_id = TRUE, var_journal = TRUE,var
   id <- NULL
   if(var_id==T){
 
-    id_names <-c("pubmed", "doi", "pmc")
+    id_names <-c("pmid", "doi", "pmc")
 
-    id <- tibble::tibble(pubmed = NA_character_, doi = NA_character_, pmc = NA_character_)
+    id <- tibble::tibble(pmid = NA_character_, doi = NA_character_, pmc = NA_character_)
     if(is.null(xml_pubmed$PubmedData$ArticleIdList)==F){
 
       id <- dplyr::bind_cols(tibble::enframe(unlist(lapply(xml_pubmed$PubmedData$ArticleIdList, attributes)),

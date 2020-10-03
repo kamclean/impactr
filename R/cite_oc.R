@@ -10,19 +10,21 @@
 #' @import lubridate
 #' @import tibble
 #' @import citecorp
-#' @importFrom lubridate as_date year
 #' @export
 
 # devtools::install_github("ropenscilabs/citecorp")
 cite_oc <- function(id_list){
+  require(magrittr);require(tibble);require(stringr);require(purrr);require(dplyr)
+  require(lubridate);require(citecorp)
 
-  id_class <- id_list %>%
+
+  id_class <- as.character(id_list) %>%
     tibble::enframe(name = "n", value = "id") %>%
     # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-    dplyr::mutate(id_type = suppressWarnings(dplyr::if_else(grepl("^10\\.\\d{4,9}/", id)==T,
-                                                            "doi",
-                                                            if_else(nchar(id)==8&is.numeric(as.numeric(id))==T,
-                                                                    "pmid", "invalid"))))
+    dplyr::mutate(id_type = dplyr::case_when(stringr::str_detect(id, "^10\\.\\d{4,9}/")==T ~  "doi",
+                                             nchar(id)==8&is.numeric(as.numeric(id))==T ~ "pmid",
+                                             TRUE ~ "invalid"))
+
 
   id_class <- id_class %>%
       dplyr::filter(id_type=="pmid") %>%

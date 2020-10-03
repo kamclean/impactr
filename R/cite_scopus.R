@@ -9,20 +9,23 @@
 #' @import rscopus
 #' @import purrr
 #' @import tibble
+#' @import stringr
 #' @export
 
 # Function
 cite_scopus <- function(id, scopus_api = rscopus::get_api_key()){
-  rscopus::set_api_key(scopus_api)
-  require(magrittr)
+  require(magrittr);require(tibble);require(stringr);require(purrr);require(dplyr)
+  require(rscopus);
 
-  id_class <- id %>%
+  rscopus::set_api_key(scopus_api)
+
+  id_class <- as.character(id_list) %>%
     tibble::enframe(name = "n", value = "id") %>%
     # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-    dplyr::mutate(id_type = suppressWarnings(dplyr::if_else(grepl("^10\\.\\d{4,9}/", id)==T,
-                                                            "doi",
-                                                            dplyr::if_else(nchar(id)==8&is.numeric(as.numeric(id))==T,
-                                                                    "pmid", "invalid"))))
+    dplyr::mutate(id_type = dplyr::case_when(stringr::str_detect(id, "^10\\.\\d{4,9}/")==T ~  "doi",
+                                             nchar(id)==8&is.numeric(as.numeric(id))==T ~ "pmid",
+                                             TRUE ~ "invalid"))
+
   result_pmid <- NULL
   # Get SCOPUS API https://rdrr.io/cran/rscopus/f/vignettes/api_key.Rmd
   # SCOPUS search terms https://dev.elsevier.com/tips/ScopusSearchTips.htm

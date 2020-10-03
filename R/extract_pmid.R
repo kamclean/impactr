@@ -36,7 +36,7 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
   pmid <- pmid[which(is.na(pmid)==F&purrr::map_lgl(pmid_original, is.numeric)==T)] # ensure no NA/ non-numeric
 
 
-  data <- extract_pmid_xml(list_pmid = pmid) %>%
+  data <- impactr::extract_pmid_xml(list_pmid = pmid) %>%
     furrr::future_map2_dfr(., seq_along(1:length(.)), function(x, y){print(y)
 
       return(suppressMessages(extract_pubmed_xml(x, var_abstract = F, var_registry = F)))}) %>%
@@ -53,7 +53,7 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
    if(get_altmetric==TRUE){
 
      data <- data %>%
-      dplyr::mutate(altmetric = score_alm(doi))}
+      dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
 
   if(get_impact==TRUE){data <- extract_impact_factor(data)}

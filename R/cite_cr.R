@@ -14,13 +14,13 @@ cite_cr <- function(id_list){
  require(tibble);require(dplyr);require(rcrossref);require(purrr)
 
 
-  id_class <- id_list %>%
+  id_class <- as.character(id_list) %>%
     tibble::enframe(name = "n", value = "id") %>%
     # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
-    dplyr::mutate(id_type = suppressWarnings(dplyr::if_else(grepl("^10\\.\\d{4,9}/", id)==T,
-                                                            "doi",
-                                                            if_else(nchar(id)==8&is.numeric(as.numeric(id))==T,
-                                                                    "pmid", "invalid"))))
+    dplyr::mutate(id_type = dplyr::case_when(stringr::str_detect(id, "^10\\.\\d{4,9}/")==T ~  "doi",
+                                             nchar(id)==8&is.numeric(as.numeric(id))==T ~ "pmid",
+                                             TRUE ~ "invalid"))
+
   data_doi <- NULL
   if("doi" %in% id_class$id_type){
     data_doi <- id_class %>%

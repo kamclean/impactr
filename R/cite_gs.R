@@ -17,6 +17,8 @@
 
 # Function----------------
 cite_gs <- function(df, gscholar_id, match_title_nchar = 50){
+  require(magrittr);require(tibble);require(stringr);require(purrr);require(dplyr)
+
   "%ni%" <- Negate("%in%")
   gcite_data <- gcite::gcite_user_info(gscholar_id)$paper_df %>%
     tibble::as_tibble()
