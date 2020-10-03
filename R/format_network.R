@@ -3,8 +3,8 @@
 #' Create a dataframe for network analysis of co-authorship
 #' @description Create a dataframe for network analysis of co-authorship
 #' @param df Dataframe with 2 mandatory columns (1) "id": A vector of unique paper IDs (e.g. DOI / PMID) (2) "author": A vector of strings of all authors (format must be last name + initials)
-#' @param author Name of the "author" variable in the dataframe (default="author")
-#' @param id Name of the "id" variable in the dataframe (default="pmid")
+#' @param author Name of the "author" variable in the dataframe (default="author_list")
+#' @param id Name of the "id" variable in the dataframe (default="pubmed")
 #' @param auth_interest = List of authors of interest (will exclude all vertices *not* involving these authors)
 #' @param initial_right = Are the initials to the right of the last name? (default = TRUE)
 #' @param initial_n = Number of initials to match authors on (default = 1).
@@ -20,7 +20,8 @@
 #' @importFrom purrr map
 #' @export
 
-impact_auth_network <- function(df, author = "author", id="pmid", auth_interest="",
+
+impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_interest="",
                                 initial_right = TRUE, initial_num = 1, edge_min = 1){
 
   # if authors of interest, ensure matches authors
@@ -42,10 +43,9 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
   # Create nodes (full dataset)
   df <- df %>%
     dplyr::mutate(id = dplyr::pull(., id),
-                  author = dplyr::pull(., author)) %>%
-    dplyr::mutate(author_n = stringr::str_count(author, ", ")+1)
+                  author = dplyr::pull(., author))
 
-  node <- impactr::impact_auth(df)$list %>%
+  node <- impact_auth(df)$list %>%
     dplyr::select(author) %>%
     dplyr::mutate(author = iconv(tolower(author), to ="ASCII//TRANSLIT")) %>%
     tibble::rowid_to_column("id")
@@ -67,7 +67,7 @@ impact_auth_network <- function(df, author = "author", id="pmid", auth_interest=
     # ensure no special characters
     dplyr::mutate(author = iconv(tolower(author), to ="ASCII//TRANSLIT")) %>%
     dplyr::select(id, author) %>%
-    tidyr::separate_rows(author, sep= ", ")
+    tidyr::separate_rows(author, sep= "; ")
 
   if(initial_right==TRUE){
     edge <- edge %>%

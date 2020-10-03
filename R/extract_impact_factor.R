@@ -13,7 +13,7 @@
 #' @export
 
 # Function-------------------
-extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"){
+extract_impact_factor <- function(df, var_id = "pubmed", var_issn = "journal_issn"){
   update.packages("sjrdata")
 
   df <- df %>%
@@ -26,13 +26,10 @@ extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"
   out <- sjrdata::sjr_journals %>%
     dplyr::filter(type=="journal") %>%
     dplyr::select(year, "journal_full" = title, "journal_issn" = issn, "journal_if" = cites_doc_2years) %>%
-    dplyr::mutate(journal_issn = ifelse(grepl("09598146", journal_issn)==T,
-                                        "17561833, 09598146, 09598138", journal_issn), # bmj
-                  journal_issn = ifelse(grepl("01406736|1474547", journal_issn)==T,
-                                        "1474547X, 01406736, 1474547", journal_issn),
-                  journal_issn = ifelse(grepl("00029610", journal_issn)==T,
-                                        "18791883, 00029610", journal_issn)) %>% #AJoS
-
+    dplyr::mutate(journal_issn = case_when(stringr::str_detect(journal_issn, "09598146")==T ~ "17561833, 09598146, 09598138",
+                                           stringr::str_detect(journal_issn, "01406736|1474547")==T ~ "1474547X, 01406736, 1474547",
+                                           stringr::str_detect(journal_issn, "00029610")==T ~ "18791883, 00029610",
+                                           TRUE ~ journal_issn)) %>%
     dplyr::filter(grepl(paste(df$journal_issn, collapse="|"), journal_issn)) %>%
     dplyr::mutate(journal_issn = stringr::str_split(journal_issn, ", "),
                   year = as.numeric(year)) %>%

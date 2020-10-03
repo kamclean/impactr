@@ -17,27 +17,23 @@
 #' @importFrom tidyr unnest
 #' @importFrom stringr str_split str_split_fixed str_replace
 #' @importFrom stringi stri_locate_last
-#' @importFrom ComplexHeatmap make_comb_mat set_name
 #' @importFrom purrr map
-#' @importFrom data.table rbindlist
 #' @export
 
 # Function-------------------
-# add network = TRUE!!!!!!!
-impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
+impact_auth <- function(df, author_list = "author", pub_group = "pubmed", max_inital = 1, upset = FALSE, metric = FALSE){
   require(dplyr);require(tidyr);require(stringr);require(tibble);require(stringi)
   auth_out <- df %>%
     dplyr::mutate(pub_group = dplyr::pull(., pub_group)) %>%
     dplyr::mutate(author = dplyr::pull(., author_list)) %>%
     dplyr::select(pub_group, author) %>%
-    dplyr::mutate(auth = stringr::str_split(author, ", ")) %>%
-    tidyr::unnest(auth) %>%
-    dplyr::mutate(auth = tolower(auth)) %>%
+    tidyr::separate_rows(author, sep = "; ") %>%
+    dplyr::mutate(author = tolower(author)) %>%
 
     # identify last space (prior to first name)
-    dplyr::mutate(fnln_break = tibble::as_tibble(stringi::stri_locate_last(auth, regex = " "))$start) %>%
-    dplyr::mutate(auth_ln = trimws(substr(auth,1, fnln_break)),
-                  auth_fn = trimws(substr(auth, fnln_break, nchar(auth)))) %>%
+    dplyr::mutate(fnln_break = tibble::as_tibble(stringi::stri_locate_last(author, regex = " "))$start) %>%
+    dplyr::mutate(auth_ln = trimws(substr(author,1, fnln_break)),
+                  auth_fn = trimws(substr(author, fnln_break, nchar(author)))) %>%
     dplyr::mutate(auth_fn_imax = trimws(substr(auth_fn, 1,max_inital))) %>%
     dplyr::mutate(auth_imax = paste0(auth_ln, " ", auth_fn_imax)) %>%
     dplyr::select(pub_group, auth_imax, auth_ln,auth_fn_imax) %>%
@@ -61,21 +57,22 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
 
   out_metric <- NULL
 
-  metric_auth <- function(comb_mat){
-    out <- tibble::tibble(level = factor(ComplexHeatmap::set_name(comb_mat), levels=unique(ComplexHeatmap::set_name(comb_mat))),
 
-                          n_total = ComplexHeatmap::set_size(comb_mat))  %>%
+  if(metric==TRUE&upset==TRUE){
+    out_metric <- data_upset %>%
+      tidyr::pivot_longer(cols = everything(), names_to = "level", values_to = "n_total") %>%
+      dplyr::mutate(level = factor(level, levels=unique(level))) %>%
       dplyr::group_by(level) %>%
-      base::split(.$level) %>%
-      purrr::map(., function(x){x %>%
-          dplyr::mutate(n_old = impactr::comb_name_size(comb_mat) %>%
+      dplyr::summarise(n_total = sum(n_total)) %>%
+      dplyr::group_split(level) %>%
+      purrr::map_df(function(x){x %>%
+          dplyr::mutate(n_old = format_intersect(data_upset) %>%
                           dplyr::filter(grepl(paste0("&", x$level), combination)) %>%
                           dplyr::pull(n) %>% sum()) %>%
-          dplyr::mutate(n_retain = comb_name_size(comb_mat) %>%
+          dplyr::mutate(n_retain = format_intersect(data_upset) %>%
                           dplyr::filter(grepl(paste0(x$level, "&"), combination)) %>%
                           dplyr::pull(n) %>% sum()) %>%
           dplyr::mutate(n_new = n_total-n_old)}) %>%
-      data.table::rbindlist() %>% tibble::as_tibble() %>%
 
       dplyr::mutate(n_total_prior = c(NA, dplyr::filter(., level!=level[length(level)])$n_total),
                     n_new_prior = c(NA, dplyr::filter(., level!=level[length(level)])$n_new),
@@ -85,12 +82,7 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
                     retain_prop = round(n_retain / n_total, 3)) %>%
       dplyr::select(level, n_total, n_total_prior, total_change_prop,
                     n_old, n_new, n_new_prior, new_change_prop,
-                    n_retain, retain_prop)
-
-    return(out)}
-
-  if(metric==TRUE&upset==TRUE){
-    out_metric <- ComplexHeatmap::make_comb_mat(data_upset) %>% metric_auth()}
+                    n_retain, retain_prop)}
 
   auth_out <- list("list" = auth_out, "upset" = data_upset, "metric" = out_metric)
 

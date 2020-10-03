@@ -7,7 +7,7 @@
 impact_auth(
   df,
   author_list = "author",
-  pub_group = "pmid",
+  pub_group = "pubmed",
   max_inital = 1,
   upset = FALSE,
   metric = FALSE

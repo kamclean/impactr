@@ -4,7 +4,7 @@
 \alias{extract_impact_factor}
 \title{Provide a citation for a research publication}
 \usage{
-extract_impact_factor(df, var_id = "pmid", var_issn = "journal_issn")
+extract_impact_factor(df, var_id = "pubmed", var_issn = "journal_issn")
 }
 \arguments{
 \item{df}{Dataframe with publications listed rowwise with at least 1 column containing the journal ISSN}

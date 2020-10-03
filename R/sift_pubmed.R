@@ -19,6 +19,12 @@
 #'
 
 
+list_pmid = search
+authors = c("mclean k", "ots r", "drake t", "harrison e")
+affiliations = c("edinburgh", "lothian")
+keywords = "surg"
+
+
 sift_pubmed <- function(list_pmid, authors = NULL, affiliations = NULL, keywords = NULL, separate = T){
 
   require(magrittr);require(RCurl);require(xml2);require(dplyr);require(tidyr);require(purrr)
@@ -34,6 +40,23 @@ sift_pubmed <- function(list_pmid, authors = NULL, affiliations = NULL, keywords
       xml2::as_xml_document() %>% xml2::xml_find_all("PubmedArticle")}
 
   xml <- extract_pmid_xml(list_pmid = list_pmid)
+  data <- extract_pmid_xml(list_pmid = list_pmid) %>%
+    furrr::future_map2_dfr(., seq_along(1:length(.)), function(x, y){print(y)
+
+      return(suppressMessages(extract_pubmed_xml(x, var_author= if(is.null(authors)==T){F}else{T},
+                                                 var_collaborator = if(is.null(authors)==T){F}else{T},
+                                                 var_metadata = F,
+                                                 var_history=F,
+                                                 var_registry = F)))}) %>%
+
+    dplyr::mutate(date_publish = dplyr::case_when(is.na(date_publish)==T ~ history_entrez,
+                                                  is.na(date_publish)==T ~ history_pubmed,
+                                                  is.na(date_publish)==T ~ history_medline,
+                                                  TRUE ~ date_publish)) %>%
+    dplyr::mutate(year = lubridate::year(date_publish)) %>%
+    dplyr::select(-dplyr::ends_with("aff"), -dplyr::starts_with("history_")) %>%
+    dplyr::mutate(pubmed = as.character(pubmed))
+
 
   data <- xml %>%
     purrr::map2_dfr(., seq_along(1:length(.)), function(x, y){
