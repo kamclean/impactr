@@ -4,7 +4,7 @@
 \alias{extract_pmid}
 \title{Extract publication data using RISmed / pmid}
 \usage{
-extract_pmid(pmid, get_altmetric = TRUE, get_impact = TRUE)
+extract_pmid(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact = TRUE)
 }
 \arguments{
 \item{pmid}{Vector of unique PubMed identifier numbers (PMID)}

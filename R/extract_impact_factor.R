@@ -13,7 +13,7 @@
 #' @export
 
 # Function-------------------
-extract_impact_factor <- function(df, var_id = "pubmed", var_issn = "journal_issn"){
+extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"){
   update.packages("sjrdata")
 
   df <- df %>%
