@@ -4,10 +4,10 @@
 \alias{score_alm}
 \title{Extract overall almetric score for a publication}
 \usage{
-score_alm(doi)
+score_alm(id)
 }
 \arguments{
-\item{doi}{Vector of unique Digital Object Identifiers (DOI)}
+\item{id}{Vector of unique Digital Object Identifiers (DOI) and/or PMID}
 }
 \value{
 Vector of overall almetric scores (or NA if not available)

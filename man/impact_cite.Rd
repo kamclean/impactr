@@ -4,12 +4,19 @@
 \alias{impact_cite}
 \title{Extract additional traditional metrics from Google Scholar}
 \usage{
-impact_cite(df, crossref = TRUE, dimentions = TRUE, scopus = FALSE,
-  oc = FALSE, gscholar = FALSE, gscholar_title_nchar = 50,
-  metric = TRUE)
+impact_cite(
+  df,
+  crossref = TRUE,
+  dimentions = TRUE,
+  scopus = FALSE,
+  oc = FALSE,
+  gscholar = FALSE,
+  gscholar_title_nchar = 50,
+  metric = TRUE
+)
 }
 \arguments{
-\item{df}{Dataframe containing at least two columns: publication year ("year") and DOI ("doi") with each publication listed as a row.}
+\item{df}{Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.}
 
 \item{crossref}{Crossref database to be used for citation data (default=TRUE)}
 
@@ -24,9 +31,11 @@ impact_cite(df, crossref = TRUE, dimentions = TRUE, scopus = FALSE,
 \item{gscholar_title_nchar}{Argument to specify how many characters the titles should be matched (default = 50). See "gscholar_invalid" output.}
 
 \item{metric}{Return common citation metrics (default = TRUE)}
+
+\item{id}{String of the column name containing the publication id (accepts DOI and PMID).}
 }
 \value{
-Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from impact_cite_metric() (4). Unmatched recorded (only for google scholar)
+Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from cite_metric() (4). Unmatched recorded (only for google scholar)
 }
 \description{
 Extract additional traditional metrics from Google Scholar

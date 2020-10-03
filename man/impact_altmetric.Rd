@@ -4,10 +4,10 @@
 \alias{impact_altmetric}
 \title{Extract altmetric data on social media engagment}
 \usage{
-impact_altmetric(list_pmid)
+impact_altmetric(id_list)
 }
 \arguments{
-\item{list_pmid}{Vector of unique PubMed identifier numbers (PMID)}
+\item{id_list}{Vector of unique PubMed identifier numbers (PMID)}
 }
 \value{
 Nested dataframe (1) df; Original dataset with appended altmetric data (2) temporal; Long format data on temporal changes (3) rank; Long format data altmetric ranking (4) source; Long format data sources used to derive altmetric.

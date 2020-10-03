@@ -4,10 +4,10 @@
 \alias{cite_dim}
 \title{Derive citation data from the Dimentions database (https://app.dimensions.ai/discover/publication)}
 \usage{
-cite_dim(id)
+cite_dim(id_list)
 }
 \arguments{
-\item{id}{Vector of pmid / doi}
+\item{id_list}{Vector of pmid / doi}
 }
 \value{
 Dataframe

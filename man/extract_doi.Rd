@@ -4,8 +4,7 @@
 \alias{extract_doi}
 \title{Extract publication data using doi / crossref}
 \usage{
-extract_doi(doi, get_auth = TRUE, get_altmetric = TRUE,
-  get_impact = TRUE)
+extract_doi(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact = TRUE)
 }
 \arguments{
 \item{doi}{Vector of Digital Object Identifiers (DOI)}

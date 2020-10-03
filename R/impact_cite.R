@@ -2,7 +2,8 @@
 # Documentation
 #' @title Extract additional traditional metrics from Google Scholar
 #' @description Extract additional traditional metrics from Google Scholar
-#' @param df Dataframe containing at least two columns: publication year ("year") and DOI ("doi") with each publication listed as a row.
+#' @param df Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.
+#' @param id String of the column name containing the publication id (accepts DOI and PMID).
 #' @param crossref Crossref database to be used for citation data (default=TRUE)
 #' @param dimentions Dimentions database to be used for citation data (default=TRUE)
 #' @param scopus Scopus database to be used for citation data (default=FALSE). Requires Scopus API.
@@ -13,27 +14,29 @@
 #' @import magrittr
 #' @import dplyr
 #' @import tibble
-#' @return Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from impact_cite_metric() (4). Unmatched recorded (only for google scholar)
+#' @return Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from cite_metric() (4). Unmatched recorded (only for google scholar)
 #' @export
 
 impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = FALSE,
                         gscholar=FALSE, gscholar_title_nchar = 50, metric=TRUE){
 
+  df <- df %>% dplyr::mutate(id = dplyr::pull(., id))
+
   # Get citation data
   require(dplyr)
-  if(crossref==T&"doi" %in% names(df)){
+  if(crossref==T){
     df <- df %>%
-      dplyr::select(doi) %>%
-      dplyr::filter(is.na(doi)==F) %>%
-      dplyr::mutate(cite_cr = impactr::cite_cr(doi)$cite) %>%
+      dplyr::select(id) %>%
+      dplyr::filter(is.na(id)==F) %>%
+      dplyr::mutate(cite_cr = impactr::cite_cr(id)$cite) %>%
       dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_cr")), by = "doi") %>%
       dplyr::select(-cite_cr, everything())}
 
-  if(dimentions==T&"doi" %in% names(df)){
+  if(dimentions==T){
     df <- df %>%
-      dplyr::select(doi) %>%
-      dplyr::filter(is.na(doi)==F) %>%
-      dplyr::mutate(cite_dim = impactr::cite_dim(doi)$cite) %>%
+      dplyr::select(id) %>%
+      dplyr::filter(is.na(id)==F) %>%
+      dplyr::mutate(cite_dim = impactr::cite_dim(id)$cite) %>%
       dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_dim")), by = "doi") %>%
       dplyr::select(-cite_dim, everything())} # to move cite_dim last
 
@@ -104,7 +107,7 @@ impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = F
                     cite_cumsum = as.numeric(cite_cumsum))}
 
   df_metric <- NULL
-  if(metric==TRUE){df_metric <- suppressWarnings(impact_cite_metric(citations = df_out$cite_max, year = df_out$year))}
+  if(metric==TRUE){df_metric <- suppressWarnings(impactr::cite_metric(citations = df_out$cite_max, year = df_out$year))}
 
   df_out <- list("df" = df_out, "time" = df_time, "metric" = df_metric, "gscholar_invalid" = gscholar_invalid)
 

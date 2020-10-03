@@ -4,11 +4,21 @@
 \alias{ref_publication}
 \title{Provide a citation for a research publication}
 \usage{
-ref_publication(df, author = "author", title = "title",
-  journal = "journal", year = "year", volume = "volume",
-  issue = "issue", pages = "pages", pmid = "pmid", doi = "doi",
+ref_publication(
+  df,
+  author = "author",
+  title = "title",
+  journal = "journal",
+  year = "year",
+  volume = "volume",
+  issue = "issue",
+  pages = "pages",
+  pmid = "pmid",
+  doi = "doi",
   max_auth = FALSE,
-  ref_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi.")
+ 
+    ref_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi."
+)
 }
 \arguments{
 \item{df}{Dataframe with publications listed rowwise}

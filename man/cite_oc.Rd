@@ -4,10 +4,10 @@
 \alias{cite_oc}
 \title{Derive citation data from the Open Citations database.}
 \usage{
-cite_oc(list_doi)
+cite_oc(id_list)
 }
 \arguments{
-\item{id}{Vector of doi (not pmid)}
+\item{id_list}{Vector of pmid / doi}
 }
 \value{
 Nested dataframe of (1) All referencing publications (2) Total citations recorded (3) Citations over time

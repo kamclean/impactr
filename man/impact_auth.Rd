@@ -4,8 +4,14 @@
 \alias{impact_auth}
 \title{Provide a citation for a research publication}
 \usage{
-impact_auth(df, author_list = "author", pub_group = "pmid",
-  max_inital = 1, upset = FALSE, metric = FALSE)
+impact_auth(
+  df,
+  author_list = "author",
+  pub_group = "pmid",
+  max_inital = 1,
+  upset = FALSE,
+  metric = FALSE
+)
 }
 \arguments{
 \item{df}{Dataframe with 2 mandatory columns (1) pub_group (the paper or project authored) (2) auth_list = A string of all authors for the pub_group.}

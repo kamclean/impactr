@@ -4,9 +4,15 @@
 \alias{impact_auth_network}
 \title{Create a dataframe for network analysis of co-authorship}
 \usage{
-impact_auth_network(df, author = "author", id = "pmid",
-  auth_interest = "", initial_right = TRUE, initial_num = 1,
-  edge_min = 1)
+impact_auth_network(
+  df,
+  author = "author",
+  id = "pmid",
+  auth_interest = "",
+  initial_right = TRUE,
+  initial_num = 1,
+  edge_min = 1
+)
 }
 \arguments{
 \item{df}{Dataframe with 2 mandatory columns (1) "id": A vector of unique paper IDs (e.g. DOI / PMID) (2) "author": A vector of strings of all authors (format must be last name + initials)}

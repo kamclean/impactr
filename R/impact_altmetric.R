@@ -159,6 +159,7 @@ impact_altmetric <- function(id_list){
 
   df_alm_time <- df_out %>%
     dplyr::select(id, doi, starts_with("alm_score"), starts_with("date_")) %>%
+    dplyr::mutate(alm_score_0d = 0) %>%
     dplyr::mutate(add2now = (date_update-date_added) %>% as.numeric()) %>%
     dplyr::filter(is.na(doi)==F) %>%
     tidyr::pivot_longer(cols = starts_with("alm_score"),
@@ -175,7 +176,8 @@ impact_altmetric <- function(id_list){
                                               alm_time=="alm_score_4d" ~ 4,
                                               alm_time=="alm_score_3d" ~ 3,
                                               alm_time=="alm_score_2d" ~ 2,
-                                              alm_time=="alm_score_1d" ~ 1)) %>%
+                                              alm_time=="alm_score_1d" ~ 1,
+                                              alm_time=="alm_score_0d" ~ 0)) %>%
     dplyr::filter(add2now>=alm_time) %>%
     dplyr::distinct() %>% # get rid of now when same as a recorded value
     dplyr::select(-add2now, -date_publish) %>%

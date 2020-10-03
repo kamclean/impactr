@@ -4,10 +4,10 @@
 \alias{cite_cr}
 \title{Derive citation data from the Crossref database via rcrossref}
 \usage{
-cite_cr(id)
+cite_cr(id_list)
 }
 \arguments{
-\item{id}{Vector of pmid / doi}
+\item{id_list}{Vector of pmid / doi}
 }
 \value{
 Dataframe
