@@ -8,11 +8,13 @@
 #' @return Dataframe of essential publication data
 #' @import magrittr
 #' @import dplyr
+#' @import RCurl
+#' @import xml2
 #' @import tibble
-#' @import RISmed
-#' @importFrom rAltmetric altmetric_data altmetrics
-#' @importFrom purrr map map_chr
-#' @importFrom data.table rbindlist
+#' @import stringr
+#' @import lubridate
+#' @importFrom furrr map_chr map_lgl
+#' @importFrom purrr future_map2_dfr
 #' @export
 
 # Function-------------------------------
@@ -20,7 +22,6 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
 
   # Load required functions----------------
   require(magrittr);require(dplyr);require(furrr);require(RCurl);require(xml2);require(lubridate)
-  "%ni%" <- Negate("%in%")
 
   # Function to extract PMID information from pubmed XML
   extract_pmid_xml <- function(list_pmid){
@@ -31,15 +32,15 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
       xml2::as_xml_document() %>% xml2::xml_find_all("PubmedArticle")}
 
   # Clean pmid----------------
-  pmid_original <- as.numeric(pmid)
+  pmid_original <- pmid
   pmid_error <- pmid[which(is.na(pmid)==T|purrr::map_lgl(pmid_original, is.numeric)==F)]
   pmid <- pmid[which(is.na(pmid)==F&purrr::map_lgl(pmid_original, is.numeric)==T)] # ensure no NA/ non-numeric
 
 
-  data <- impactr::extract_pmid_xml(list_pmid = pmid) %>%
+  data <- extract_pmid_xml(list_pmid = pmid) %>%
     furrr::future_map2_dfr(., seq_along(1:length(.)), function(x, y){print(y)
 
-      return(suppressMessages(extract_pubmed_xml(x, var_abstract = F, var_registry = F)))}) %>%
+      return(suppressMessages(impactr::extract_pubmed_xml(x, var_abstract = F, var_registry = F)))}) %>%
 
     dplyr::mutate(date_publish = dplyr::case_when(is.na(date_publish)==T ~ history_entrez,
                                                   is.na(date_publish)==T ~ history_pubmed,
@@ -50,13 +51,12 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
     dplyr::mutate(pmid = as.character(pmid))
 
 
-   if(get_altmetric==TRUE){
+  if(get_altmetric==TRUE){
 
-     data <- data %>%
+    data <- data %>%
       dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
-
-  if(get_impact==TRUE){data <- extract_impact_factor(data)}
+  if(get_impact==TRUE){data <- impactr::extract_impact_factor(data)}
 
   if("journal_full.y" %in% names(data)){
     data <- data %>%

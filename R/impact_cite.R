@@ -30,7 +30,7 @@ impact_cite <- function(df, id, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc
       dplyr::select(id) %>%
       dplyr::filter(is.na(id)==F) %>%
       dplyr::mutate(cite_cr = impactr::cite_cr(id)$cite) %>%
-      dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_cr")), by = "doi") %>%
+      dplyr::bind_cols(dplyr::select(df, -dplyr::any_of(c("id", "cite_cr")))) %>%
       dplyr::select(-cite_cr, everything())}
 
   if(dimentions==T){
@@ -38,7 +38,7 @@ impact_cite <- function(df, id, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc
       dplyr::select(id) %>%
       dplyr::filter(is.na(id)==F) %>%
       dplyr::mutate(cite_dim = impactr::cite_dim(id)$cite) %>%
-      dplyr::right_join(dplyr::select(df, -dplyr::matches("cite_dim")), by = "doi") %>%
+      dplyr::bind_cols(dplyr::select(df, -dplyr::any_of(c("id", "cite_dim")))) %>%
       dplyr::select(-cite_dim, everything())} # to move cite_dim last
 
   if(scopus==T){
