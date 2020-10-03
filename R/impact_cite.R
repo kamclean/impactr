@@ -17,13 +17,14 @@
 #' @return Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from cite_metric() (4). Unmatched recorded (only for google scholar)
 #' @export
 
-impact_cite <- function(df, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = FALSE,
+impact_cite <- function(df, id, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = FALSE,
                         gscholar=FALSE, gscholar_title_nchar = 50, metric=TRUE){
+
+  require(dplyr); require(dplyr); require(dplyr); require(dplyr); require(dplyr);
 
   df <- df %>% dplyr::mutate(id = dplyr::pull(., id))
 
   # Get citation data
-  require(dplyr)
   if(crossref==T){
     df <- df %>%
       dplyr::select(id) %>%

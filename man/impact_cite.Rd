@@ -6,6 +6,7 @@
 \usage{
 impact_cite(
   df,
+  id,
   crossref = TRUE,
   dimentions = TRUE,
   scopus = FALSE,
@@ -17,6 +18,8 @@ impact_cite(
 }
 \arguments{
 \item{df}{Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.}
+
+\item{id}{String of the column name containing the publication id (accepts DOI and PMID).}
 
 \item{crossref}{Crossref database to be used for citation data (default=TRUE)}
 
@@ -31,8 +34,6 @@ impact_cite(
 \item{gscholar_title_nchar}{Argument to specify how many characters the titles should be matched (default = 50). See "gscholar_invalid" output.}
 
 \item{metric}{Return common citation metrics (default = TRUE)}
-
-\item{id}{String of the column name containing the publication id (accepts DOI and PMID).}
 }
 \value{
 Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from cite_metric() (4). Unmatched recorded (only for google scholar)

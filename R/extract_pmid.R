@@ -47,7 +47,7 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
                                                   TRUE ~ date_publish)) %>%
     dplyr::mutate(year = lubridate::year(date_publish)) %>%
     dplyr::select(-dplyr::ends_with("aff"), -dplyr::starts_with("history_")) %>%
-    dplyr::mutate(pubmed = as.character(pubmed))
+    dplyr::mutate(pmid = as.character(pmid))
 
 
    if(get_altmetric==TRUE){
@@ -62,8 +62,8 @@ extract_pmid <- function(pmid, get_altmetric = TRUE, get_impact= TRUE){
     data <- data %>%
       dplyr::rename("journal_full" = journal_full.x, "journal_full2" = journal_full.y)}
 
-  out <- tibble::enframe(as.character(pmid), name=  NULL, value = "pubmed") %>%
-    dplyr::left_join(data, by = "pubmed") %>%
-    dplyr::mutate(pubmed = factor(pubmed, levels = c(pmid)))
+  out <- tibble::enframe(as.character(pmid), name=  NULL, value = "pmid") %>%
+    dplyr::left_join(data, by = "pmid") %>%
+    dplyr::mutate(pmid = factor(pmid, levels = c(pmid)))
 
   return(out)}
