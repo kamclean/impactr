@@ -3,7 +3,7 @@
 #' Extract publication data using doi / crossref
 #' @description Extract publication data using doi / rcrossref
 #' @param doi Vector of Digital Object Identifiers (DOI)
-#' @param get_auth Extract authorship data (default = TRUE)
+#' @param get_authors Extract authorship data (default = TRUE)
 #' @param get_altmetric Extract overall altmetric score data (default = TRUE)
 #' @param get_impact Extract journal impact factor and metrics (default = TRUE)
 #' @return Dataframe of essential publication data
@@ -16,7 +16,7 @@
 #' @export
 
 # Function-------------------------------
-extract_doi <- function(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact=TRUE){
+extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impact=TRUE){
 
   "%ni%" <- Negate("%in%")
 
@@ -93,7 +93,7 @@ extract_doi <- function(doi, get_auth = TRUE, get_altmetric = TRUE, get_impact=T
     dplyr::mutate(doi = tolower(doi)) %>%
     dplyr::select(doi, title, year, journal_abbr,volume,issue,pages,cite_cr, everything())
 
-  if(get_auth==TRUE){crossref_auth <- impactr::extract_doi_auth(doi)
+  if(get_authors==TRUE){crossref_auth <- impactr::extract_doi_auth(doi)
 
   out_crossref <- dplyr::left_join(out_crossref, crossref_auth, by=c("doi")) %>%
     dplyr::select(doi, author_group, title:cite_cr, auth_n, "author" = auth_list, everything())}

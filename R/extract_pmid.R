@@ -3,6 +3,7 @@
 #' @title Extract publication data using RISmed / pmid
 #' @description Extract publication data using RISmed / pmid
 #' @param pmid Vector of unique PubMed identifier numbers (PMID)
+#' @param get_authors Extract authorship data (default = TRUE)
 #' @param get_altmetric Extract overall altmetric score data (default = TRUE)
 #' @param get_impact Extract journal impact factor and metrics (default = TRUE)
 #' @return Dataframe of essential publication data

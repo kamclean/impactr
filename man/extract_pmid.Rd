@@ -9,6 +9,8 @@ extract_pmid(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact = TRUE)
 \arguments{
 \item{pmid}{Vector of unique PubMed identifier numbers (PMID)}
 
+\item{get_authors}{Extract authorship data (default = TRUE)}
+
 \item{get_altmetric}{Extract overall altmetric score data (default = TRUE)}
 
 \item{get_impact}{Extract journal impact factor and metrics (default = TRUE)}
