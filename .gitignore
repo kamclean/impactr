@@ -7,5 +7,7 @@
 .Ruserdata/
 inst/doc
 packrat/lib*/
+admin
+pubmed
 .httr-oauth
 .Rbuildignore

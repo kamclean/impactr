@@ -2,38 +2,30 @@
 # Documentation
 #' Provide a citation for a research publication
 #' @description Used to extract journal impact metrics for publications.
-#' @param df Dataframe with publications listed rowwise with at least 1 column containing the journal ISSN
+#' @param data Dataframe with publications listed rowwise with at least 1 column containing the journal ISSN
 #' @param var_issn String of column name with the journal International Standard Serial Number (ISSN) number listed (default: journal_issn)
+#' @param all Logical value indicating if only the 2 year impact factor should be returned (or if it should include all impact factor information)
 #' @return Dataframe of journal impact metrics
-#' @import sjrdata
 #' @import dplyr
+#' @import tidyr
+#' @import stringr
+#' @import purrr
 #' @importFrom tidyr unnest
-#' @importFrom stringr str_split str_split_fixed str_replace
-#' @importFrom purrr map map_df
+#' @importFrom zoo na.locf
 #' @export
 
 # Function-------------------
-extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"){
-  update.packages("sjrdata")
-
-  df <- df %>%
+extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_issn", all = F){
+  df <- data %>%
     dplyr::mutate(journal_issn = dplyr::pull(., var_issn),
                   var_id = dplyr::pull(., var_id)) %>%
-    dplyr::mutate(journal_issn = gsub("-","", journal_issn)) %>%
-    tidyr::separate_rows(., journal_issn, sep = ", ")  %>%
-    dplyr::mutate(journal_issn = trimws(journal_issn))
+    tidyr::separate_rows(journal_issn, sep = ", ")  %>%
+    dplyr::mutate(journal_issn = stringr::str_squish(journal_issn)) %>%
+    dplyr::mutate(year = as.character(year),
+                  var_id = as.character(var_id))
 
-  out <- sjrdata::sjr_journals %>%
-    dplyr::filter(type=="journal") %>%
-    dplyr::select(year, "journal_full" = title, "journal_issn" = issn, "journal_if" = cites_doc_2years) %>%
-    dplyr::mutate(journal_issn = case_when(stringr::str_detect(journal_issn, "09598146")==T ~ "17561833, 09598146, 09598138",
-                                           stringr::str_detect(journal_issn, "01406736|1474547")==T ~ "1474547X, 01406736, 1474547",
-                                           stringr::str_detect(journal_issn, "00029610")==T ~ "18791883, 00029610",
-                                           TRUE ~ journal_issn)) %>%
-    dplyr::filter(grepl(paste(df$journal_issn, collapse="|"), journal_issn)) %>%
-    dplyr::mutate(journal_issn = stringr::str_split(journal_issn, ", "),
-                  year = as.numeric(year)) %>%
-    tidyr::unnest(journal_issn) %>%
+  out <- readr::read_rds(here::here("data/data_if.rds")) %>%
+    dplyr::mutate(year = as.numeric(as.character(year))) %>%
     dplyr::filter(journal_issn %in% df$journal_issn)
 
   # Last IF recorded for missing years
@@ -46,19 +38,30 @@ extract_impact_factor <- function(df, var_id = "pmid", var_issn = "journal_issn"
   df_missing_min <- NULL
   if(min(df$year)<min(out$year)){
     min_year_miss <- seq(min(df$year), min(out$year)-1)
+
     df_missing_min <- purrr::map_df(min_year_miss, ~dplyr::filter(out, year==min(year))) %>%
       mutate(year = rep(min_year_miss, each=nrow(dplyr::filter(out, year==min(year)))))}
 
-  out2 <- out %>%
+  journal_data <- out %>%
     dplyr::bind_rows(df_missing_max, df_missing_min) %>%
-    dplyr::select(-journal_full) %>%
-    dplyr::left_join(df, ., by=c("year", "journal_issn")) %>%
-    dplyr::arrange(var_id, journal_if) %>%
-    dplyr::mutate(journal_if = zoo::na.locf(journal_if)) %>%
+    dplyr::mutate(year = as.character(year)) %>%
+    dplyr::select(-journal_full, -journal_abbr)
+
+  final <- df %>%
+    dplyr::left_join(journal_data, by=c("journal_issn","year")) %>%
+    dplyr::mutate(var_id = factor(var_id, levels =  unique(var_id))) %>%
+    dplyr::arrange(var_id, journal_if_2y, journal_if_5y) %>%
     dplyr::group_by(var_id) %>%
+    dplyr::mutate_at(dplyr::vars(journal_rank:journal_eigen), function(x){zoo::na.locf(x, na.rm = F)}) %>%
     dplyr::mutate(journal_issn = paste(journal_issn, collapse=", ")) %>%
     dplyr::distinct(var_id, journal_issn, .keep_all = TRUE) %>%
     dplyr::ungroup(var_id) %>%
     dplyr::select(-var_id)
 
-  return(out2)}
+
+  if(all==F){final <- final %>%
+    select(-any_of(c("journal_if", "journal_rank", "journal_cite_total",
+                     "journal_if_5y", "journal_eigen", "journal_issn_comb"))) %>%
+    dplyr::rename("journal_if" = journal_if_2y)}
+
+  return(final)}
