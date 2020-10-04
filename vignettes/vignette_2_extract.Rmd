@@ -2,9 +2,7 @@
 title: "1 - Extract Publication Data"
 date: "`r Sys.Date()`"
 always_allow_html: yes
-output:
-  md_document:
-    variant: gfm
+output: md_document
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -35,7 +33,7 @@ The function will automatically extract the authors (`auth_group`, `auth_n`, `au
 
 ```{r extract_pmid, warning=FALSE, message=FALSE}
 out_pubmed <- impactr::extract_pmid(pmid = c(26769786, 26195471, 30513129),
-                            get_auth = TRUE, get_altmetric = FALSE, get_impact = FALSE)
+                                    get_altmetric = FALSE, get_impact = FALSE)
 
 ```
 
@@ -43,8 +41,7 @@ out_pubmed <- impactr::extract_pmid(pmid = c(26769786, 26195471, 30513129),
 col_pubmed <- which(colnames(out_pubmed) %in% c("author", "title"))
 
 out_pubmed %>%
-  dplyr::mutate(author = paste0(substr(author, 1, 50), "...")) %>%
-  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
+  dplyr::mutate(author = paste0(substr(author_list, 1, 50), "...")) %>%
   knitr::kable(format="html",escape = FALSE) %>%
   kableExtra::column_spec(col_pubmed, width_min="6in") %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) %>%
@@ -65,7 +62,7 @@ The function will automatically extract the authors (`auth_group`, `auth_n`, `au
 ```{r extract_doi1, warning=FALSE, message=FALSE}
 # Example output from user_roles_n()
 out_doi <- impactr::extract_doi(doi = out_pubmed$doi,
-                       get_auth = TRUE, get_altmetric = FALSE, get_impact = FALSE)
+                       get_authors = TRUE, get_altmetric = FALSE, get_impact = FALSE)
 ```
 
 ```{r extract_doi2, warning=FALSE, message=FALSE, echo=FALSE}
@@ -75,7 +72,6 @@ col_doi2 <- which(colnames(out_doi) %in% c("doi", "author_group","author"))
 
 out_doi %>%
   dplyr::mutate(author = ifelse(is.na(author)==F, paste0(substr(author, 1, 50), "..."), author)) %>%
-  magrittr::set_colnames(gsub("_", " ", names(.))) %>%
   knitr::kable(format="html",escape = FALSE) %>%
   kableExtra::column_spec(col_doi1, width_min="7in") %>%
   kableExtra::column_spec(col_doi2, width_min="2.5in") %>%

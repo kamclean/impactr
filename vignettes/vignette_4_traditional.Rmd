@@ -16,7 +16,7 @@ library(tidyverse);library(magrittr)
 
 pmid <- readRDS("~/starsurg_impact/data/impact_pub.rds")$pmid
 
-data <- impactr::extract_pmid(pmid) %>%
+data <- impactr::extract_pmid(pmid = pmid) %>%
     dplyr::mutate(journal_edit = ifelse(journal_full=="The Lancet", "Lancet", journal_full),
                   journal_edit = ifelse(journal_edit=="British Medical Journal", "BMJ-British Medical Journal", journal_edit))
 ```
@@ -44,14 +44,17 @@ The function `impact_cite()` can also produce several metrics that can be used f
   + **Open Citations** (`cite_oc`): Accessed via the [Open Citations API](https://opencitations.net/index/coci/api/v1) (requires oc=TRUE). Note: this is felt to be too sparcely populated at present  (Feb 2020) to be of practical use.
 
 ```{r cite_data, warning=FALSE, message=FALSE}
-data_cite <- impactr::impact_cite(df = data, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = TRUE,
-                     gscholar = "Ol5uNSwAAAAJ&hl", metric=TRUE)
+
+
+data_cite <- impactr::impact_cite(data = data, var_id = "pmid",
+                                  crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = TRUE,
+                                  gscholar = "Ol5uNSwAAAAJ&hl", metric=TRUE)
 ```
 
 ```{r cite_data_out, warning=FALSE, message=FALSE, echo=FALSE}
 data_cite$df %>%
   dplyr::select(doi, title, journal_edit, journal_if,
-                cite_pm,	cite_gs) %>%
+                cite_dim,	cite_gs) %>%
   magrittr::set_colnames(gsub("_", " ", names(.))) %>%
   dplyr::mutate(`journal edit` = ifelse(`journal edit`=="The British journal of surgery", "BJS", `journal edit`),
                 `journal edit` = ifelse(`journal edit`=="Colorectal disease : the official journal of the Association of Coloproctology of Great Britain and Ireland", "Colorectal Disease", `journal edit`)) %>%
@@ -164,10 +167,10 @@ Citation metrics are author-level measures that attempts to assess both the prod
  
  - **[G-Index](https://harzing.com/popbook/ch1_4_6.htm)**: It aims to improve on the h-index by giving more weight to highly-cited articles. The H-Index can "undervalue" highly cited papers as it ignores the number of citations to each individual article beyond what is needed to achieve a certain h-index.
 
-`impact_cite()` will produce common citation metrics automatically based on the papers included in the dataframe supplied. Alternatively this can be calculated directly using `impact_cite_metric()`. 
+`impact_cite()` will produce common citation metrics automatically based on the papers included in the dataframe supplied. Alternatively this can be calculated directly using `cite_metric()`. 
 
 ```{r cite_hindex, warning=FALSE, message=FALSE}
-data_cite$metric; impactr::impact_cite_metric(data_cite$df$cite_max, data_cite$df$year)
+data_cite$metric; impactr::cite_metric(data_cite$df$cite_max, data_cite$df$year)
 ```
 
 &nbsp;

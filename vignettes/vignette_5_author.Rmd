@@ -12,8 +12,8 @@ vignette: >
 ---
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(collapse = FALSE)
-library(tidyverse);library(magrittr)
-library(UpSetR);library(grid);library(ComplexHeatmap);library(ggalluvial)
+library(tidyverse);library(magrittr); library(UpSetR);library(grid);library(ggalluvial)
+
 ```
 
 # **Impact from from Co-authorship Network**
@@ -39,20 +39,23 @@ Traditional authorship models, largely based on the criteria of the Internationa
 
 An example of several papers published using a traditional authorship model can be seen here:
 ```{r impact_auth_intro1a, warning=FALSE, message=FALSE}
-data_auth <- impactr::extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,
-                                            30850367, 31585971, 30793373), get_auth = TRUE) %>%
-  dplyr::mutate(pmid = factor(pmid)) %>%
-  dplyr::mutate(author_n = stringr::str_count(author, ", ")+1) %>%
-  dplyr::select(pmid, author_n, author)
+source('~/impactr/R/extract_pmid.R')
+  source('~/impactr/R/extract_pubmed_xml.R')
+source('~/impactr/R/score_alm.R')
+source('~/impactr/R/extract_impact_factor.R')
+data_auth <- extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,30850367, 31585971, 30793373)) %>%
+                                            
+  dplyr::mutate(pubmed = factor(pubmed)) %>%
+  dplyr::select(pubmed, author_n, author_list)
 ```
 
 ```{r impact_auth_intro1b, warning=FALSE, message=FALSE, echo=FALSE}
 data_auth %>%
-  dplyr::mutate(author = paste0(substr(author, 1, 80), "...")) %>%
+  dplyr::mutate(author_list = paste0(substr(author_list, 1, 80), "...")) %>%
   knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 ```{r impact_auth_intro1c, warning=FALSE, message=FALSE}
-example_auth <- impactr::impact_auth(data_auth, pub_group = "pmid", max_inital = 1)
+example_auth <- impact_auth(data_auth, pub_group = "pubmed", max_inital = 1)
 ```
 
 
@@ -85,7 +88,7 @@ Scientific collaboration networks are a hallmark of contemporary academic resear
 This can then be plotted using packages such as `igraph`, `tidygraph`, `networkD3`, etc.
 
 ```{r impact_auth_network1a, warning=FALSE, message=FALSE, echo=TRUE}
-plot_network1 <- impactr::impact_auth_network(data_auth) %$%
+plot_network1 <- impact_auth_network(data_auth) %$%
   
   tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   dplyr::mutate(centrality = tidygraph::centrality_betweenness()) %>% 
@@ -111,14 +114,14 @@ ggsave(plot = plot_network1,
 If there are specific authors of interest, these can be supplied via `auth_interest`. This will ensure only direct connections to the specified author(s) will be included.
 
 ```{r impact_auth_network2a, warning=FALSE, message=FALSE, echo=TRUE}
-plot_network2 <- impactr::impact_auth_network(data_auth,
+plot_network2 <- impact_auth_network(data_auth,
                                               auth_interest = c("mclean k", "drake t", "harrison e", "ots r", "wigmore s")) %$%
 
 tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   dplyr::mutate(centrality = tidygraph::centrality_betweenness()) %>% 
   
   ggraph::ggraph(layout = "nicely") +
-  ggraph::geom_edge_link(aes(width = weight), alpha = 0.5) + 
+  ggraph::geom_edge_link(aes(width = weight), alpha = 0.2) + 
   ggraph::scale_edge_width(range = c(0.1, 1)) +
   ggraph::geom_node_point(aes(size = centrality)) +
   ggraph::geom_node_text(aes(label = author, group = interest, colour = interest), fontface="bold", repel = TRUE) +
@@ -202,12 +205,10 @@ example_collab$upset %>%
 
 #### **i). Summary**
 
-The `upset` output can be used by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) package to derive information on the relationships between authors and the groups (`pub_group` variable).
+The `upset` output can be used to derive information on the relationships between authors and the groups (`pub_group` variable).
 
 ```{r impact_auth_upset2, warning=FALSE, message=FALSE}
-upset_comb_mat <- ComplexHeatmap::make_comb_mat(example_collab$upset)
-
-impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>%
+upset_comb_mat <- impactr::format_intersect(data_upset) %>% knitr::kable() %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
@@ -215,7 +216,7 @@ impactr::comb_name_size(upset_comb_mat) %>% knitr::kable() %>%
 
 #### **ii). UpSet plots**
 
-Furthermore, UpSet plots provide an efficient way to visualize intersections of multiple sets compared to the traditional approaches (e.g. Venn Diagram). The `upset` output can be used directly to make UpSet plots by the [ComplexHeatmap](https://github.com/jokergoo/ComplexHeatmap) and [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
+Furthermore, UpSet plots provide an efficient way to visualize intersections of multiple sets compared to the traditional approaches (e.g. Venn Diagram). The `upset` output can be used directly to make UpSet plots via the [UpSetR](https://github.com/hms-dbmi/UpSetR) packages.
 
 ```{r impact_auth_upset3bi, echo=TRUE, results='hide', eval=FALSE}
 as.data.frame(example_collab$upset) %>% UpSetR::upset(text.scale = 1.7)

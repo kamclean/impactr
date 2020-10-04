@@ -52,7 +52,7 @@ df_author_final <- tibble::tibble(pmid = data$pmid,
                        function(x){tolower(x) %>% iconv(to ="ASCII//TRANSLIT")}) %>%
       dplyr::select(pmid, full_list, full_list_aff) %>%
       dplyr::mutate(author_multi_list = stringr::str_extract_all(full_list,
-                                                                 paste(authors, collapse = "|")) %>%
+                                                                 paste0(authors, collapse = "|")) %>%
                       purrr::map_chr(function(x){unique(x) %>% paste(., collapse = "; ")})) %>%
       dplyr::mutate(author_multi_n = stringr::str_count(author_multi_list,"; ")+1) %>%
       dplyr::mutate(author_multi_n = ifelse(author_multi_list=="", 0, author_multi_n),
@@ -144,12 +144,11 @@ df_author_final <- tibble::tibble(pmid = data$pmid,
       dplyr::mutate(keyword = ifelse(eval(parse(text=keywords_logic_group$group))==T, "Yes", "No")) %>%
       select(pmid, keyword)}
 
-  df_output <- NULL
   df_output <- data %>%
     dplyr::left_join(df_author_final, by="pmid") %>%
     dplyr::left_join(df_affiliations_any, by="pmid") %>%
     dplyr::left_join(df_keyword, by="pmid") %>%
-    dplyr::mutate(criteria_met = ifelse(is.na(author_multi_n)==F&author_multi_n>2, 1, 0),
+    dplyr::mutate(criteria_met = ifelse(is.na(author_multi_n)==F&author_multi_n>=2, 1, 0),
                   criteria_met = ifelse(is.na(affiliations_author)==F&affiliations_author=="Yes", criteria_met+1, criteria_met),
                   criteria_met = ifelse(is.na(affiliations_any)==F&affiliations_any=="Yes", criteria_met+1, criteria_met),
                   criteria_met = ifelse(is.na(keyword)==F&keyword=="Yes", criteria_met+1, criteria_met)) %>%

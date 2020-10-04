@@ -25,12 +25,14 @@ It is recommended that this package is used together with `tidyverse` packages.
 
 Vignettes
 ---------
-[Extract Publication Data](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_1_extract.md)
+[Search Pubmed](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_1_search.md)
 
-[Reference Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_2_cite.md)
+[Extract Publication Data](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_2_extract.md)
 
-[Impact from Traditional Metrics](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_3_traditional.md)
+[Reference Research Outputs](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_3_cite.md)
 
-[Impact from Co-authorship Network](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_4_author.md)
+[Impact from Traditional Metrics](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_4_traditional.md)
 
-[Impact from Social Media Engagement](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_5_altmetric.md)
+[Impact from Co-authorship Network](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_5_author.md)
+
+[Impact from Social Media Engagement](https://github.com/kamclean/impactr/blob/master/vignettes/vignette_6_altmetric.md)

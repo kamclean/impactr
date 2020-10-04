@@ -1,0 +1,159 @@
+---
+title: "Search Pubmed"
+date: "`r Sys.Date()`"
+always_allow_html: yes
+output:
+  md_document:
+    variant: gfm
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = FALSE)
+library(dplyr);library(impactr)
+```
+
+# **Search Publication Data**
+
+
+
+&nbsp;
+
+## **1. Search Pubmed**
+
+The `search_pubmed()` function provides a focussed method
+
+- *Note: This is not intended to replicate the search function within pubmed. This is intended for the specific use of identifying the publications associated with an individual or group of authors*.
+
+At present the search can be refined in 2 ways:
+
+ - Timeperiod (`date_min` and `date_max`): The default is no limitations.
+
+ - Keywords (`keywords`): This will search for the keyword(s) within *All Fields* on PubMed.
+ 
+    - Multiple keywords can be supplied as a list (e.g. keywords = c("surgery", "infection")), and will be searched for in combination (via "OR" Boolean operator).
+ 
+    - Boolean operators ("AND", "OR", and "NOT") can be used to combine search terms within a keyword (e.g. keywords = "surgery AND infection")
+
+    - The asterisk wildcard search ("*") is supported to further refine the search.
+
+```{r search2, warning=FALSE, message=FALSE}
+search <- impactr::search_pubmed(search_list = c("mclean k", "ots r", "drake t", "harrison e"),
+                        date_min = "2018/01/01", date_max = "2020/05/01")
+```
+
+The output from `search_pubmed()` is a list of PMIDs resulting from this search (e.g. `r length(search)` in the above case).
+
+
+&nbsp;
+
+## **2. Sift Pubmed Results**
+
+There may be 1000s of records which meet the search criteria specified 
+
+ - **list_pmid** - can be identified via the `search_pubmed()` function or another method.
+ 
+  - Note: There is a limit to the number of PMID that can be supplied to the PubMed API at once via this method (approximately 200 PMID). It is highly suggested that if you wish to sift > 200 records, these are supplied to the function separately. 
+
+ - **authors** = If these authors are linked (e.g. likelihood of being co-authors), then the `authors` parameter is suggested to be used. 
+ 
+  - Note: This is generally the rate-limiting step for this function (particularly when publications contain hundreds or thousands or authors).  
+
+ - **Author affiliations** (`affiliations`): This will search within the information held on authors for:
+ 
+  - A match within any of the affiliations listed for all authors.
+  
+  - A match witin any of the affiliations listed specifically for authors supplied in `authors` (if provided).
+
+ - **Keywords** (`keywords`): This will search for the keyword(s) within the title, abstract, and journal name. Otherwise this parameter functions as in the `search_pubmed()` function (see above).
+ 
+Note: This function 
+
+```{r extract_pmid2, eval=FALSE, echo=T}
+sifted <- impactr::sift_pubmed(pmid = search,
+                               authors = c("mclean k", "ots r", "drake t", "harrison e"),
+                               affiliations = c("edinburgh", "lothian"),
+                               keywords = "surg")
+```
+```{r extract_pmid2, warning=FALSE, message=FALSE, echo=FALSE}
+sifted <- readr::read_rds(here::here("vignettes/sifted.rds"))
+```
+
+```{r extract_pmid_table, warning=FALSE, message=FALSE, echo=FALSE}
+head(sifted$wheat, 10)
+```
+
+```{r extract_pmid3, warning=FALSE, message=FALSE, echo=FALSE}
+head(sifted$chaff, 10)
+
+```
+
+Based on the above search of `r length(result2)` identified using `pubmed_search()` there are:
+
+ - `r nrow(wheat)` identified as **wheat** (e.g. more likely to be relevant), of which 40 (47%) were relevant when maunally screened.
+ 
+ - `r nrow(chaff)` identified as **chaff** (e.g. less likely to be relevant), of which none were relevant when maunally screened. 
+
+
+```{r extract_pmid4, warning=FALSE, message=FALSE, echo=FALSE}
+accuracy <- tibble::tibble(result = c(rep("Wheat", nrow(sifted$wheat)), rep("Chaff", nrow(sifted$chaff))),
+               relevant = c(rep("Yes", 40), rep("No", nrow(sifted$chaff)+nrow(sifted$wheat)-40))) %>%
+  dplyr::mutate(relevant = factor(relevant, levels=c("Yes", "No")),
+                result = factor(result, levels=c("Wheat", "Chaff"))) 
+
+# accuracy2 <- tibble::tibble(result = c(rep("Wheat", nrow(sifted$wheat %>% dplyr::filter(criteria_met>1))),
+ #                                      rep("Chaff", nrow(sifted$chaff)+nrow(sifted$wheat %>% dplyr::filter(criteria_met==1)))),
+#               relevant = c(rep("Yes", 40), rep("No", 45), rep("No", nrow(sifted$chaff)))) %>%
+#  dplyr::mutate(relevant = factor(relevant, levels=c("Yes", "No")),
+#                result = factor(result, levels=c("Wheat", "Chaff"))) 
+# ; epiR::epi.tests(table(accuracy2))
+
+```
+
+```{r, warning=FALSE, message=FALSE, echo=T}
+table(accuracy)
+```
+
+Therefore, for this search the sensitivity of being identified as `wheat` was 
+
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+epiR::epi.tests(table(accuracy))
+
+```
+
+However, it should be noted that all publications that met 2 or more criteria (n=`nrow(sifted$wheat %>% dplyr::filter(criteria_met>1)`) were relevant. The function has been designed with sensitivity in mind to maximise negative predictive value.
+  
+The accuracy of the search entirely depends upon  
+```{r, warning=FALSE, message=FALSE, echo=T}
+venn_data <-sifted$wheat %>%
+  dplyr::left_join(readr::read_csv(here::here("vignettes/sift_result.csv"))%>% dplyr::mutate_all(as.character), by="pmid") %>%
+  dplyr::filter(result=="Yes") %>%
+  dplyr::mutate(`Multiple Specified Authors` = ifelse(author_multi_n>1, 1, 0),
+                `Affiliation (Specified Author)` = ifelse(affiliations_author=="Yes", 1, 0),
+                `Affiliation (Any Author)` = ifelse(affiliations_any=="Yes", 1, 0),
+                `Keyword` = ifelse(keyword=="Yes", 1, 0)) %>%
+  dplyr::select(`Multiple Specified Authors`:`Keyword`) %>%
+  impactr::format_intersect()
+  dplyr::select(-degree) %>%
+  dplyr::filter(combination!="") %>% # patients who are recorded as asymptomatic (on these 3 variables)
+  tidyr::pivot_wider(names_from = combination, values_from = n) %>%
+  unlist()
+
+grDevices::png(filename = here::here("vignettes/plot/venn_sift.png"),
+               height = 3.6, width = 5.6, units = "in", res=300)
+
+plot(eulerr::euler(venn_data),
+     edges = list("black", alpha = 0.8),
+     fill = list(alpha = 0.5),
+     quantities = list(fontsize = 15), legend = list(alpha = 1))
+
+dev.off()
+  
+```
+  
+Over half would not have been highlighted if a keyword was not used. 
+  
