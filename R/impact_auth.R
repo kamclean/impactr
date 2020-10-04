@@ -21,13 +21,14 @@
 #' @export
 
 # Function-------------------
-impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
+impact_auth <- function(data, author_list = "author_list", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
   require(dplyr);require(tidyr);require(stringr);require(tibble);require(stringi)
-  auth_out <- df %>%
+  auth_out <- data %>%
     dplyr::mutate(pub_group = dplyr::pull(., pub_group)) %>%
     dplyr::mutate(author = dplyr::pull(., author_list)) %>%
     dplyr::select(pub_group, author) %>%
     tidyr::separate_rows(author, sep = "; ") %>%
+    dplyr::filter(is.na(author)==F)%>%
     dplyr::mutate(author = tolower(author)) %>%
 
     # identify last space (prior to first name)
@@ -46,7 +47,7 @@ impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_init
 
   data_upset <- NULL
   if(upset==TRUE){
-  group_val <- levels(unique(dplyr::pull(df, pub_group)))
+  group_val <- levels(unique(dplyr::pull(data, pub_group)))
 
   data_upset = auth_out %>%
     tidyr::separate_rows(pub_group, sep = ", ") %>%

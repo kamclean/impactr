@@ -5,8 +5,8 @@
 \title{Provide a citation for a research publication}
 \usage{
 impact_auth(
-  df,
-  author_list = "author",
+  data,
+  author_list = "author_list",
   pub_group = "pmid",
   max_inital = 1,
   upset = FALSE,
@@ -14,8 +14,6 @@ impact_auth(
 )
 }
 \arguments{
-\item{df}{Dataframe with 2 mandatory columns (1) pub_group (the paper or project authored) (2) auth_list = A string of all authors for the pub_group.}
-
 \item{author_list}{A vector of the collapsed authorship lists of each publication, listed per row (should be an output from paste0(x, collapse = ", ")).}
 
 \item{pub_group}{A vector of the research outputs (the paper or project authored) which the authors are being compared across (default = pmid)}
@@ -25,6 +23,8 @@ impact_auth(
 \item{upset}{Compare intersections of authorship across each pub_group, and produces data format suitable for producing UpSet plots (default = FALSE).}
 
 \item{metric}{Provide author engagement metrics across each pub_group (default = FALSE)}
+
+\item{df}{Dataframe with 2 mandatory columns (1) pub_group (the paper or project authored) (2) auth_list = A string of all authors for the pub_group.}
 }
 \value{
 Nested dataframe of: (1). "auth_out" - All unique authors; (2). data_upset = intersection data (if upset = TRUE). (3). metric = author engagement metrics (if metric = TRUE).
