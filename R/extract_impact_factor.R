@@ -21,6 +21,7 @@ extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_iss
                   var_id = dplyr::pull(., var_id)) %>%
     tidyr::separate_rows(journal_issn, sep = ", ")  %>%
     dplyr::mutate(journal_issn = stringr::str_squish(journal_issn)) %>%
+    dplyr::mutate(journal_issn = stringr::str_remove(journal_issn, "-")) %>%
     dplyr::mutate(year = as.character(year),
                   var_id = as.character(var_id))
 
