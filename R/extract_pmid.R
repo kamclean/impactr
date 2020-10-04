@@ -47,10 +47,7 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
     dplyr::select(-dplyr::ends_with("aff"), -dplyr::starts_with("history_")) %>%
     dplyr::mutate(pmid = as.character(pmid))
 
-  if(get_altmetric==TRUE){
-
-    data <- data %>%
-      dplyr::mutate(altmetric = impactr::score_alm(doi))}
+  if(get_altmetric==TRUE){data <- data %>% dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
   if(get_impact==TRUE){data <- impactr::extract_impact_factor(data)}
 

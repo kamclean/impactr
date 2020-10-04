@@ -2,8 +2,8 @@
 # Documentation
 #' @title Extract additional traditional metrics from Google Scholar
 #' @description Extract additional traditional metrics from Google Scholar
-#' @param df Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.
-#' @param id String of the column name containing the publication id (accepts DOI and PMID).
+#' @param data Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.
+#' @param var_id String of the column name containing the publication id (accepts DOI and PMID).
 #' @param crossref Crossref database to be used for citation data (default=TRUE)
 #' @param dimentions Dimentions database to be used for citation data (default=TRUE)
 #' @param scopus Scopus database to be used for citation data (default=FALSE). Requires Scopus API.
@@ -17,12 +17,12 @@
 #' @return Nested dataframe of: (1)."df": Amended dataframe with additional citation data appended (2). "time": Dataframe of citations over time (only avaiable for Scopus and google scholar). (3). "metric": output from cite_metric() (4). Unmatched recorded (only for google scholar)
 #' @export
 
-impact_cite <- function(df, id, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = FALSE,
+impact_cite <- function(data, var_id, crossref=TRUE, dimentions=TRUE, scopus=FALSE, oc = FALSE,
                         gscholar=FALSE, gscholar_title_nchar = 50, metric=TRUE){
 
   require(dplyr); require(dplyr); require(dplyr); require(dplyr); require(dplyr);
 
-  df <- df %>% dplyr::mutate(id = dplyr::pull(., id))
+  df <- df %>% dplyr::mutate(id = dplyr::pull(., var_id))
 
   # Get citation data
   if(crossref==T){

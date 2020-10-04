@@ -23,14 +23,8 @@ cite_oc <- function(id_list){
     # https://www.crossref.org/blog/dois-and-matching-regular-expressions/
     dplyr::mutate(id_type = dplyr::case_when(stringr::str_detect(id, "^10\\.\\d{4,9}/")==T ~  "doi",
                                              nchar(id)==8&is.numeric(as.numeric(id))==T ~ "pmid",
-                                             TRUE ~ "invalid"))
-
-
-  id_class <- id_class %>%
-      dplyr::filter(id_type=="pmid") %>%
-      dplyr::mutate(id_doi = rcrossref::id_converter(id, type="pmid")$records$doi) %>%
-      dplyr::right_join(id_class, by = c("n", "id", "id_type")) %>%
-      dplyr::mutate(id_doi = dplyr::if_else(id_type=="doi",id,id_doi))
+                                             TRUE ~ "invalid")) %>%
+      dplyr::mutate(id_doi = ifelse(id_type=="pmid",  rcrossref::id_converter(id, type="pmid")$records$doi, id))
 
 
   doi_data <- id_class %>% dplyr::filter(is.na(id_doi)==F)

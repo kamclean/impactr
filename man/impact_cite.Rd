@@ -5,8 +5,8 @@
 \title{Extract additional traditional metrics from Google Scholar}
 \usage{
 impact_cite(
-  df,
-  id,
+  data,
+  var_id,
   crossref = TRUE,
   dimentions = TRUE,
   scopus = FALSE,
@@ -17,9 +17,9 @@ impact_cite(
 )
 }
 \arguments{
-\item{df}{Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.}
+\item{data}{Dataframe containing at least two columns: publication year ("year") and id with each publication listed as a row.}
 
-\item{id}{String of the column name containing the publication id (accepts DOI and PMID).}
+\item{var_id}{String of the column name containing the publication id (accepts DOI and PMID).}
 
 \item{crossref}{Crossref database to be used for citation data (default=TRUE)}
 
