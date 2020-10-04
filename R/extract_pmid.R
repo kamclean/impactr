@@ -49,7 +49,7 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
 
   if(get_altmetric==TRUE){data <- data %>% dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
-  if(get_impact==TRUE){data <- impactr::extract_impact_factor(data)}
+  if(get_impact==TRUE){data <- extract_impact_factor(data)}
 
   if("journal_full.y" %in% names(data)){
     data <- data %>%

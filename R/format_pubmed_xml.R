@@ -78,9 +78,9 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
 
       if(is.null(xml_pubmed$MedlineCitation$MedlineJournalInfo)==F){
         journal_na <- journal
-        journal <- dplyr::bind_rows(tibble::enframe(unlist(xml_pubmed$MedlineCitation$MedlineJournalInfo)),
-                                    tibble::enframe(unlist(xml_pubmed$MedlineCitation$Article$Journal)),
-                                    tibble::enframe(unlist(xml_pubmed$MedlineCitation$Article$Pagination))) %>%
+        journal <- dplyr::bind_rows(tibble::enframe(unlist(xml_pubmed$MedlineCitation$MedlineJournalInfo)) %>% mutate_all(as.character),
+                                    tibble::enframe(unlist(xml_pubmed$MedlineCitation$Article$Journal)) %>% mutate_all(as.character),
+                                    tibble::enframe(unlist(xml_pubmed$MedlineCitation$Article$Pagination)) %>% mutate_all(as.character)) %>%
           dplyr::mutate(name = dplyr::case_when(name == "NlmUniqueID" ~ "journal_nlm",
                                                 name %in% c("ISSN", "ISSNLinking") ~ "journal_issn",
                                                 name == "Title" ~ "journal_full",

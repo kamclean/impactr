@@ -22,7 +22,6 @@ sift_pubmed <- function(pmid, authors = NULL, affiliations = NULL, keywords = NU
   require(magrittr);require(RCurl);require(xml2);require(dplyr);require(tidyr);require(purrr)
   require(tibble);require(stringr);require(lubridate);require(RCurl);require(xml2)
 
-
   data <- impactr::format_pubmed_xml(pmid = pmid,
                                      var_author= if(is.null(authors)==T){F}else{T},
                                      var_collaborator = if(is.null(authors)==T){F}else{T},
