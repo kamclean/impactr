@@ -9,8 +9,7 @@
 #' @import tibble
 #' @importFrom rcrossref cr_cn cr_works
 #' @importFrom rAltmetric altmetric_data altmetrics
-#' @importFrom purrr map
-#' @importFrom data.table rbindlist
+#' @importFrom purrr map_df
 #' @export
 
 # Function-------------------------------
@@ -34,12 +33,10 @@ extract_doi_auth <- function(doi){
   doi <- doi[which(doi %ni% NA)] # ensure no NA
 
   df_auth <- doi %>%
-    lapply(., function(x){extract_doi_auth1(x)}) %>%
-    data.table::rbindlist(.,idcol=doi) %>%
+    purrr::map_df(function(x){extract_doi_auth1(x)}) %>%
     dplyr::mutate(doi = tolower(doi)) %>%
     dplyr::mutate(auth_list = gsub("NA , ", "", auth_list)) %>%
     dplyr::mutate(auth_list = gsub(", NA", "", auth_list)) %>%
-    dplyr::select(doi, author_group, auth_n, auth_list) %>%
-    tibble::as_tibble()
+    dplyr::select(doi, author_group, auth_n, auth_list)
 
   return(df_auth)}

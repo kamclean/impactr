@@ -2,16 +2,16 @@
 % Please edit documentation in R/format_intersect.R
 \name{format_intersect}
 \alias{format_intersect}
-\title{Additional function for ComplexHeatmap}
+\title{Determine intersections (combinations) for upset or venn diagrams.}
 \usage{
-format_intersect(data_upset)
+format_intersect(data)
 }
 \arguments{
-\item{comb_mat}{Combination matrix output from ComplexHeatmap::make_comb_mat()}
+\item{data}{Dataset containing only columns which intersections are aiming to be determined for (must be binary - 01)}
 }
 \value{
 Tibble of combinations with the name of the sets provided.
 }
 \description{
-Additional function for ComplexHeatmap to faciltate named sets in combinations
+Determine intersections (combinations) for upset or venn diagrams.
 }

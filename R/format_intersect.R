@@ -1,21 +1,19 @@
 # format_intersect----------------------
 # Documentation
-#' Additional function for ComplexHeatmap
-#' @description Additional function for ComplexHeatmap to faciltate named sets in combinations
-#' @param comb_mat Combination matrix output from ComplexHeatmap::make_comb_mat()
+#' Determine intersections (combinations) for upset or venn diagrams.
+#' @description Determine intersections (combinations) for upset or venn diagrams.
+#' @param data Dataset containing only columns which intersections are aiming to be determined for (must be binary - 01)
 #' @return Tibble of combinations with the name of the sets provided.
-#' @import magrittr
 #' @import dplyr
+#' @import tidyr
 #' @import tibble
-#' @importFrom ComplexHeatmap comb_size set_name
-#' @importFrom stringr str_split_fixed str_count
-#' @importFrom tidyr unite
+#' @importFrom stringr str_count
 #' @export
 
 # Function-------------------------------
-format_intersect <- function(data_upset){
+format_intersect <- function(data){
 
-out <- data_upset %>%
+out <- data %>%
     tidyr::pivot_longer(cols = everything()) %>%
     dplyr::mutate(value = ifelse(value==1, name, NA)) %>%
     tidyr::pivot_wider(values_fn = list) %>%
