@@ -21,7 +21,7 @@
 #' @export
 
 # Function-------------------
-impact_auth <- function(df, author_list = "author", pub_group = "pubmed", max_inital = 1, upset = FALSE, metric = FALSE){
+impact_auth <- function(df, author_list = "author", pub_group = "pmid", max_inital = 1, upset = FALSE, metric = FALSE){
   require(dplyr);require(tidyr);require(stringr);require(tibble);require(stringi)
   auth_out <- df %>%
     dplyr::mutate(pub_group = dplyr::pull(., pub_group)) %>%
