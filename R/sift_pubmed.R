@@ -1,8 +1,7 @@
 # sift_pubmed------------------------------
-# Documentation
-#'
-#' @description
-#' @param list_pmid Vector of pubmed identifiers (PMID) desired to be screened.
+#' Sift though pubmed records to stratify by potential relevance
+#' @description Highlight pubmed records potentially relevant to the authors of interest
+#' @param pmid Vector of pubmed identifiers (PMID) desired to be screened.
 #' @param authors Vector of last name and initial(s) which correspond to relevant authors (default = NULL).
 #' @param affiliations Vector of strings which correspond to relevant author affiliations (default = NULL).
 #' @param keywords Vector of keywords or patterns that are expected to be present in the title/abstract/journal (default = NULL).
@@ -18,58 +17,20 @@
 #' @export
 #'
 
-
-list_pmid = search
-authors = c("mclean k", "ots r", "drake t", "harrison e")
-affiliations = c("edinburgh", "lothian")
-keywords = "surg"
-
-
-sift_pubmed <- function(list_pmid, authors = NULL, affiliations = NULL, keywords = NULL, separate = T){
+sift_pubmed <- function(pmid, authors = NULL, affiliations = NULL, keywords = NULL, separate = T){
 
   require(magrittr);require(RCurl);require(xml2);require(dplyr);require(tidyr);require(purrr)
   require(tibble);require(stringr);require(lubridate);require(RCurl);require(xml2)
 
 
-  source('~/impactr/R/extract_pubmed_xml.R')
-  extract_pmid_xml <- function(list_pmid){
-
-    RCurl::getURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=",
-                         paste(list_pmid, collapse = "+OR+"),
-                         "&retmode=xml")) %>%
-      xml2::as_xml_document() %>% xml2::xml_find_all("PubmedArticle")}
-
-  xml <- extract_pmid_xml(list_pmid = list_pmid)
-  data <- extract_pmid_xml(list_pmid = list_pmid) %>%
-    furrr::future_map2_dfr(., seq_along(1:length(.)), function(x, y){print(y)
-
-      return(suppressMessages(extract_pubmed_xml(x, var_author= if(is.null(authors)==T){F}else{T},
-                                                 var_collaborator = if(is.null(authors)==T){F}else{T},
-                                                 var_metadata = F,
-                                                 var_history=F,
-                                                 var_registry = F)))}) %>%
-
-    dplyr::mutate(date_publish = dplyr::case_when(is.na(date_publish)==T ~ history_entrez,
-                                                  is.na(date_publish)==T ~ history_pubmed,
-                                                  is.na(date_publish)==T ~ history_medline,
-                                                  TRUE ~ date_publish)) %>%
-    dplyr::mutate(year = lubridate::year(date_publish)) %>%
-    dplyr::select(-dplyr::ends_with("aff"), -dplyr::starts_with("history_")) %>%
-    dplyr::mutate(pubmed = as.character(pubmed))
-
-
-  data <- xml %>%
-    purrr::map2_dfr(., seq_along(1:length(.)), function(x, y){
-      print(paste0(y, " of ", length(xml)))
-      out <- extract_pubmed_xml(x,
-                                var_author= if(is.null(authors)==T){F}else{T},
-                                var_collaborator = if(is.null(authors)==T){F}else{T},
-                                var_metadata = F,
-                                var_history=F,
-                                var_registry = F)
-      return(out)}) %>%
-    dplyr::select(-pmc, -journal_nlm,-journal_issn, -journal_vol, -journal_issue,-journal_pages,-funder) %>%
-    dplyr::rename("pmid" = pubmed) %>%
+  data <- impactr::format_pubmed_xml(pmid = pmid,
+                                     var_author= if(is.null(authors)==T){F}else{T},
+                                     var_collaborator = if(is.null(authors)==T){F}else{T},
+                                     var_metadata = F,
+                                     var_history=F,
+                                     var_registry = F,
+                                     var_abstract = T) %>%
+    dplyr::select(-pmc, -journal_nlm,-journal_issn, -journal_vol, -journal_issue,-journal_pages) %>%
     tidyr::unite(col="journal", sep = ", ", dplyr::starts_with("journal_"))
 
   print("XML Download: Done")
