@@ -26,7 +26,7 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
 
 
   # Clean pmid----------------
-  check_pmid <- pmid %>%
+  check_pmid <- as.character(pmid) %>%
     tibble::enframe(name = NULL, value= "original") %>%
     dplyr::mutate(numeric = as.numeric(original)) %>%
 
