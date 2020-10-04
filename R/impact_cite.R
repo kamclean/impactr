@@ -22,7 +22,7 @@ impact_cite <- function(data, var_id, crossref=TRUE, dimentions=TRUE, scopus=FAL
 
   require(dplyr); require(dplyr); require(dplyr); require(dplyr); require(dplyr);
 
-  df <- df %>% dplyr::mutate(id = dplyr::pull(., var_id))
+  df <- data %>% dplyr::mutate(id = dplyr::pull(., var_id))
 
   # Get citation data
   if(crossref==T){
