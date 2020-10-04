@@ -25,7 +25,11 @@ extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_iss
     dplyr::mutate(year = as.character(year),
                   var_id = as.character(var_id))
 
-  out <- readr::read_rds(here::here("data/data_if.rds")) %>%
+  download.file("https://github.com/kamclean/impactr/raw/master/data/data_if.rds","data_if.rds")
+  data_if <- readr::read_rds("data_if.rds")
+  file.remove("data_if.rds")
+
+  out <- data_if %>%
     dplyr::mutate(year = as.numeric(as.character(year))) %>%
     dplyr::filter(journal_issn %in% df$journal_issn)
 
