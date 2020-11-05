@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_pmid.R
 \name{extract_pmid}
 \alias{extract_pmid}
-\title{Extract publication data using RISmed / pmid}
+\title{Extract publication data using Pubmed ID}
 \usage{
 extract_pmid(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact = TRUE)
 }
@@ -19,5 +19,5 @@ extract_pmid(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact = TRUE)
 Dataframe of essential publication data
 }
 \description{
-Extract publication data using RISmed / pmid
+Extract publication data using Pubmed ID
 }

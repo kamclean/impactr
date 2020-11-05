@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: as.person(c(
     "Kenneth McLean <k.a.mclean@ed.ac.uk> [aut, cre]"))
 Description: The impactr package consolidates functionality from a range of existing packages
-    (including RISMed, rcrossref, rAltmetric, scholar) into holistic and practical quantifications
+    (including rcrossref, rAltmetric, scholar) into holistic and practical quantifications
     of biomedical research impact. These functions have a range of applications from generating publication
     lists to quantifying research impact by combining traditional metrics (citations, journal impact factor),
     with newer impact metrics such as co-authorship networks and social media presence.
@@ -13,7 +13,6 @@ Imports: dplyr,
   purrr,
   stringr,
   magrittr,
-  ComplexHeatmap,
   tidyr,
   tibble,
   rscopus,
@@ -21,10 +20,7 @@ Imports: dplyr,
   scales,
   rcrossref,
   rAltmetric,
-  data.table,
-  sjrdata,
   stringi,
-  RISmed,
 Suggests: knitr,
     rmarkdown,
     devtools,

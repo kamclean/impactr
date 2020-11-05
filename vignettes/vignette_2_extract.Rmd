@@ -27,7 +27,7 @@ The functions `extract_pmid()` (PubMed) and `extract_doi()` (CrossRef) use uniqu
 However, it should be noted that the information extracted is dependent on the accuracy and completeness of the information within these repositories. Therefore, some additional editing may be required to remove heterogeneity / make corrections / supply missing data. 
 
 ### **a). `extract_pmid()`**
-The `extract_pmid()` function only requires a vector/list of PubMed identification numbers, and uses the [RISmed](https://cran.r-project.org/web/packages/RISmed/RISmed.pdf) package to extract publication information.
+The `extract_pmid()` function only requires a vector/list of PubMed identification numbers to extract publication information.
 
 The function will automatically extract the authors (`auth_group`, `auth_n`, `authors`), and the associated altmetric score (`altmetric`). However, this functionality has been made optional as it can extend the run time of the function (particularly in the case of a large number of authors).
 

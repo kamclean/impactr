@@ -1,7 +1,7 @@
 # score_alm--------------------------------
 # Documentation
 #' Extract overall almetric score for a publication
-#' @description Extract publication data using RISmed / pmid
+#' @description Extract overall almetric score for a publication
 #' @param id Vector of unique Digital Object Identifiers (DOI) and/or PMID
 #' @return Vector of overall almetric scores (or NA if not available)
 #' @import purrr

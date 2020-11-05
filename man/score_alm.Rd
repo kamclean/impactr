@@ -13,5 +13,5 @@ score_alm(id)
 Vector of overall almetric scores (or NA if not available)
 }
 \description{
-Extract publication data using RISmed / pmid
+Extract overall almetric score for a publication
 }

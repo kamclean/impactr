@@ -1,7 +1,7 @@
 # extract_pmid--------------------------------
 # Documentation
-#' @title Extract publication data using RISmed / pmid
-#' @description Extract publication data using RISmed / pmid
+#' @title Extract publication data using Pubmed ID
+#' @description Extract publication data using Pubmed ID
 #' @param pmid Vector of unique PubMed identifier numbers (PMID)
 #' @param get_authors Extract authorship data (default = TRUE)
 #' @param get_altmetric Extract overall altmetric score data (default = TRUE)
