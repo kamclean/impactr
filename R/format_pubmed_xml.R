@@ -34,6 +34,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
                               var_metadata = TRUE, var_history = TRUE, var_registry = F,var_abstract = F,
                               n_chunk = 200){
 
+
   extract_xml <- function(xml){
 
     require(dplyr);require(xml2);require(tidyr);require(lubridate);require(zoo);require(tibble);
@@ -55,6 +56,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
                                                name = NULL, value = "id_value" )) %>%
           dplyr::mutate(id_type = ifelse(id_type=="pubmed", "pmid", id_type)) %>%
           dplyr::filter(id_type %in% id_names) %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider(names_from = "id_type",  values_from = "id_value")
 
         if(rlang::is_empty(id_names[! id_names %in% names(id)])==F){
@@ -92,6 +94,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
           dplyr::filter(stringr::str_detect(name, "journal_")) %>%
           dplyr::group_by(name) %>%
           dplyr::summarise(value = paste(value, collapse = ", ")) %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider(names_from = "name",  values_from = "value")
 
         if(rlang::is_empty(journal_names[! journal_names %in% names(journal)])==F){
@@ -122,12 +125,13 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
             dplyr::mutate(name = purrr::map(value, function(x){names(x)})) %>%
             tidyr::unnest(cols = c(value, name)) %>%
             dplyr::mutate(name2 = purrr::map(value, function(x){names(x)})) %>%
-            dplyr::mutate(name2 = purrr::map(name2, function(x){ifelse(is.null(x)==T, NA, x)})) %>%
+            dplyr::mutate(name2 = purrr::map(name2, function(x){ifelse(is.null(x)==T, NA, x) %>% as.character()})) %>%
             tidyr::unnest(c(value, name2))  %>% dplyr::mutate(value = unlist(value)) %>%
             dplyr::filter(name %in% c("LastName", "Initials", "AffiliationInfo.Affiliation")|name2=="Affiliation") %>%
             dplyr::group_by(n, name) %>%
             dplyr::summarise(value = paste(value, collapse = "; ")) %>%
             dplyr::ungroup() %>%
+            dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
             tidyr::pivot_wider(id_cols= n, names_from = name, values_from = value)
 
 
@@ -162,7 +166,9 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
             dplyr::ungroup() %>% dplyr::select(author_group)}
 
         author <- dplyr::bind_cols(dplyr::select(author,- dplyr::contains("author_group")), author_group)
-        author_raw <- NULL}}
+        author_raw <- NULL}
+
+      }
 
     collaborator <- NULL
     if(var_collaborator==T){
@@ -177,12 +183,13 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
           dplyr::mutate(name = purrr::map(value, function(x){names(x)})) %>%
           tidyr::unnest(cols = c(value, name)) %>%
           dplyr::mutate(name2 = purrr::map(value, function(x){names(x)})) %>%
-          dplyr::mutate(name2 = purrr::map(name2, function(x){ifelse(is.null(x)==T, NA, x)})) %>%
+          dplyr::mutate(name2 = purrr::map(name2, function(x){ifelse(is.null(x)==T, NA, x) %>% as.character()})) %>%
           tidyr::unnest(c(value, name2)) %>% dplyr::mutate(value = unlist(value)) %>%
           dplyr::filter(name %in% c("LastName", "Initials", "AffiliationInfo.Affiliation")) %>%
           dplyr::group_by(n, name) %>%
           dplyr::summarise(value = paste(value, collapse = "; ")) %>%
           dplyr::ungroup() %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider(id_cols= n, names_from = name, values_from = value)
 
         if(ncol(collaborator)<4){
@@ -223,6 +230,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
       if(is.null(xml_pubmed$MedlineCitation$Article$ArticleDate)==F){
         date_publish <- tibble::enframe(unlist(xml_pubmed$MedlineCitation$Article$ArticleDate)) %>%
           dplyr::select("time" = name, value) %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider(names_from = "time",  values_from = "value") %>%
           dplyr::mutate(date_publish = lubridate::as_date(paste0(Year, "-", Month, "-", Day))) %>%
           dplyr::select(date_publish)}
@@ -244,9 +252,11 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
           dplyr::filter(name!="PubMedPubDate.PubStatus") %>%
           dplyr::select(-name) %>%
           dplyr::bind_cols(tibble::enframe(unlist(xml_pubmed$PubmedData$History), name = NULL, value = "time_value")) %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider(id_col = "type", names_from = "time_unit",  values_from = "time_value") %>%
           dplyr::mutate(history = lubridate::as_date(paste0(Year, "-", Month, "-", Day))) %>%
           dplyr::select(type, "date" = history) %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider(names_from = "type",  values_from = "date")
 
         if(rlang::is_empty(history_names[! history_names %in% names(history)])==F){
@@ -305,12 +315,14 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
       if(is.null(xml_pubmed$MedlineCitation$Article$DataBankList)==F){
 
         registry <- tibble::enframe(unlist(xml_pubmed$MedlineCitation$Article$DataBankList)) %>%
+          dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
           tidyr::pivot_wider() %>%
           dplyr::rename(registry_name = "DataBank.DataBankName", registry_num = "DataBank.AccessionNumberList.AccessionNumber") %>%
           dplyr::summarise(registry_num = paste(registry_num, collapse = ", "),
                            registry_name = paste(registry_name, collapse = ", "))}}
 
-    output <- dplyr::bind_cols(id, journal, author, collaborator, metadata, history, registry, abstract)
+    output <- dplyr::bind_cols(id, journal, author, collaborator, metadata, history, registry, abstract) %>%
+      mutate(across(everything(), as.character))
 
     return(output)}
 
@@ -355,9 +367,8 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
 
           print(e)
 
-          out <- suppressMessages(extract_xml(d))
+           out <- suppressMessages(extract_xml(d))
 
           return(out)})})
-
 
   return(final)}
