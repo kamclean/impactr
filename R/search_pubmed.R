@@ -20,7 +20,7 @@
 
 search_pubmed <- function(search_type = "author", search_list, date_min=NULL, date_max=Sys.Date(),keywords = NULL){
   # The E-utilities In-Depth: Parameters, Syntax and More (https://www.ncbi.nlm.nih.gov/books/NBK25499/)
-  require(dplyr); require(lubridate); require(RCurl); require(jsonlite); require(str_replace)
+  require(dplyr); require(lubridate); require(RCurl); require(jsonlite); require(stringr)
 
 
   url_search <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&esearch.fcgi?db=pubmed"

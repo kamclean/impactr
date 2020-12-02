@@ -37,7 +37,10 @@ cite_cr <- function(id_list){
     data_pmid <- id_class %>%
       dplyr::filter(id_type=="pmid") %>%
       dplyr::mutate(id_pmid = id) %>%
-      dplyr::mutate(id_doi = rcrossref::id_converter(id_pmid, type="pmid")$records$doi) %>%
+      dplyr::mutate(id_doi = purrr::map_chr(id_pmid, function(x){
+        doi <- rcrossref::id_converter(x, type="pmid")$records$doi
+
+        return(ifelse(is.null(doi)==T, NA, doi))})) %>%
       dplyr::mutate(cite = purrr::map_chr(id_doi,
                                           function(x){ifelse(is.na(x)==T,
                                                              NA,
