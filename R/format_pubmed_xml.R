@@ -358,7 +358,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
 
       RCurl::getURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=",
                            paste(a$pmid, collapse = "+OR+"),
-                           "&retmode=xml")) %>%
+                           "&retmode=xml"), .encoding = "Windows-1252") %>%
 
         xml2::as_xml_document() %>% xml2::xml_find_all("PubmedArticle") %>%
 
