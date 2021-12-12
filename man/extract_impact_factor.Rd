@@ -14,6 +14,8 @@ extract_impact_factor(
 \arguments{
 \item{data}{Dataframe with publications listed rowwise with at least 1 column containing the journal ISSN}
 
+\item{var_id}{String of column name with identifier name: "pmid" or "doi" (default: "pmid")}
+
 \item{var_issn}{String of column name with the journal International Standard Serial Number (ISSN) number listed (default: journal_issn)}
 
 \item{all}{Logical value indicating if only the 2 year impact factor should be returned (or if it should include all impact factor information)}

@@ -6,6 +6,7 @@
 \usage{
 sift(
   extract,
+  var_id = "pmid",
   authors = NULL,
   affiliations = NULL,
   keyword = NULL,
@@ -24,7 +25,7 @@ sift(
 
 \item{separate}{Logical value to separate the output into wheat (highlighted publications) and chaff (unhighlighted publications).}
 
-\item{pmid}{Vector of pubmed identifiers (PMID) desired to be screened.}
+\item{String}{of column name with identifier name: "pmid" or "doi" (default: "pmid")}
 }
 \value{
 Tibble containing pmid, results from sifting based on the authors, affiliations, and keyword, and the title/journal/abstract to allow further evaluation.

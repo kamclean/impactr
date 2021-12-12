@@ -160,7 +160,7 @@ sift <- function(extract, var_id = "pmid", authors = NULL, affiliations = NULL, 
         dplyr::group_by(name) %>%
         dplyr::mutate(term_final = purrr::map_chr(term_final, function(x){stringr::str_remove_all(x, "\\(|\\)") %>%
             paste0('stringr::str_detect(df_keyword$text, "', ., '")==T') %>% paste0(collapse = "&")})) %>%
-        dplyr::group_by(name) %>%
+        dplyr::ungroup() %>%
         dplyr::group_split(name) %>%
         purrr::map_df(function(x){x %>%
             dplyr::mutate(search = list(eval(parse(text=term_final))))}) %>%
@@ -185,9 +185,9 @@ sift <- function(extract, var_id = "pmid", authors = NULL, affiliations = NULL, 
     dplyr::mutate(criteria_met = ifelse(is.na(author_multi_n)==F&author_multi_n>=2, 1, 0),
                   criteria_met = ifelse(is.na(affiliations_author)==F&affiliations_author=="Yes", criteria_met+1, criteria_met),
                   criteria_met = ifelse(is.na(affiliations_any)==F&affiliations_any=="Yes", criteria_met+1, criteria_met),
-                  criteria_met = ifelse(is.na(keyword)==F&keyword=="Yes", criteria_met+1, criteria_met),
-                  criteria_met = ifelse(is.na(ignoreword)==F&ignoreword=="Yes", criteria_met+1, criteria_met)) %>%
-    dplyr::mutate(highlight = ifelse(criteria_met>0, "Yes", "No")) %>%
+                  criteria_met = ifelse(is.na(keyword)==F&keyword=="Yes", criteria_met+1, criteria_met)) %>%
+    dplyr::mutate(highlight = case_when(criteria_met>0&(is.na(ignoreword)|ignoreword=="Yes")&is.na(author_multi_list)==F ~ "Yes",
+                                        TRUE ~ "No")) %>%
     dplyr::select(var_id, highlight, criteria_met, author_multi_n, author_multi_list, affiliations_author:keyword,ignoreword,
                   "author_list" = full_list, "author_affiliation_list" = full_list_aff,
                   title,any_of(c("journal_full", "journal_abbr")),abstract) %>%

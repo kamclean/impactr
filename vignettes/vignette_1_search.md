@@ -1,6 +1,6 @@
 ---
 title: "Search Pubmed"
-date: "`r Sys.Date()`"
+date: "2021-12-12"
 always_allow_html: yes
 output: md_document
 vignette: >
@@ -9,10 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(collapse = FALSE)
-library(dplyr);library(impactr)
-```
+
 
 # **Search Publication Data**
 
@@ -38,12 +35,13 @@ At present the search can be refined in 2 ways:
 
     - The asterisk wildcard search ("*") is supported to further refine the search.
 
-```{r search2, warning=FALSE, message=FALSE}
+
+```r
 search <- impactr::search_pubmed(search_list = c("mclean ka", "ots r", "drake tm", "harrison em"),
                         date_min = "2018/01/01", date_max = "2020/05/01")
 ```
 
-The output from `search_pubmed()` is a list of PMIDs resulting from this search (e.g. `r length(search)` in the above case).
+The output from `search_pubmed()` is a list of PMIDs resulting from this search (e.g. 271 in the above case).
 
 
 &nbsp;
@@ -70,62 +68,100 @@ There may be 1000s of records which meet the search criteria specified
  
 Note: This function 
 
-```{r, eval=FALSE, echo=T}
+
+```r
 extract <- impactr::extract_pmid(pmid = search, get_authors = TRUE, get_altmetric = F, get_impact = F)
 ```
 
-```{r, eval=T, echo=F}
-extract <- readr::read_rds( here::here("vignettes/extract_pmid.rds"))
-```
 
-```{r, eval=T, echo=T}
+
+
+```r
 sifted <- extract %>%
   sift(authors = c("mclean ka", "ots r", "drake tm", "harrison em"),
                 affiliations = c("edinburgh", "lothian"),
                 keyword = c("surg"))
 ```
 
-```{r extract_pmid_table, warning=FALSE, message=FALSE, echo=FALSE}
-head(sifted$wheat, 10)
 
 ```
-
-```{r extract_pmid3, warning=FALSE, message=FALSE, echo=FALSE}
-head(sifted$chaff, 10)
-
+## # A tibble: 10 × 15
+##    var_id   criteria_met author_multi_n
+##    <chr>           <dbl>          <dbl>
+##  1 31585971            2              4
+##  2 30620075            2              3
+##  3 31600252            2              2
+##  4 30793373            1              4
+##  5 30234014            1              2
+##  6 32345457            1              1
+##  7 32072750            1              1
+##  8 32033800            1              1
+##  9 31903586            1              1
+## 10 31726643            1              1
+## # … with 12 more variables:
+## #   author_multi_list <chr>,
+## #   affiliations_author <chr>,
+## #   affiliations_any <chr>, text <chr>,
+## #   keyword <chr>, ignoreword <lgl>,
+## #   author_list <chr>,
+## #   author_affiliation_list <chr>, title <chr>, …
 ```
 
-```{r, echo=FALSE}
-relevance <- readr::read_csv(here::here("vignettes/sifted_relevance.csv"), show_col_types = F) %>%
-  dplyr::mutate(var_id = as.character(var_id),
-                relevance = factor(relevance) %>% forcats::fct_rev())
 
-accuracy_check <- bind_rows(sifted$wheat %>% mutate(designation = "Wheat"),
-                           sifted$chaff %>% mutate(designation = "Chaff")) %>%
-  dplyr::left_join(relevance, by = "var_id") %>%
-  dplyr::mutate(designation = factor(designation, levels = c("Wheat", "Chaff")))
+```
+## # A tibble: 10 × 15
+##    var_id   criteria_met author_multi_n
+##    <chr>           <dbl>          <dbl>
+##  1 32021696            1              0
+##  2 31630664            1              0
+##  3 31519896            1              0
+##  4 29561180            1              0
+##  5 29100900            1              0
+##  6 33062652            0              0
+##  7 32502207            0              0
+##  8 32468912            0              0
+##  9 32341509            0              0
+## 10 32318915            0              0
+## # … with 12 more variables:
+## #   author_multi_list <chr>,
+## #   affiliations_author <chr>,
+## #   affiliations_any <chr>, text <chr>,
+## #   keyword <chr>, ignoreword <lgl>,
+## #   author_list <chr>,
+## #   author_affiliation_list <chr>, title <chr>, …
 ```
 
-Based on the above search of `r length(search)` identified using `pubmed_search()` there are:
 
- - `r nrow(sifted$wheat)` identified as **wheat** (e.g. more likely to be relevant), of which 27/39 (69.2%) were relevant when maunally screened.
+
+Based on the above search of 271 identified using `pubmed_search()` there are:
+
+ - 36 identified as **wheat** (e.g. more likely to be relevant), of which 27/39 (69.2%) were relevant when maunally screened.
  
- - `r nrow(sifted$chaff)` identified as **chaff** (e.g. less likely to be relevant), of which 12/235 (5.1%) were relevant when maunally screened. 
+ - 235 identified as **chaff** (e.g. less likely to be relevant), of which 12/235 (5.1%) were relevant when maunally screened. 
  
  
 However, it should be noted that all publications that met 2 or more criteria (n=`nrow(sifted$wheat %>% dplyr::filter(criteria_met>1))`) were relevant. The function has been designed with sensitivity in mind to maximise negative predictive value.
 
-```{r, warning=FALSE, message=FALSE, echo=T}
+
+```r
 accuracy_table <- accuracy_check %>%
   dplyr::select(designation, relevance) %>%
   table()
 
 accuracy_table
 ```
+
+```
+##            relevance
+## designation Yes  No
+##       Wheat  27   9
+##       Chaff  12 223
+```
   
 The accuracy of the search entirely depends upon the parameters used - 75.9% (n=22/29) would not have been highlighted if a keyword ("surg") was not used. 
 
-```{r, warning=FALSE, message=FALSE, echo=T}
+
+```r
 venn_data <- accuracy_check %>%
   dplyr::filter(relevance=="Yes") %>%
   dplyr::filter(designation=="Wheat") %>%
@@ -149,11 +185,16 @@ plot(eulerr::euler(venn_data),
      quantities = list(fontsize = 15), legend = list(alpha = 1))
 
 dev.off()
-  
+```
+
+```
+## png 
+##   2
 ```
 Let's add some more parameters in to try to improve sensitivity. This will include a common coauthor ("wigmore sj"), and another common topic of publications ("liver").
 
-```{r, eval=T, echo=T}
+
+```r
 sifted2 <- extract %>%
   sift(authors = c("mclean ka", "ots r", "drake tm", "harrison em", "wigmore sj"),
                 affiliations = c("edinburgh", "lothian"),
@@ -162,15 +203,14 @@ sifted2 <- extract %>%
 
 Based on the above criteria:
 
- - `r nrow(sifted2$wheat)` identified as **wheat** (e.g. more likely to be relevant), of which 35/55 (63.6%) were relevant when maunally screened.
+ - 55 identified as **wheat** (e.g. more likely to be relevant), of which 35/55 (63.6%) were relevant when maunally screened.
  
- - `r nrow(sifted2$chaff)` identified as **chaff** (e.g. less likely to be relevant), of which 4/212 (1.8%) were relevant when maunally screened. 
+ - 216 identified as **chaff** (e.g. less likely to be relevant), of which 4/212 (1.8%) were relevant when maunally screened. 
 
-```{r, eval=T, echo=F}
-bind_rows(sifted2$wheat %>% mutate(designation = "Wheat"),
-                           sifted2$chaff %>% mutate(designation = "Chaff")) %>%
-  dplyr::left_join(relevance, by = "var_id") %>%
-  dplyr::mutate(designation = factor(designation, levels = c("Wheat", "Chaff"))) %>%
-  dplyr::select(designation, relevance) %>%
-  table()
+
+```
+##            relevance
+## designation Yes  No
+##       Wheat  35  20
+##       Chaff   4 212
 ```
