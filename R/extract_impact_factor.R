@@ -61,11 +61,15 @@ extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_iss
     dplyr::group_by(var_id) %>%
     dplyr::mutate_at(dplyr::vars(journal_if_2y:journal_eigen), function(x){zoo::na.locf(x, na.rm = F)}) %>%
     dplyr::mutate(journal_issn = paste(journal_issn, collapse=", ")) %>%
-    dplyr::rename("journal_nlm" = "nlmid")    %>%
     dplyr::distinct(var_id, journal_issn, .keep_all = TRUE) %>%
     dplyr::ungroup(var_id) %>%
     dplyr::select(-var_id)
 
+  if("journal_nlm" %in% names(final)){
+    final <- final %>% dplyr::select(-contains("nlmid"))}
+
+  if(! ("journal_nlm" %in% names(final))){
+    final <- final %>% dplyr::rename("journal_nlm" = "nlmid")}
 
   if(all==F){final <- final %>%
     select(-any_of(c("journal_if", "journal_cite_total",
