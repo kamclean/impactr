@@ -8,7 +8,8 @@ sift_pubmed(
   pmid,
   authors = NULL,
   affiliations = NULL,
-  keywords = NULL,
+  keyword = NULL,
+  ignoreword = NULL,
   separate = T
 )
 }
@@ -19,12 +20,14 @@ sift_pubmed(
 
 \item{affiliations}{Vector of strings which correspond to relevant author affiliations (default = NULL).}
 
-\item{keywords}{Vector of keywords or patterns that are expected to be present in the title/abstract/journal (default = NULL).}
+\item{keyword}{Vector of keyword or patterns that are expected to be present in the title/abstract/journal (default = NULL).}
+
+\item{ignoreword}{Vector of keyword or patterns that are expected to NOT be present in the title/abstract/journal (default = NULL).}
 
 \item{separate}{Logical value to separate the output into wheat (highlighted publications) and chaff (unhighlighted publications).}
 }
 \value{
-Tibble containing pmid, results from sifting based on the authors, affiliations, and keywords, and the title/journal/abstract to allow further evaluation.
+Tibble containing pmid, results from sifting based on the authors, affiliations, and keyword, and the title/journal/abstract to allow further evaluation.
 }
 \description{
 Highlight pubmed records potentially relevant to the authors of interest

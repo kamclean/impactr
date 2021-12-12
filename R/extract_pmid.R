@@ -17,10 +17,6 @@
 #' @importFrom furrr future_map2_dfr
 #' @importFrom purrr map_chr map_lgl
 #' @export
-extract_pmid(pmid = 29672416)
-get_authors = TRUE
-get_altmetric = TRUE
-get_impact= TRUE
 
 # Function-------------------------------
 extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact= TRUE){
