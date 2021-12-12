@@ -26,7 +26,7 @@ extract_doi_auth <- function(doi){
         dplyr::mutate(name = paste0(family, " ", initials)) %>%
         dplyr::summarise(author_group = NA,
                          auth_n = n(),
-                         auth_list =  paste(name, collapse=", "))}else{author2 <- tibble::tibble(author_group = author$name,
+                         auth_list =  paste(name, collapse="; "))}else{author2 <- tibble::tibble(author_group = author$name,
                                                                                                  auth_n = NA, auth_list = NA)}}
     return(author2)}
 

@@ -45,7 +45,7 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
                                                   is.na(date_publish)==T ~ history_medline,
                                                   TRUE ~ date_publish)) %>%
     dplyr::mutate(year = lubridate::year(date_publish)) %>%
-    dplyr::select(-dplyr::ends_with("aff"), -dplyr::starts_with("history_")) %>%
+    dplyr::select(-dplyr::starts_with("history_")) %>%
     dplyr::mutate(pmid = as.character(pmid))
 
   if(get_altmetric==TRUE){data <- data %>% dplyr::mutate(altmetric = impactr::score_alm(doi))}

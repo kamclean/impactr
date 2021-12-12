@@ -191,7 +191,7 @@ extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impac
   if(get_authors==TRUE){crossref_auth <- impactr::extract_doi_auth(doi)
 
   out_crossref <- dplyr::left_join(out_crossref, crossref_auth, by=c("doi")) %>%
-    dplyr::mutate(collab_n = NA, collab_list = NA) %>%
+    dplyr::mutate(collab_n = NA, collab_list = NA, author_list_aff = NA, collab_list_aff = NA) %>%
     dplyr::rename("author_n" = auth_n, author_list = auth_list)}
 
   if(get_altmetric==TRUE){
@@ -212,7 +212,7 @@ extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impac
     dplyr::select(pmid, doi, pmc, title,
                   journal_issn, journal_full, journal_abbr,
                   "journal_vol" = volume, journal_issue = issue, journal_pages = pages,
-                  any_of(c("author_n", "author_list", "author_group", "collab_n", "collab_list")),
+                  any_of(c("author_n", "author_list","author_list_aff", "author_group", "collab_n", "collab_list", "collab_list_aff")),
                   type, status, date_publish, abstract, year, any_of("altmetric"),
                   any_of(c("journal_nlm", "journal_if")))
 
