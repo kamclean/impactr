@@ -15,7 +15,6 @@
 #' @importFrom purrr map_df
 #' @export
 
-
 # Function-------------------------------
 extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impact=TRUE){
 
@@ -24,13 +23,32 @@ extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impac
   doi <- doi[which(doi %ni% c(NA, ""))]
 
   extract_var <- c("DOI", "title","container-title", "container-title-short", "ISSN",
-                   "volume", "issue", "page", "published-print","published-online", "is-referenced-by-count")
+                   "volume", "issue", "page", "published", "published-print","published-online", "is-referenced-by-count")
 
   if(length(doi)>1){
     out_crossref <- rcrossref::cr_cn(dois = doi, format = "citeproc-json") %>%
       purrr::map_df(function(x){
 
         x <- x[which(names(x) %in% extract_var)]
+
+        if(is.null(x$`published`)==F){
+          x$year <- ifelse(length(x$`published`$`date-parts`)>1,
+                           x$`published`$`date-parts`[1,1],
+                           x$`published`)
+
+          if(length(x$`published`$`date-parts`)==3){
+            x$date_publish <- x$`published`$`date-parts` %>%
+              tibble::as_tibble() %>%
+              dplyr::mutate(date_publish = paste0(V1, "/", V2, "/", V3) %>% lubridate::as_date()) %>%
+              pull(date_publish)}
+          if(length(x$`published`$`date-parts`)==2){
+            x$date_publish <- x$`published`$`date-parts` %>%
+              tibble::as_tibble() %>%
+              dplyr::mutate(V3 = 1,
+                            date_publish = paste0(V1, "/", V2, "/", V3) %>% lubridate::as_date()) %>%
+              pull(date_publish)}
+          if(length(x$`published`$`date-parts`)==1){
+            x$date_publish <- NA}}
 
         if(is.null(x$`published-online`)==F){
           x$year <- ifelse(length(x$`published-online`$`date-parts`)>1,
@@ -88,8 +106,27 @@ extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impac
                         "journal_issn" = ISSN,"title" = title, "year" = year, "volume" = volume,
                         "issue" = issue, "pages" = page, "cite_cr" = `is-referenced-by-count`, date_publish)
         return(y)})}else{
-        x <- rcrossref::cr_cn(dois = doi[4], format = "citeproc-json")
+        x <- rcrossref::cr_cn(dois = doi, format = "citeproc-json")
         x <- x[which(names(x) %in% extract_var)]
+
+        if(is.null(x$`published`)==F){
+          x$year <- ifelse(length(x$`published`$`date-parts`)>1,
+                           x$`published`$`date-parts`[1,1],
+                           x$`published`)
+
+          if(length(x$`published`$`date-parts`)==3){
+            x$date_publish <- x$`published`$`date-parts` %>%
+              tibble::as_tibble() %>%
+              dplyr::mutate(date_publish = paste0(V1, "/", V2, "/", V3) %>% lubridate::as_date()) %>%
+              pull(date_publish)}
+          if(length(x$`published`$`date-parts`)==2){
+            x$date_publish <- x$`published`$`date-parts` %>%
+              tibble::as_tibble() %>%
+              dplyr::mutate(V3 = 1,
+                            date_publish = paste0(V1, "/", V2, "/", V3) %>% lubridate::as_date()) %>%
+              pull(date_publish)}
+          if(length(x$`published`$`date-parts`)==1){
+            x$date_publish <- NA}}
 
         if(is.null(x$`published-online`)==F){
           x$year <- ifelse(length(x$`published-online`$`date-parts`)>1,
