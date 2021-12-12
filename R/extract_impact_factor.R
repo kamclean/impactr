@@ -61,7 +61,7 @@ extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_iss
     dplyr::group_by(var_id) %>%
     dplyr::mutate_at(dplyr::vars(journal_if_2y:journal_eigen), function(x){zoo::na.locf(x, na.rm = F)}) %>%
     dplyr::mutate(journal_issn = paste(journal_issn, collapse=", ")) %>%
-
+    dplyr::rename("journal_nlm" = "nlmid")    %>%
     dplyr::distinct(var_id, journal_issn, .keep_all = TRUE) %>%
     dplyr::ungroup(var_id) %>%
     dplyr::select(-var_id)

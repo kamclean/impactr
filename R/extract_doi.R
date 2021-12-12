@@ -198,8 +198,7 @@ extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impac
     out_crossref <- out_crossref %>%
       dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
-  if(get_impact==TRUE){out_crossref <- impactr::extract_impact_factor(out_crossref, var_id="doi") %>%
-    dplyr::rename("journal_nlm" = "nlmid")}
+  if(get_impact==TRUE){out_crossref <- impactr::extract_impact_factor(out_crossref, var_id="doi")}
 
   if("journal_full.y" %in% names(out_crossref)){
     out_crossref<- out_crossref %>%
@@ -211,9 +210,10 @@ extract_doi <- function(doi, get_authors = TRUE, get_altmetric = TRUE, get_impac
     dplyr::mutate(pmid = NA, pmc = NA, type = NA, status = NA,  abstract = NA) %>%
 
     dplyr::select(pmid, doi, pmc, title,
-                  any_of(c("author_n", "author_list", "author_group", "collab_n", "collab_list")),
-                  any_of(c("journal_nlm", "journal_if")), journal_issn, journal_full, journal_abbr,
+                  journal_issn, journal_full, journal_abbr,
                   "journal_vol" = volume, journal_issue = issue, journal_pages = pages,
-                  type, status, date_publish, abstract, year, any_of("altmetric"))
+                  any_of(c("author_n", "author_list", "author_group", "collab_n", "collab_list")),
+                  type, status, date_publish, abstract, year, any_of("altmetric"),
+                  any_of(c("journal_nlm", "journal_if")))
 
   return(out_crossref)}
