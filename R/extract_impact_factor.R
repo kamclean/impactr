@@ -54,18 +54,20 @@ extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_iss
 
   final <- df %>%
     dplyr::left_join(journal_data, by=c("journal_issn","year")) %>%
-    dplyr::mutate(var_id = factor(var_id, levels =  unique(var_id))) %>%
+    dplyr::mutate(var_id = factor(var_id, levels =  unique(var_id)),
+                  journal_cite_total = as.numeric(journal_cite_total)) %>%
     dplyr::arrange(var_id, journal_if_2y, journal_if_5y) %>%
     dplyr::group_by(var_id) %>%
-    dplyr::mutate_at(dplyr::vars(journal_rank:journal_eigen), function(x){zoo::na.locf(x, na.rm = F)}) %>%
+    dplyr::mutate_at(dplyr::vars(journal_if_2y:journal_eigen), function(x){zoo::na.locf(x, na.rm = F)}) %>%
     dplyr::mutate(journal_issn = paste(journal_issn, collapse=", ")) %>%
+
     dplyr::distinct(var_id, journal_issn, .keep_all = TRUE) %>%
     dplyr::ungroup(var_id) %>%
     dplyr::select(-var_id)
 
 
   if(all==F){final <- final %>%
-    select(-any_of(c("journal_if", "journal_rank", "journal_cite_total",
+    select(-any_of(c("journal_if", "journal_cite_total",
                      "journal_if_5y", "journal_eigen", "journal_issn_comb"))) %>%
     dplyr::rename("journal_if" = journal_if_2y)}
 
