@@ -4,23 +4,22 @@
 #' @param pmid Vector of pubmed identifiers (PMID) desired to be screened.
 #' @param authors Vector of last name and initial(s) which correspond to relevant authors (default = NULL).
 #' @param affiliations Vector of strings which correspond to relevant author affiliations (default = NULL).
-#' @param keywords Vector of keywords or patterns that are expected to be present in the title/abstract/journal (default = NULL).
+#' @param keyword Vector of keyword or patterns that are expected to be present in the title/abstract/journal (default = NULL).
+#' @param ignoreword Vector of keyword or patterns that are expected to NOT be present in the title/abstract/journal (default = NULL).
 #' @param separate Logical value to separate the output into wheat (highlighted publications) and chaff (unhighlighted publications).
-#' @return Tibble containing pmid, results from sifting based on the authors, affiliations, and keywords, and the title/journal/abstract to allow further evaluation.
-#' @import magrittr
+#' @return Tibble containing pmid, results from sifting based on the authors, affiliations, and keyword, and the title/journal/abstract to allow further evaluation.
 #' @import dplyr
-#' @import RCurl
-#' @import xml2
+#' @import tidyr
 #' @import purrr
 #' @import stringr
 #' @import tibble
 #' @export
 #'
 
-sift_pubmed <- function(pmid, authors = NULL, affiliations = NULL, keywords = NULL, separate = T){
+sift_pubmed <- function(pmid, authors = NULL, affiliations = NULL, keyword = NULL, ignoreword = NULL, separate = T){
 
-  require(magrittr);require(RCurl);require(xml2);require(dplyr);require(tidyr);require(purrr)
-  require(tibble);require(stringr);require(lubridate);require(RCurl);require(xml2)
+  require(dplyr);require(tidyr);require(purrr);require(tibble);require(stringr)
+
 
   data <- impactr::format_pubmed_xml(pmid = pmid,
                                      var_author= if(is.null(authors)==T){F}else{T},
@@ -45,18 +44,30 @@ df_author_final <- tibble::tibble(pmid = data$pmid,
   if(is.null(authors)==F){
     authors = iconv(tolower(authors), to ="ASCII//TRANSLIT")
 
+    sift_author <- authors %>%
+      tibble::enframe(name = NULL) %>%
+      dplyr::mutate(include = stringr::str_extract(value, "^[a-z]+ [a-z]"),
+                    exclude = stringr::str_split_fixed(value, " ", 2)[,2],
+                    exclude = stringr::str_sub(exclude, 2,2),
+                    exclude = case_when(exclude=="" ~ NA_character_,
+                                        TRUE ~ paste0(include, "[^", exclude, "]")),
+                    exclude = ifelse(is.na(exclude)==F, paste0(exclude), exclude)) %>%
+      dplyr::summarise(include_any = paste0(unique(c(value, include)), collapse = "|"),
+                       include_single = paste0(c(paste0(include, ";"), paste0(include, "$")), collapse = "|"),
+                       exclude = paste0(exclude, collapse = "|") %>% stringr::str_remove_all("\\|NA"))
+
     df_author <- data %>%
       tidyr::unite(col = "full_list", author_list, collab_list, sep = "; ", na.rm = T) %>%
       tidyr::unite(col = "full_list_aff", author_list_aff, collab_list_aff, sep = "; ", na.rm = T) %>%
       dplyr::mutate_at(dplyr::vars(dplyr::starts_with("full_list")),
                        function(x){tolower(x) %>% iconv(to ="ASCII//TRANSLIT")}) %>%
-      dplyr::select(pmid, full_list, full_list_aff) %>%
-      dplyr::mutate(author_multi_list = stringr::str_extract_all(full_list,
-                                                                 paste0(authors, collapse = "|")) %>%
-                      purrr::map_chr(function(x){unique(x) %>% paste(., collapse = "; ")})) %>%
+      dplyr::select(pmid, full_list, full_list_aff)  %>%
+      dplyr::mutate(author_multi_list = stringr::str_extract_all(full_list, sift_author$include_any) %>%
+                      purrr::map_chr(function(x){paste0(unique(x) %>% stringr::str_remove_all(";"), collapse = "; ")})) %>%
+      dplyr::mutate(author_multi_list = case_when(stringr::str_detect(full_list, sift_author$include_single)==F&stringr::str_detect(full_list, sift_author$exclude)==T ~ NA_character_,
+                                         TRUE ~ author_multi_list)) %>%
       dplyr::mutate(author_multi_n = stringr::str_count(author_multi_list,"; ")+1) %>%
-      dplyr::mutate(author_multi_n = ifelse(author_multi_list=="", 0, author_multi_n),
-                    author_multi_list = ifelse(author_multi_list=="", NA, author_multi_list))
+      dplyr::mutate(author_multi_n = ifelse(is.na(author_multi_list), 0, author_multi_n))
 
     if(is.null(affiliations)==F){
       affiliations = iconv(tolower(affiliations), to ="ASCII//TRANSLIT")
@@ -103,46 +114,78 @@ df_author_final <- tibble::tibble(pmid = data$pmid,
         dplyr::select(pmid) %>% dplyr::mutate(affiliations_any = "No")}}
 
   df_keyword <- tibble::tibble(pmid = data$pmid,
-                               keyword = rep(NA_character_, nrow(data)))
+                               keyword = rep(NA_character_, nrow(data)),
+                               ignoreword = rep(NA_character_, nrow(data)))
 
-  if(is.null(keywords)==F){
+  if(is.null(keyword)==F|is.null(ignoreword)==F){
 
     df_keyword <- data %>%
       dplyr::select(pmid, title, journal, abstract) %>%
       dplyr::mutate_all(function(x){iconv(tolower(x), to ="ASCII//TRANSLIT")}) %>%
-      tidyr::unite(col = keyword_text, title, journal, abstract, sep = "; ", na.rm = T)
+      tidyr::unite(col = text, title, journal, abstract, sep = "; ", na.rm = T)
 
-    keywords_logic = iconv(keywords, to ="ASCII//TRANSLIT") %>%
+    if(is.null(ignoreword)==T&is.null(keyword)==F){
+    keyword_logic = keyword %>%
       tibble::enframe(value = "term") %>%
-      tidyr::separate_rows(term, sep =  "(?<=AND|OR|NOT)") %>%
-      dplyr::mutate(operator = stringr::str_extract(term, "AND|OR|NOT"),
-                    term = trimws(stringr::str_remove(term, "AND|OR|NOT"))) %>%
-
-      dplyr::mutate(term = gsub("\\*", "",term) %>% tolower(),
-                    operator = gsub("OR", "|",operator) %>% gsub("AND", "&",. )) %>%
-      dplyr::mutate(term = ifelse(grepl("&", term), paste0("(", term, ")"), term))
-
-    keywords_logic_group <- keywords_logic %>%
-      dplyr::mutate(operator_lag = lag(operator, 1)) %>%
-      dplyr::mutate(term_final = ifelse(operator %in% c("&", "|"), paste0(term, "==T"), term)) %>%
-      dplyr::mutate(term_final = ifelse(operator_lag %in% c("NOT"), paste0(term_final, "==F"), term_final)) %>%
-      dplyr::mutate(term_final = ifelse(operator_lag %in% c("&", "|"), paste0(term_final, "==T"), term_final)) %>%
-      dplyr::mutate(operator_final = ifelse(operator == "NOT", "&", operator)) %>%
-      dplyr::mutate(operator_final = ifelse(is.na(operator_final)==T, "", operator_final)) %>%
+      dplyr::mutate(term = iconv(term, to ="ASCII//TRANSLIT")) %>%
+      dplyr::mutate(term = stringr::str_replace_all(term,"OR", "|"),
+                    term = stringr::str_replace_all(term,"AND", "&"),
+                    term = stringr::str_replace_all(term, "\\*", ""),
+                    term = stringr::str_remove_all(term, " "),
+                    term_final = stringr::str_split(term, "&")) %>%
       dplyr::group_by(name) %>%
-      dplyr::summarise(group = paste(paste0(term_final,operator_final), collapse = "")) %>%
-      dplyr::mutate(group = paste0("(", group, ")")) %>%
-      dplyr::summarise(group = paste0(group, collapse = "|"))
-
-
-      for(i in 1:nrow(keywords_logic)){
-        df_keyword <- df_keyword %>%
-          dplyr::mutate(search = grepl(keywords_logic$term[i], keyword_text)) %>%
-          dplyr::rename_at(vars(search), function(x){x = keywords_logic$term[i]})}
+      dplyr::mutate(term_final = purrr::map_chr(term_final, function(x){stringr::str_remove_all(x, "\\(|\\)") %>%
+          paste0('stringr::str_detect(df_keyword$text, "', ., '")==T') %>% paste0(collapse = "&")})) %>%
+      dplyr::group_by(name) %>%
+      dplyr::group_split(name) %>%
+      purrr::map_df(function(x){x %>%
+          dplyr::mutate(search = list(eval(parse(text=term_final))),
+                        search = list(eval(parse(text=term_final))))}) %>%
+      dplyr::select(term, search) %>%
+      tidyr::unnest(cols = names(.)) %>%
+      dplyr::group_by(term) %>%
+      dplyr::mutate(rowid = 1:n()) %>%
+      dplyr::group_by(rowid) %>%
+      dplyr::summarise(search = ifelse(sum(search==T)>0, "Yes", "No"))
 
     df_keyword <- df_keyword %>%
-      dplyr::mutate(keyword = ifelse(eval(parse(text=keywords_logic_group$group))==T, "Yes", "No")) %>%
-      select(pmid, keyword)}
+      dplyr::bind_cols(keyword_logic %>% select("keyword" = search))}
+
+    if(is.null(ignoreword)==F&is.null(keyword)==T){
+    df_keyword <- df_keyword %>%
+      dplyr::mutate(ignoreword = stringr::str_detect(text, pattern = paste0(ignoreword, collapse = "|"))==F,
+                    ignoreword = ifelse(ignoreword==T, "Yes", "No"))}
+
+
+    if(is.null(ignoreword)==F&is.null(keyword)==F){
+      keyword_logic = keyword %>%
+        tibble::enframe(value = "term") %>%
+        dplyr::mutate(term = iconv(term, to ="ASCII//TRANSLIT")) %>%
+        dplyr::mutate(term = stringr::str_replace_all(term,"OR", "|"),
+                      term = stringr::str_replace_all(term,"AND", "&"),
+                      term = stringr::str_replace_all(term, "\\*", ""),
+                      term = stringr::str_remove_all(term, " "),
+                      term_final = stringr::str_split(term, "&")) %>%
+        dplyr::group_by(name) %>%
+        dplyr::mutate(term_final = purrr::map_chr(term_final, function(x){stringr::str_remove_all(x, "\\(|\\)") %>%
+            paste0('stringr::str_detect(df_keyword$text, "', ., '")==T') %>% paste0(collapse = "&")})) %>%
+        dplyr::group_by(name) %>%
+        dplyr::group_split(name) %>%
+        purrr::map_df(function(x){x %>%
+            dplyr::mutate(search = list(eval(parse(text=term_final))))}) %>%
+        dplyr::select(term, search) %>%
+        tidyr::unnest(cols = names(.)) %>%
+        dplyr::group_by(term) %>%
+        dplyr::mutate(rowid = 1:n()) %>%
+        dplyr::group_by(rowid) %>%
+        dplyr::summarise(search = ifelse(sum(search==T)>0, "Yes", "No"))
+
+      df_keyword <- df_keyword %>%
+        dplyr::bind_cols(keyword_logic %>% select("keyword" = search)) %>%
+        dplyr::mutate(ignoreword = stringr::str_detect(text, pattern = paste0(ignoreword, collapse = "|"))==F,
+                      ignoreword = ifelse(ignoreword==T, "Yes", "No"))}}
+
+
 
   df_output <- data %>%
     dplyr::left_join(df_author_final, by="pmid") %>%
@@ -151,20 +194,24 @@ df_author_final <- tibble::tibble(pmid = data$pmid,
     dplyr::mutate(criteria_met = ifelse(is.na(author_multi_n)==F&author_multi_n>=2, 1, 0),
                   criteria_met = ifelse(is.na(affiliations_author)==F&affiliations_author=="Yes", criteria_met+1, criteria_met),
                   criteria_met = ifelse(is.na(affiliations_any)==F&affiliations_any=="Yes", criteria_met+1, criteria_met),
-                  criteria_met = ifelse(is.na(keyword)==F&keyword=="Yes", criteria_met+1, criteria_met)) %>%
+                  criteria_met = ifelse(is.na(keyword)==F&keyword=="Yes", criteria_met+1, criteria_met),
+                  criteria_met = ifelse(is.na(ignoreword)==F&ignoreword=="Yes", criteria_met+1, criteria_met)) %>%
     dplyr::mutate(highlight = ifelse(criteria_met>0, "Yes", "No")) %>%
-    dplyr::select(pmid, highlight, criteria_met, author_multi_n, author_multi_list, affiliations_author:keyword,
+    dplyr::select(pmid, highlight, criteria_met, author_multi_n, author_multi_list, affiliations_author:keyword,ignoreword,
                   "author_list" = full_list, "author_affiliation_list" = full_list_aff,
                   title,journal,abstract) %>%
     dplyr::arrange(dplyr::desc(highlight), dplyr::desc(criteria_met), dplyr::desc(author_multi_n), dplyr::desc(affiliations_author),
-                   dplyr::desc(affiliations_any), dplyr::desc(keyword))
+                   dplyr::desc(affiliations_any), dplyr::desc(keyword)) %>%
+    distinct()
 
   if(separate==T){df_output <- list("wheat" = df_output %>%
                                       dplyr::filter(highlight=="Yes") %>%
-                                      dplyr::select(-highlight),
+                                      dplyr::select(-highlight) %>%
+                                      distinct(),
                                     "chaff" = df_output %>%
                                       dplyr::filter(highlight=="No"|is.na(highlight)==T) %>%
                                       dplyr::arrange(author_multi_n) %>%
-                                      dplyr::select(-highlight))}
+                                      dplyr::select(-highlight) %>%
+                                      distinct())}
 
   return(df_output)}

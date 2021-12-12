@@ -17,11 +17,9 @@
 #' @import stringr
 #' @export
 
-
 search_pubmed <- function(search_type = "author", search_list, date_min=NULL, date_max=Sys.Date(),keywords = NULL){
   # The E-utilities In-Depth: Parameters, Syntax and More (https://www.ncbi.nlm.nih.gov/books/NBK25499/)
   require(dplyr); require(lubridate); require(RCurl); require(jsonlite); require(stringr)
-
 
   url_search <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&esearch.fcgi?db=pubmed"
 
@@ -34,9 +32,8 @@ search_pubmed <- function(search_type = "author", search_list, date_min=NULL, da
     stringr::str_replace("\\?", "%3F") %>%
     paste0("(", ., ")") %>%  paste(collapse = "+OR+") %>% paste0("AND(",.,")")}
 
-
-
-
+  search_list <- tolower(search_list)
+  search_list <- unique(stringr::str_extract(search_list, "^[a-z]+ [a-z]"))
 
   if(search_type == "author"){search_list_formatted <- gsub(" ",
                                                             "%20",

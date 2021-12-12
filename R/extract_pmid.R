@@ -17,6 +17,10 @@
 #' @importFrom furrr future_map2_dfr
 #' @importFrom purrr map_chr map_lgl
 #' @export
+extract_pmid(pmid = 29672416)
+get_authors = TRUE
+get_altmetric = TRUE
+get_impact= TRUE
 
 # Function-------------------------------
 extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact= TRUE){
@@ -49,7 +53,7 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
 
   if(get_altmetric==TRUE){data <- data %>% dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
-  if(get_impact==TRUE){data <- extract_impact_factor(data)}
+  if(get_impact==TRUE){data <- impactr::extract_impact_factor(data)}
 
   if("journal_full.y" %in% names(data)){
     data <- data %>%
@@ -57,6 +61,7 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
 
   out <- tibble::enframe(as.character(pmid), name=  NULL, value = "pmid") %>%
     dplyr::left_join(data, by = "pmid") %>%
+    dplyr::distinct(pmid, .keep_all = T) %>%
     dplyr::mutate(pmid = factor(pmid, levels = c(pmid)))
 
   return(out)}

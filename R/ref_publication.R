@@ -23,7 +23,9 @@
 #' @importFrom purrr map
 #' @export
 
+
 # Function-------------------
+
 ref_publication <- function(df, author = "author", title = "title", journal = "journal",
                              year = "year",volume = "volume",issue = "issue", pages = "pages",
                              pmid = "pmid", doi = "doi", max_auth = FALSE,
@@ -34,13 +36,14 @@ ref_publication <- function(df, author = "author", title = "title", journal = "j
   cite <- df %>%
     tibble::as_tibble() %>%
     dplyr::rename(author = author,title = title,journal = journal,
-                year = year,volume = volume,issue = issue,pages = pages,
-                pmid = pmid,doi = doi) %>%
-    dplyr::mutate_at(vars(author, title, journal, year, volume,issue,pages,pmid, doi), function(x){ifelse(is.na(x)==T, NA, trimws(as.character(x)))}) %>%
-    dplyr::mutate_at(vars(author, title, journal, year, volume,issue,pages,pmid, doi),
+                  year = year,volume = volume,issue = issue,pages = pages,
+                  pmid = pmid,doi = doi) %>%
+    dplyr::mutate(across(c(author, title, journal, year, volume,issue,pages,pmid, doi),
+                         function(x){ifelse(is.na(x)==T, NA, trimws(as.character(x)))})) %>%
+    dplyr::mutate(across(c(author, title, journal, year, volume,issue,pages,pmid, doi),
                       function(x){x = ifelse(substr(x,nchar(x),nchar(x))==".",
                                              substr(x, 1, nchar(x)-1),
-                                             x)})
+                                             x)}))
 
   if(max_auth!=FALSE&is.numeric(max_auth)>0){
 
@@ -73,25 +76,25 @@ ref_publication <- function(df, author = "author", title = "title", journal = "j
 
     # use format from function -> replace with current values
     dplyr::mutate(citation = ref_format) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "author", ifelse(is.na(author)==T, "NA", author))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "title", ifelse(is.na(title)==T, "NA", title))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "journal", ifelse(is.na(journal)==T, "NA", journal))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "year", ifelse(is.na(year)==T, "NA", year))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "volume", ifelse(is.na(volume)==T, "NA", volume))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "issue", ifelse(is.na(issue)==T, "NA", issue))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "pages", ifelse(is.na(pages)==T, "NA", pages))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "author", ifelse(is.na(author)==T, "[author]", author))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "title", ifelse(is.na(title)==T, "[title]", title))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "journal", ifelse(is.na(journal)==T, "[journal]", journal))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "year", ifelse(is.na(year)==T, "[year]", year))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "volume", ifelse(is.na(volume)==T, "[volume]", volume))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "issue", ifelse(is.na(issue)==T, "[issue]", issue))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "pages", ifelse(is.na(pages)==T, "[pages]", pages))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "pmid", ifelse(is.na(pmid)==T, "NA", pmid))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "doi", paste0("http://dx.doi.org/", ifelse(is.na(doi)==T, "NA", doi)))) %>%
-    dplyr::mutate(citation = ifelse(grepl("; NA \\(NA\\): NA.", citation)==T,
-                                    gsub("; NA \\(NA\\): NA.", "; [epub ahead of print].", citation), citation)) %>%
-    dplyr::mutate(citation = ifelse( is.na(citation_na)==F&(citation_na!="volume, pages"),
-                                    paste0("[Incomplete citation data: ", citation_na, "]."), citation)) %>%
+    dplyr::mutate(citation = ifelse(grepl("; \\[volume\\] \\(\\[issue\\]\\): \\[pages\\].", citation)==T,
+                                    gsub("; \\[volume\\] \\(\\[issue\\]\\): \\[pages\\].", "; \\[epub ahead of print\\].", citation), citation)) %>%
+    dplyr::mutate(citation = ifelse(is.na(citation_na)==F&(citation_na!="volume, pages"),
+                                    paste0("[Incomplete citation data] ", citation), citation)) %>%
     dplyr::select(-citation_na) %>%
 
     # clean string
     dplyr::mutate(citation = gsub("DOI: http://dx.doi.org/NA.", "", citation)) %>%
     dplyr::mutate(citation = gsub("PMID: NA.", "", citation)) %>%
-    dplyr::mutate(citation = gsub("\\(NA)", "", citation)) %>%
+    dplyr::mutate(citation = gsub("\\(\\[issue\\]\\)", "", citation)) %>%
     dplyr::mutate(citation = gsub("  ", " ", citation)) %>%
     dplyr::mutate(citation = gsub(" :", ":", citation)) %>%
     dplyr::mutate(citation = gsub(";\\.", ".", citation)) %>%
