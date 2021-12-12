@@ -3,6 +3,7 @@
 #' Provide a citation for a research publication
 #' @description Used to extract journal impact metrics for publications.
 #' @param data Dataframe with publications listed rowwise with at least 1 column containing the journal ISSN
+#' @param var_id String of column name with identifier name: "pmid" or "doi" (default: "pmid")
 #' @param var_issn String of column name with the journal International Standard Serial Number (ISSN) number listed (default: journal_issn)
 #' @param all Logical value indicating if only the 2 year impact factor should be returned (or if it should include all impact factor information)
 #' @return Dataframe of journal impact metrics
