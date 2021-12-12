@@ -37,7 +37,8 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
 
   pmid <- check_pmid %>% dplyr::filter(check == "pass") %>% dplyr::pull(numeric)
 
-  data <- impactr::format_pubmed_xml(pmid, var_author = get_authors, var_collaborator = get_authors) %>%
+  data <- impactr::format_pubmed_xml(pmid, var_author = get_authors, var_collaborator = get_authors,
+                                     var_abstract = T) %>%
 
     dplyr::mutate(date_publish = dplyr::case_when(is.na(date_publish)==T ~ history_entrez,
                                                   is.na(date_publish)==T ~ history_pubmed,

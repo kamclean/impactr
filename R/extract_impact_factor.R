@@ -50,7 +50,7 @@ extract_impact_factor <- function(data, var_id = "pmid", var_issn = "journal_iss
   journal_data <- out %>%
     dplyr::bind_rows(df_missing_max, df_missing_min) %>%
     dplyr::mutate(year = as.character(year)) %>%
-    dplyr::select(-journal_full, -journal_abbr)
+    dplyr::select(-journal_full)
 
   final <- df %>%
     dplyr::left_join(journal_data, by=c("journal_issn","year")) %>%
