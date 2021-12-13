@@ -33,7 +33,7 @@ search_pubmed <- function(search_type = "author", search_list, date_min=NULL, da
     paste0("(", ., ")") %>%  paste(collapse = "+OR+") %>% paste0("AND(",.,")")}
 
   search_list <- tolower(search_list)
-  search_list <- unique(stringr::str_extract(search_list, "^[a-z]+ [a-z]"))
+  search_list <- unique(stringr::str_extract_all(search_list, "^[a-z]+ [a-z]")) %>% unlist()
 
   if(search_type == "author"){search_list_formatted <- gsub(" ",
                                                             "%20",
