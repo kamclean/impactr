@@ -35,8 +35,9 @@ score_alm <- function(id_list){
         tibble::enframe() %>%
         tidyr::pivot_wider(everything())})) %>%
     dplyr::select(-response) %>%
-    dplyr::right_join(score, id_class %>% select(id), by = "id") %>%
+    dplyr::left_join(id_class %>% select(id),., by = "id") %>%
     dplyr::select(id, score) %>%
     tidyr::unnest(score,keep_empty = T) %>%
     pull(score)
-    return(score)}
+
+  return(score)}
