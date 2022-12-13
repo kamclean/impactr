@@ -29,7 +29,6 @@
 #' @importFrom rlang is_empty
 #' @export
 
-
 format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author = TRUE, var_collaborator = TRUE,
                               var_metadata = TRUE, var_history = TRUE, var_registry = F,var_abstract = F,
                               n_chunk = 200){
@@ -369,6 +368,9 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
 
            out <- suppressMessages(extract_xml(d))
 
-          return(out)})})
+          return(out)})})  %>%
+    group_by(across(c(-author_group))) %>%
+    dplyr::summarise(author_group = paste0(author_group, collapse = "; ")) %>%
+    dplyr::ungroup()
 
   return(final)}
