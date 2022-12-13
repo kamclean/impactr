@@ -39,5 +39,4 @@ score_alm <- function(id_list){
     dplyr::select(id, score) %>%
     tidyr::unnest(score,keep_empty = T) %>%
     pull(score)
-
   return(score)}
