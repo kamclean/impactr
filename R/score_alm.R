@@ -21,7 +21,8 @@ score_alm <- function(id_list){
                                  dplyr::mutate(id_type = dplyr::case_when(stringr::str_detect(id, "^10\\.\\d{4,9}/")==T ~  "doi",
                                                                           nchar(id)==8&is.numeric(as.numeric(id))==T ~ "pmid",
                                                                           TRUE ~ "invalid")))
- score <- id_class %>%
+
+  score <- id_class %>%
     dplyr::filter(id_type %in% c("pmid", "doi")) %>%
     dplyr::mutate(request = paste0("https://api.altmetric.com/v1/", id_type, "/",id)) %>%
     dplyr::mutate(response = purrr::map(request, function(x){httr::GET(x)}),
@@ -34,7 +35,8 @@ score_alm <- function(id_list){
         tibble::enframe() %>%
         tidyr::pivot_wider(everything())})) %>%
     dplyr::select(-response) %>%
-    dplyr::right_join(id_class %>% select(id), by = "id") %>%
-    pull(score) %>% unlist()
-
+    dplyr::right_join(score, id_class %>% select(id), by = "id") %>%
+    dplyr::select(id, score) %>%
+    tidyr::unnest(score,keep_empty = T) %>%
+    pull(score)
     return(score)}
