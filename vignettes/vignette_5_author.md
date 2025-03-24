@@ -36,12 +36,6 @@ Traditional authorship models, largely based on the criteria of the Internationa
 An example of several papers published using a traditional authorship model can be seen here:
 
 ```r
-source('~/impactr/R/extract_pmid.R')
-source('~/impactr/R/format_pubmed_xml.R')
-source('~/impactr/R/score_alm.R')
-source('~/impactr/R/extract_impact_factor.R')
-source("~/impactr/R/impact_auth.R")
-source("~/impactr/R/impact_auth_network.R")
 data_auth <- extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,30850367, 31585971, 30793373)) %>%
   
   dplyr::mutate(pmid = factor(pmid)) %>%
@@ -131,24 +125,24 @@ example_auth$list
  </thead>
 <tbody>
   <tr>
+   <td style="text-align:left;"> sgrò a </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 31585971, 30793373 </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> fairfield c </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:left;"> 31585971 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> campbell h </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> 26445672 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> goldin s </td>
+   <td style="text-align:left;"> nannei c </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:left;"> 27531411 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> ahmed w </td>
+   <td style="text-align:left;"> potter m </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> 30850367 </td>
+   <td style="text-align:left;"> 31585971 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> camilleri-brennan j </td>
@@ -299,29 +293,29 @@ example_collab$list
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> lua boon xuan j </td>
+   <td style="text-align:left;"> malik a </td>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:left;"> DISCOVER </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> nadeem k </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> OAKS-1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> atkin g </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> OAKS-1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> bhide i </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> OAKS-1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> kambasha c </td>
+   <td style="text-align:left;"> scotcher s </td>
    <td style="text-align:right;"> 2 </td>
-   <td style="text-align:left;"> STARSurg-1, OAKS-1 </td>
+   <td style="text-align:left;"> DISCOVER, OAKS-1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> edison m </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> DISCOVER </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> schade a </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> OAKS-1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> sivakumar c </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> OAKS-1 </td>
   </tr>
 </tbody>
 </table>
@@ -372,28 +366,28 @@ A subset of the `$upset` output is displayed below. Each column is a level from 
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-  </tr>
-  <tr>
    <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 1 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
    <td style="text-align:right;"> 0 </td>
   </tr>
 </tbody>

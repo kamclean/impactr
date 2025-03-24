@@ -39,12 +39,6 @@ Traditional authorship models, largely based on the criteria of the Internationa
 
 An example of several papers published using a traditional authorship model can be seen here:
 ```{r impact_auth_intro1a, warning=FALSE, message=FALSE}
-source('~/impactr/R/extract_pmid.R')
-source('~/impactr/R/format_pubmed_xml.R')
-source('~/impactr/R/score_alm.R')
-source('~/impactr/R/extract_impact_factor.R')
-source("~/impactr/R/impact_auth.R")
-source("~/impactr/R/impact_auth_network.R")
 data_auth <- extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,30850367, 31585971, 30793373)) %>%
   
   dplyr::mutate(pmid = factor(pmid)) %>%
