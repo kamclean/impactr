@@ -16,8 +16,8 @@ ref_publication(
   pmid = "pmid",
   doi = "doi",
   max_auth = FALSE,
- 
-    ref_format = "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi."
+  ref_format =
+    "author. title. journal. year; volume (issue): pages. PMID: pmid. DOI: doi."
 )
 }
 \arguments{

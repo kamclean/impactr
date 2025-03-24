@@ -4,7 +4,7 @@
 #' @description Create a dataframe for network analysis of co-authorship
 #' @param df Dataframe with 2 mandatory columns (1) "id": A vector of unique paper IDs (e.g. DOI / PMID) (2) "author": A vector of strings of all authors (format must be last name + initials)
 #' @param author Name of the "author" variable in the dataframe (default="author_list")
-#' @param id Name of the "id" variable in the dataframe (default="pubmed")
+#' @param id Name of the "id" variable in the dataframe (default="pmid")
 #' @param auth_interest = List of authors of interest (will exclude all vertices *not* involving these authors)
 #' @param initial_right = Are the initials to the right of the last name? (default = TRUE)
 #' @param initial_n = Number of initials to match authors on (default = 1).
@@ -20,8 +20,7 @@
 #' @importFrom purrr map
 #' @export
 
-
-impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_interest="",
+impact_auth_network <- function(df, author = "author_list", id="pmid", auth_interest="",
                                 initial_right = TRUE, initial_num = 1, edge_min = 1){
 
   # if authors of interest, ensure matches authors
@@ -41,15 +40,21 @@ impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_in
           dplyr::pull(author)}
 
   # Create nodes (full dataset)
+  if(("id" %in% names(df)&id!="id")){df <- df %>% dplyr::select(-id)}
+  if(("author" %in% names(df)&author!="author")){df <- df %>% dplyr::select(-author)}
+
   df <- df %>%
     dplyr::mutate(id = dplyr::pull(., id),
-                  author = dplyr::pull(., author))
+                  author = dplyr::pull(., author)) %>%
+    dplyr::select(id, author) %>%
+    dplyr::mutate(author_n = stringr::str_count(author, ";")+1)
 
-  node <- impact_auth(df)$list %>%
+  node <- impactr::impact_auth(df,
+                               author_list = "author",
+                               pub_group = "id")$list %>%
     dplyr::select(author) %>%
     dplyr::mutate(author = iconv(tolower(author), to ="ASCII//TRANSLIT")) %>%
     tibble::rowid_to_column("id")
-
 
   # if authors of interest, ensure only publications where they are coauthor
   suppressWarnings(
@@ -67,7 +72,8 @@ impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_in
     # ensure no special characters
     dplyr::mutate(author = iconv(tolower(author), to ="ASCII//TRANSLIT")) %>%
     dplyr::select(id, author) %>%
-    tidyr::separate_rows(author, sep= "; ")
+    tidyr::separate_rows(author, sep= "; ") %>%
+    dplyr::mutate(author = stringr::str_trim(author) %>% stringr::str_squish())
 
   if(initial_right==TRUE){
     edge <- edge %>%
@@ -83,6 +89,7 @@ impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_in
           dplyr::mutate(author = paste0(author_ln, " ", author_in)) %>%
           dplyr::select(-author_ln, -author_in)}
 
+
   edge <- edge %>%
     dplyr::group_split(id, keep=TRUE) %>%
     purrr::map(function(x){x %$%
@@ -96,6 +103,11 @@ impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_in
     dplyr::mutate(status_auth12 = paste0(status_auth1, "-", status_auth2)) %>%
     dplyr::filter(status_auth12!="ext-ext") %>%
     dplyr::select(id, auth1,auth2)
+
+
+
+
+
 
   n_edge <- edge %>%
     dplyr::filter(auth1!=auth2) %>% # cannot be paired with self
@@ -136,6 +148,6 @@ impact_auth_network <- function(df, author = "author_list", id="pubmed", auth_in
     dplyr::filter(id %in% c(edge_data$auth1_id, edge_data$auth2_id)) %>%
     dplyr::mutate(interest= ifelse(author %in% auth_interest, "Yes", "No"))
 
-   out <- list("node" = node, "edge" = edge_data)
+  out <- list("node" = node, "edge" = edge_data)
 
   return(out)}

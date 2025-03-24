@@ -1,8 +1,8 @@
 ---
 title: "Impact from Co-authorship Network"
-date: "2020-10-04"
+date: "2025-03-24"
 always_allow_html: yes
-output:
+output: 
   md_document:
     variant: gfm
 vignette: >
@@ -24,9 +24,9 @@ Both the `extract_pmid()` and `extract_doi()` functions extract a list of author
 
 To track co-authors across publications, the author names must be matched between the groups (and dupliciates within groups excluded). Ideally authors would be matched on ORCID (or similar unique identifier). Unfortunalely, that information is rarely stored in on-line repositories and so authors dervied in this way can only be reliably matched by last name and initials. However, `max_inital` allows flexiblity in how restrictive matching authors will be.
 
- - If `max_inital` = 3, then the authors will be matched on their last name and exact initials (up to 3). As a result, this **more** restrictive matching may overestimate the number of unique co-authors. For example, if the **same author** is listed as "Smith ABC" and "Smith AB" on 2 separate publications, these will be treated as **different authors**.
+- If `max_inital` = 3, then the authors will be matched on their last name and exact initials (up to 3). As a result, this **more** restrictive matching may overestimate the number of unique co-authors. For example, if the **same author** is listed as "Smith ABC" and "Smith AB" on 2 separate publications, these will be treated as **different authors**.
 
- - If `max_inital` = 1, then the authors will be matched on their last name and first initial only. As a result, this **less** restrictive matching may underestimate the number of unique co-authors. For example, if **different authors** have the same last name and first initial (e.g. listed as "Smith AB" and "Smith AK") on 2 separate publications, these will be treated as the **same author**.
+- If `max_inital` = 1, then the authors will be matched on their last name and first initial only. As a result, this **less** restrictive matching may underestimate the number of unique co-authors. For example, if **different authors** have the same last name and first initial (e.g. listed as "Smith AB" and "Smith AK") on 2 separate publications, these will be treated as the **same author**.
 
 &nbsp;
 
@@ -37,20 +37,15 @@ An example of several papers published using a traditional authorship model can 
 
 ```r
 source('~/impactr/R/extract_pmid.R')
-  source('~/impactr/R/extract_pubmed_xml.R')
-```
-
-```
-## Error in file(filename, "r", encoding = encoding): cannot open the connection
-```
-
-```r
+source('~/impactr/R/format_pubmed_xml.R')
 source('~/impactr/R/score_alm.R')
 source('~/impactr/R/extract_impact_factor.R')
+source("~/impactr/R/impact_auth.R")
+source("~/impactr/R/impact_auth_network.R")
 data_auth <- extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,30850367, 31585971, 30793373)) %>%
-                                            
-  dplyr::mutate(pubmed = factor(pubmed)) %>%
-  dplyr::select(pubmed, author_n, author_list)
+  
+  dplyr::mutate(pmid = factor(pmid)) %>%
+  dplyr::select(pmid, author_n, author_list)
 ```
 
 ```
@@ -64,23 +59,55 @@ data_auth <- extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,308503
 ## [1] 7
 ```
 
-```
-## Error: Problem with `mutate()` input `pubmed`.
-## x object 'pubmed' not found
-## ℹ Input `pubmed` is `factor(pubmed)`.
-```
-
-
-```
-## Error in eval(lhs, parent, parent): object 'data_auth' not found
-```
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> pmid </th>
+   <th style="text-align:left;"> author_n </th>
+   <th style="text-align:left;"> author_list </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 26445672 </td>
+   <td style="text-align:left;"> 4 </td>
+   <td style="text-align:left;"> Shi T; McLean K; Campbell H; Nair H... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 28280919 </td>
+   <td style="text-align:left;"> 7 </td>
+   <td style="text-align:left;"> McLean KA; Sheng Z; O'Neill S; Boyce K; Jones C; Wigmore SJ; Harrison EM... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 27531411 </td>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> McLean KA; Goldin S; Nannei C; Sparrow E; Torelli G... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 28027614 </td>
+   <td style="text-align:left;"> 8 </td>
+   <td style="text-align:left;"> McLean KA; Camilleri-Brennan J; Knight SR; Drake TM; Ots R; Shaw CA; Wigmore SJ;... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 30850367 </td>
+   <td style="text-align:left;"> 5 </td>
+   <td style="text-align:left;"> Ahmed WU; Mills E; Khaw RA; McLean KA; Glasbey JC... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 31585971 </td>
+   <td style="text-align:left;"> 12 </td>
+   <td style="text-align:left;"> McLean KA; Mountain KE; Shaw CA; Drake TM; Ots R; Knight SR; Fairfield CJ; Sgrò ... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 30793373 </td>
+   <td style="text-align:left;"> 9 </td>
+   <td style="text-align:left;"> McLean KA; Drake TM; Sgrò A; Camilleri-Brennan J; Knight SR; Ots R; Adair A; Wig... </td>
+  </tr>
+</tbody>
+</table>
 
 ```r
-example_auth <- impact_auth(data_auth, pub_group = "pubmed", max_inital = 1)
-```
-
-```
-## Error in eval(lhs, parent, parent): object 'data_auth' not found
+example_auth <- impact_auth(data_auth, pub_group = "pmid", max_inital = 1)
 ```
 
 
@@ -94,10 +121,42 @@ We can use `impact_auth()` to derive a basic summary (`$list`) of all unique col
 example_auth$list
 ```
 
-
-```
-## Error in eval(lhs, parent, parent): object 'example_auth' not found
-```
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> author </th>
+   <th style="text-align:right;"> pub_n </th>
+   <th style="text-align:left;"> pub_group </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> fairfield c </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 31585971 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> campbell h </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 26445672 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> goldin s </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 27531411 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ahmed w </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 30850367 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> camilleri-brennan j </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 28027614, 30793373 </td>
+  </tr>
+</tbody>
+</table>
 
 &nbsp;
 
@@ -106,15 +165,15 @@ Scientific collaboration networks are a hallmark of contemporary academic resear
 
 **`impact_auth_network()`** takes a dataframe produced by `extract_pmid()` or `extract_doi()` (or any dataframe which matches the format of the `pmid` or `doi`, and `auth_list` columns) and will produce a nested list of:
 
-  1. **$node**: All individual authors.
-  
-  2. **$edge**: All connections between authors (and their weight).
+1. **$node**: All individual authors.
+
+2. **$edge**: All connections between authors (and their weight).
 
 This can then be plotted using packages such as `igraph`, `tidygraph`, `networkD3`, etc.
 
 
 ```r
-plot_network1 <- impact_auth_network(data_auth) %$%
+plot_network1 <- impact_auth_network(data_auth, id ="pmid") %$%
   
   tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   dplyr::mutate(centrality = tidygraph::centrality_betweenness()) %>% 
@@ -129,14 +188,7 @@ plot_network1 <- impact_auth_network(data_auth) %$%
   ggraph::theme_graph()
 ```
 
-```
-## Error in eval(lhs, parent, parent): object 'data_auth' not found
-```
 
-```
-## Error in grid.draw(plot): object 'plot_network1' not found
-```
-       
 <img src="plot/plot_network1.png" align="center"/>
 
 &nbsp;
@@ -146,9 +198,10 @@ If there are specific authors of interest, these can be supplied via `auth_inter
 
 ```r
 plot_network2 <- impact_auth_network(data_auth,
-                                              auth_interest = c("mclean k", "drake t", "harrison e", "ots r", "wigmore s")) %$%
-
-tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
+                                     auth_interest = c("mclean k", "drake t", "harrison e", "ots r", "wigmore s"),
+                                     id = "pmid") %$%
+  
+  tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   dplyr::mutate(centrality = tidygraph::centrality_betweenness()) %>% 
   
   ggraph::ggraph(layout = "nicely") +
@@ -161,13 +214,6 @@ tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   ggraph::theme_graph()
 ```
 
-```
-## Error in eval(lhs, parent, parent): object 'data_auth' not found
-```
-
-```
-## Error in grid.draw(plot): object 'plot_network2' not found
-```
 
 <img src="plot/plot_network2.png" align="center"/>
 
@@ -182,12 +228,11 @@ An example of several publications by the [STARSurg collaborative](https://stars
 
 
 ```r
-data_collab <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%
+data_collab <- extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE, get_collaborators = T) %>%
   dplyr::mutate(project = factor(pmid,
                                  levels = c(25091299, 27321766, 30513129),
                                  labels =c("STARSurg-1", "DISCOVER", "OAKS-1"))) %>%
-  dplyr::mutate(author_n = stringr::str_count(author, ", ")+1) %>%
-  dplyr::select(project, pmid, author_n, author)
+  dplyr::select(project, pmid, collab_n, collab_list)
 ```
 
 ```
@@ -197,24 +242,41 @@ data_collab <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get
 ## [1] 3
 ```
 
-```
-## Error: Problem with `mutate()` input `author_n`.
-## x object 'author' not found
-## ℹ Input `author_n` is `stringr::str_count(author, ", ") + 1`.
-```
-
-
-```
-## Error in eval(lhs, parent, parent): object 'data_collab' not found
-```
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> project </th>
+   <th style="text-align:left;"> pmid </th>
+   <th style="text-align:left;"> collab_n </th>
+   <th style="text-align:left;"> collab_list </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> STARSurg-1 </td>
+   <td style="text-align:left;"> 25091299 </td>
+   <td style="text-align:left;"> 476 </td>
+   <td style="text-align:left;"> Chapman SJ; Glasbey J; Kelly M; Khatri C; Nepogodiev D; Fitzgerald JE; Bhangu A;... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DISCOVER </td>
+   <td style="text-align:left;"> 27321766 </td>
+   <td style="text-align:left;"> 1215 </td>
+   <td style="text-align:left;"> Drake TM; Nepogodiev D; Chapman SJ; Glasbey JC; Khatri C; Kong CY; Claireaux HA;... </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OAKS-1 </td>
+   <td style="text-align:left;"> 30513129 </td>
+   <td style="text-align:left;"> 1784 </td>
+   <td style="text-align:left;"> Nepogodiev D; Walker K; Glasbey JC; Drake TM; Borakati A; Kamarajah S; McLean K;... </td>
+  </tr>
+</tbody>
+</table>
 
 
 ```r
-example_collab <- impactr::impact_auth(data_collab, pub_group = "project", max_inital = 1, upset = TRUE, metric = TRUE)
-```
-
-```
-## Error in eval(lhs, parent, parent): object 'data_collab' not found
+example_collab <- impactr::impact_auth(data_collab, author_list = "collab_list",pub_group = "project", 
+                                       max_inital = 1, upset = TRUE, metric = TRUE)
 ```
 
 &nbsp;
@@ -227,17 +289,71 @@ We can use `impact_auth()` to derive a basic summary (`$list`) of all unique col
 example_collab$list
 ```
 
-
-```
-## Error in eval(lhs, parent, parent): object 'example_collab' not found
-```
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> author </th>
+   <th style="text-align:right;"> pub_n </th>
+   <th style="text-align:left;"> pub_group </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> lua boon xuan j </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> DISCOVER </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> nadeem k </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> OAKS-1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> atkin g </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> OAKS-1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> bhide i </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> OAKS-1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> kambasha c </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> STARSurg-1, OAKS-1 </td>
+  </tr>
+</tbody>
+</table>
 
 This data can be used in a variety of ways, including a basic summary of involvement over time. For example, the number of projects authors/collaborators have been involved in:
 
-
-```
-## Error in eval(lhs, parent, parent): object 'example_collab' not found
-```
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> label </th>
+   <th style="text-align:left;"> levels </th>
+   <th style="text-align:left;"> all </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> pub_n </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 2612 (89.5) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> 2 </td>
+   <td style="text-align:left;"> 271 (9.3) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 37 (1.3) </td>
+  </tr>
+</tbody>
+</table>
 
 &nbsp;
 
@@ -246,10 +362,42 @@ As discussed above, when collaborative authorship reaches hundreds or thousands,
 
 A subset of the `$upset` output is displayed below. Each column is a level from the `pub_group` variable (e.g. "project"), with `1` representing presence and the `0` representing absence of the author from each project.
 
-
-```
-## Error in eval(lhs, parent, parent): object 'example_collab' not found
-```
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> STARSurg-1 </th>
+   <th style="text-align:right;"> DISCOVER </th>
+   <th style="text-align:right;"> OAKS-1 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+</tbody>
+</table>
 
 &nbsp;
 
@@ -259,12 +407,8 @@ The `upset` output can be used to derive information on the relationships betwee
 
 
 ```r
-upset_comb_mat <- impactr::format_intersect(data_upset) %>% knitr::kable() %>%
+upset_comb_mat <- impactr::format_intersect(example_collab$upset) %>% knitr::kable() %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
-```
-
-```
-## Error in eval(lhs, parent, parent): object 'data_upset' not found
 ```
 
 &nbsp;
@@ -279,10 +423,94 @@ as.data.frame(example_collab$upset) %>% UpSetR::upset(text.scale = 1.7)
 ```
 
 
+<img src="plot/plot_upset2.png" align="center"/>
+
+#### **iii). Alluvial diagrams:**
+Alternatively, it can be used for Alluvial diagrams to provide a visualisation of author/collaborator involvement over time (variations of [Sankey diagrams](https://datavizcatalogue.com/methods/sankey_diagram.html)). This is only meaningful for *recurrent studies* from the *same group*. 
 
 
 
+<img src="plot/plot_alluvial.png" align="center"/>
+
+&nbsp;
+
+### c). **Collaborative authorship metrics (`$metrics`)**
+In addition to more traditional research metrics, a measure of the success of these projects is reflected in:
+
+1. Growth: The number of new collaborators involved in each project 
+
+2. Retention: The involvement of collaborators across multiple projects.
+
+3. Overall engagement: The total number of collaborators involved in the project.
+
+However, with potentially thousands of collaborators involved, being able to easily compare authors across multiple publications is a challenging task. Therefore, `impact_auth()` can provide metrics on author/collaborator engagement over time (note this requires `upset=TRUE`). This is only meaningful for *recurrent studies* from the *same group*. 
 
 
+```r
+example_collab$metric
+```
 
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:1000; "><table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> level </th>
+   <th style="text-align:right;"> n_total </th>
+   <th style="text-align:right;"> n_total_prior </th>
+   <th style="text-align:right;"> total_change_prop </th>
+   <th style="text-align:right;"> n_old </th>
+   <th style="text-align:right;"> n_new </th>
+   <th style="text-align:right;"> n_new_prior </th>
+   <th style="text-align:right;"> new_change_prop </th>
+   <th style="text-align:right;"> n_retain </th>
+   <th style="text-align:right;"> retain_prop </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> STARSurg-1 </td>
+   <td style="text-align:right;"> 446 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 446 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 140 </td>
+   <td style="text-align:right;"> 0.314 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DISCOVER </td>
+   <td style="text-align:right;"> 1137 </td>
+   <td style="text-align:right;"> 446 </td>
+   <td style="text-align:right;"> 2.549 </td>
+   <td style="text-align:right;"> 111 </td>
+   <td style="text-align:right;"> 1026 </td>
+   <td style="text-align:right;"> 446 </td>
+   <td style="text-align:right;"> 2.300 </td>
+   <td style="text-align:right;"> 205 </td>
+   <td style="text-align:right;"> 0.180 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> OAKS-1 </td>
+   <td style="text-align:right;"> 1682 </td>
+   <td style="text-align:right;"> 1137 </td>
+   <td style="text-align:right;"> 1.479 </td>
+   <td style="text-align:right;"> 234 </td>
+   <td style="text-align:right;"> 1448 </td>
+   <td style="text-align:right;"> 1026 </td>
+   <td style="text-align:right;"> 1.411 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+</tbody>
+</table></div>
 
+a). `total_change_prop` and `new_change_prop` refers to the number of collaborators (in total or new) involved in each project compared to the previous project.
+
+- A value of **1** indicates **consistant** engagement **compared with previous years** (stable growth).
+
+- A value **>1** indicates an **increase** in engagement **compared with previous years** (accelerated growth).
+
+b). `retain_prop` refers to the proportion of collaborators from each project involved in future projects (e.g. `n_retain` / `n_total`). This value can range from 0 (0%) to 1 (100%).
+
+&nbsp;

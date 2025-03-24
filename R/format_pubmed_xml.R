@@ -33,7 +33,6 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
                               var_metadata = TRUE, var_history = TRUE, var_registry = F,var_abstract = F,
                               n_chunk = 200){
 
-
   extract_xml <- function(xml){
 
     require(dplyr);require(xml2);require(tidyr);require(lubridate);require(zoo);require(tibble);
@@ -167,7 +166,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
         author <- dplyr::bind_cols(dplyr::select(author,- dplyr::contains("author_group")), author_group)
         author_raw <- NULL}
 
-      }
+    }
 
     collaborator <- NULL
     if(var_collaborator==T){
@@ -252,7 +251,7 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
           dplyr::select(-name) %>%
           dplyr::bind_cols(tibble::enframe(unlist(xml_pubmed$PubmedData$History), name = NULL, value = "time_value")) %>%
           dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
-          tidyr::pivot_wider(id_col = "type", names_from = "time_unit",  values_from = "time_value") %>%
+          tidyr::pivot_wider(names_from = "time_unit",  values_from = "time_value") %>%
           dplyr::mutate(history = lubridate::as_date(paste0(Year, "-", Month, "-", Day))) %>%
           dplyr::select(type, "date" = history) %>%
           dplyr::mutate(across(everything(), function(x){as.character(x)})) %>%
@@ -292,17 +291,17 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
         }else{
           abstract_all <- dplyr::bind_cols(abstract_all_label, abstract_all_content)
 
-        if(nrow(abstract_all_label)!=0){
-          abstract <- abstract_all %>%
-            dplyr::filter(stringr::str_detect(tolower(abstract_label), "fund", negate = T)) %>%
-            dplyr::mutate(abstract_label = stringr::str_to_sentence(abstract_label)) %>%
-            dplyr::mutate(abstract = paste0(abstract_label, ": ", abstract_text)) %>%
-            dplyr::summarise(abstract = paste(abstract, collapse = "\n\n"))}else{
-              abstract <- abstract_all %>%
-                dplyr::filter(stringr::str_detect(tolower(abstract_label), "fund", negate = T)) %>%
-                dplyr::mutate(abstract_label = stringr::str_to_sentence(abstract_label)) %>%
-                dplyr::mutate(abstract = paste0("Abstract: ", abstract_label)) %>%
-                dplyr::select(abstract)}}
+          if(nrow(abstract_all_label)!=0){
+            abstract <- abstract_all %>%
+              dplyr::filter(stringr::str_detect(tolower(abstract_label), "fund", negate = T)) %>%
+              dplyr::mutate(abstract_label = stringr::str_to_sentence(abstract_label)) %>%
+              dplyr::mutate(abstract = paste0(abstract_label, ": ", abstract_text)) %>%
+              dplyr::summarise(abstract = paste(abstract, collapse = "\n\n"))}else{
+                abstract <- abstract_all %>%
+                  dplyr::filter(stringr::str_detect(tolower(abstract_label), "fund", negate = T)) %>%
+                  dplyr::mutate(abstract_label = stringr::str_to_sentence(abstract_label)) %>%
+                  dplyr::mutate(abstract = paste0("Abstract: ", abstract_label)) %>%
+                  dplyr::select(abstract)}}
 
         if(is.null(abstract)==F){if(nrow(abstract)==0){abstract <- NULL} }}}
 
@@ -355,9 +354,9 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
 
       # Pull XML from Pubmed
 
-      RCurl::getURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=",
-                           paste(a$pmid, collapse = "+OR+"),
-                           "&retmode=xml"), .encoding = "Windows-1252") %>%
+      d <- RCurl::getURL(paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=",
+                                paste(pmid, collapse = "+OR+"),
+                                "&retmode=xml"), .encoding = "Windows-1252") %>%
 
         xml2::as_xml_document() %>% xml2::xml_find_all("PubmedArticle") %>%
 
@@ -366,11 +365,15 @@ format_pubmed_xml <- function(pmid, var_id = TRUE, var_journal = TRUE,var_author
 
           print(e)
 
-           out <- suppressMessages(extract_xml(d))
+          out <- suppressMessages(extract_xml(d))
 
-          return(out)})})  %>%
-    group_by(across(c(-author_group))) %>%
+          return(out)})})
+
+  if("author_group" %in% names(final)){
+  final <- final %>%
+    dplyr::group_by(across(c(-author_group))) %>%
     dplyr::summarise(author_group = paste0(author_group, collapse = "; ")) %>%
-    dplyr::ungroup()
+    dplyr::ungroup()}
 
   return(final)}
+

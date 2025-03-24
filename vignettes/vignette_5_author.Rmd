@@ -2,7 +2,7 @@
 title: "Impact from Co-authorship Network"
 date: "`r Sys.Date()`"
 always_allow_html: yes
-output:
+output: 
   md_document:
     variant: gfm
 vignette: >
@@ -28,9 +28,9 @@ Both the `extract_pmid()` and `extract_doi()` functions extract a list of author
 
 To track co-authors across publications, the author names must be matched between the groups (and dupliciates within groups excluded). Ideally authors would be matched on ORCID (or similar unique identifier). Unfortunalely, that information is rarely stored in on-line repositories and so authors dervied in this way can only be reliably matched by last name and initials. However, `max_inital` allows flexiblity in how restrictive matching authors will be.
 
- - If `max_inital` = 3, then the authors will be matched on their last name and exact initials (up to 3). As a result, this **more** restrictive matching may overestimate the number of unique co-authors. For example, if the **same author** is listed as "Smith ABC" and "Smith AB" on 2 separate publications, these will be treated as **different authors**.
+- If `max_inital` = 3, then the authors will be matched on their last name and exact initials (up to 3). As a result, this **more** restrictive matching may overestimate the number of unique co-authors. For example, if the **same author** is listed as "Smith ABC" and "Smith AB" on 2 separate publications, these will be treated as **different authors**.
 
- - If `max_inital` = 1, then the authors will be matched on their last name and first initial only. As a result, this **less** restrictive matching may underestimate the number of unique co-authors. For example, if **different authors** have the same last name and first initial (e.g. listed as "Smith AB" and "Smith AK") on 2 separate publications, these will be treated as the **same author**.
+- If `max_inital` = 1, then the authors will be matched on their last name and first initial only. As a result, this **less** restrictive matching may underestimate the number of unique co-authors. For example, if **different authors** have the same last name and first initial (e.g. listed as "Smith AB" and "Smith AK") on 2 separate publications, these will be treated as the **same author**.
 
 &nbsp;
 
@@ -40,13 +40,15 @@ Traditional authorship models, largely based on the criteria of the Internationa
 An example of several papers published using a traditional authorship model can be seen here:
 ```{r impact_auth_intro1a, warning=FALSE, message=FALSE}
 source('~/impactr/R/extract_pmid.R')
-  source('~/impactr/R/extract_pubmed_xml.R')
+source('~/impactr/R/format_pubmed_xml.R')
 source('~/impactr/R/score_alm.R')
 source('~/impactr/R/extract_impact_factor.R')
+source("~/impactr/R/impact_auth.R")
+source("~/impactr/R/impact_auth_network.R")
 data_auth <- extract_pmid(pmid = c(26445672, 28280919, 27531411, 28027614,30850367, 31585971, 30793373)) %>%
-                                            
-  dplyr::mutate(pubmed = factor(pubmed)) %>%
-  dplyr::select(pubmed, author_n, author_list)
+  
+  dplyr::mutate(pmid = factor(pmid)) %>%
+  dplyr::select(pmid, author_n, author_list)
 ```
 
 ```{r impact_auth_intro1b, warning=FALSE, message=FALSE, echo=FALSE}
@@ -55,7 +57,7 @@ data_auth %>%
   knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 ```{r impact_auth_intro1c, warning=FALSE, message=FALSE}
-example_auth <- impact_auth(data_auth, pub_group = "pubmed", max_inital = 1)
+example_auth <- impact_auth(data_auth, pub_group = "pmid", max_inital = 1)
 ```
 
 
@@ -81,14 +83,14 @@ Scientific collaboration networks are a hallmark of contemporary academic resear
 
 **`impact_auth_network()`** takes a dataframe produced by `extract_pmid()` or `extract_doi()` (or any dataframe which matches the format of the `pmid` or `doi`, and `auth_list` columns) and will produce a nested list of:
 
-  1. **$node**: All individual authors.
-  
-  2. **$edge**: All connections between authors (and their weight).
+1. **$node**: All individual authors.
+
+2. **$edge**: All connections between authors (and their weight).
 
 This can then be plotted using packages such as `igraph`, `tidygraph`, `networkD3`, etc.
 
 ```{r impact_auth_network1a, warning=FALSE, message=FALSE, echo=TRUE}
-plot_network1 <- impact_auth_network(data_auth) %$%
+plot_network1 <- impact_auth_network(data_auth, id ="pmid") %$%
   
   tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   dplyr::mutate(centrality = tidygraph::centrality_betweenness()) %>% 
@@ -106,7 +108,7 @@ plot_network1 <- impact_auth_network(data_auth) %$%
 ggsave(plot = plot_network1,
        filename="~/impactr/vignettes/plot/plot_network1.png",height=5.6, width = 7.60, units ="in")
 ```    
-       
+
 <img src="plot/plot_network1.png" align="center"/>
 
 &nbsp;
@@ -115,9 +117,10 @@ If there are specific authors of interest, these can be supplied via `auth_inter
 
 ```{r impact_auth_network2a, warning=FALSE, message=FALSE, echo=TRUE}
 plot_network2 <- impact_auth_network(data_auth,
-                                              auth_interest = c("mclean k", "drake t", "harrison e", "ots r", "wigmore s")) %$%
-
-tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
+                                     auth_interest = c("mclean k", "drake t", "harrison e", "ots r", "wigmore s"),
+                                     id = "pmid") %$%
+  
+  tidygraph::tbl_graph(nodes = node, edges = edge, directed = FALSE) %>%
   dplyr::mutate(centrality = tidygraph::centrality_betweenness()) %>% 
   
   ggraph::ggraph(layout = "nicely") +
@@ -146,22 +149,22 @@ Collaborative research is becoming increasingly common, recognising the valuable
 An example of several publications by the [STARSurg collaborative](https://starsurg.org/) using a collaborative authorship model can be seen below. This composes 3 successive studies from the group (STARSurg-1, DISCOVER, and OAKS-1)
 
 ```{r impact_collab1a, warning=FALSE, message=FALSE}
-data_collab <- impactr::extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE) %>%
+data_collab <- extract_pmid(pmid = c(25091299, 27321766, 30513129), get_auth = TRUE, get_collaborators = T) %>%
   dplyr::mutate(project = factor(pmid,
                                  levels = c(25091299, 27321766, 30513129),
                                  labels =c("STARSurg-1", "DISCOVER", "OAKS-1"))) %>%
-  dplyr::mutate(author_n = stringr::str_count(author, ", ")+1) %>%
-  dplyr::select(project, pmid, author_n, author)
+  dplyr::select(project, pmid, collab_n, collab_list)
 ```
 
 ```{r impact_collab1b, warning=FALSE, message=FALSE, echo=FALSE}
 data_collab %>%
-  dplyr::mutate(author = paste0(substr(author, 1, 80), "...")) %>%
+  dplyr::mutate(collab_list = paste0(substr(collab_list, 1, 80), "...")) %>%
   knitr::kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ```{r impact_collab1c, warning=FALSE, message=FALSE}
-example_collab <- impactr::impact_auth(data_collab, pub_group = "project", max_inital = 1, upset = TRUE, metric = TRUE)
+example_collab <- impactr::impact_auth(data_collab, author_list = "collab_list",pub_group = "project", 
+                                       max_inital = 1, upset = TRUE, metric = TRUE)
 ```
 
 &nbsp;
@@ -208,7 +211,7 @@ example_collab$upset %>%
 The `upset` output can be used to derive information on the relationships between authors and the groups (`pub_group` variable).
 
 ```{r impact_auth_upset2, warning=FALSE, message=FALSE}
-upset_comb_mat <- impactr::format_intersect(data_upset) %>% knitr::kable() %>%
+upset_comb_mat <- impactr::format_intersect(example_collab$upset) %>% knitr::kable() %>%
   kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
@@ -220,7 +223,7 @@ Furthermore, UpSet plots provide an efficient way to visualize intersections of 
 
 ```{r impact_auth_upset3bi, echo=TRUE, results='hide', eval=FALSE}
 as.data.frame(example_collab$upset) %>% UpSetR::upset(text.scale = 1.7)
-  
+
 ```
 
 ```{r impact_auth_upset3bii, echo=FALSE, message=FALSE, error=FALSE,include=FALSE, warning = FALSE}
@@ -257,7 +260,7 @@ plot_alluvial <-  example_collab$upset %>%
   scale_x_discrete(name = "Involvement in STARSurg Project") +
   scale_y_continuous(name = "Total Number of Collaborators") +
   theme_bw(base_size = 18) + guides(fill=FALSE)
-  
+
 ggsave(plot_alluvial, filename = "~/impactr/vignettes/plot/plot_alluvial.png",
        height = 5.76*0.75, width = 9.60*0.75)
 ```
@@ -269,12 +272,12 @@ ggsave(plot_alluvial, filename = "~/impactr/vignettes/plot/plot_alluvial.png",
 ### c). **Collaborative authorship metrics (`$metrics`)**
 In addition to more traditional research metrics, a measure of the success of these projects is reflected in:
 
-  1. Growth: The number of new collaborators involved in each project 
+1. Growth: The number of new collaborators involved in each project 
 
-  2. Retention: The involvement of collaborators across multiple projects.
-  
-  3. Overall engagement: The total number of collaborators involved in the project.
-  
+2. Retention: The involvement of collaborators across multiple projects.
+
+3. Overall engagement: The total number of collaborators involved in the project.
+
 However, with potentially thousands of collaborators involved, being able to easily compare authors across multiple publications is a challenging task. Therefore, `impact_auth()` can provide metrics on author/collaborator engagement over time (note this requires `upset=TRUE`). This is only meaningful for *recurrent studies* from the *same group*. 
 
 ```{r impact_auth_metric1a, warning=FALSE, message=FALSE, eval=FALSE}
@@ -287,12 +290,12 @@ knitr::kable(example_collab$metric)%>%
   kableExtra::scroll_box(width = "1000")
 ```
 
- a). `total_change_prop` and `new_change_prop` refers to the number of collaborators (in total or new) involved in each project compared to the previous project.
+a). `total_change_prop` and `new_change_prop` refers to the number of collaborators (in total or new) involved in each project compared to the previous project.
 
- - A value of **1** indicates **consistant** engagement **compared with previous years** (stable growth).
-    
- - A value **>1** indicates an **increase** in engagement **compared with previous years** (accelerated growth).
-    
- b). `retain_prop` refers to the proportion of collaborators from each project involved in future projects (e.g. `n_retain` / `n_total`). This value can range from 0 (0%) to 1 (100%).
- 
+- A value of **1** indicates **consistant** engagement **compared with previous years** (stable growth).
+
+- A value **>1** indicates an **increase** in engagement **compared with previous years** (accelerated growth).
+
+b). `retain_prop` refers to the proportion of collaborators from each project involved in future projects (e.g. `n_retain` / `n_total`). This value can range from 0 (0%) to 1 (100%).
+
 &nbsp;

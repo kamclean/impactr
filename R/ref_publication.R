@@ -76,15 +76,16 @@ ref_publication <- function(df, author = "author", title = "title", journal = "j
 
     # use format from function -> replace with current values
     dplyr::mutate(citation = ref_format) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "author", ifelse(is.na(author)==T, "[author]", author))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "title", ifelse(is.na(title)==T, "[title]", title))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "journal", ifelse(is.na(journal)==T, "[journal]", journal))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "year", ifelse(is.na(year)==T, "[year]", year))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "pmid", ifelse(is.na(pmid)==T, "NA", pmid))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "doi", paste0("http://dx.doi.org/", ifelse(is.na(doi)==T, "NA", doi)))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "journal", ifelse(is.na(journal)==T, "[journal]", journal))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "volume", ifelse(is.na(volume)==T, "[volume]", volume))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "issue", ifelse(is.na(issue)==T, "[issue]", issue))) %>%
     dplyr::mutate(citation = stringr::str_replace(citation, "pages", ifelse(is.na(pages)==T, "[pages]", pages))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "pmid", ifelse(is.na(pmid)==T, "NA", pmid))) %>%
-    dplyr::mutate(citation = stringr::str_replace(citation, "doi", paste0("http://dx.doi.org/", ifelse(is.na(doi)==T, "NA", doi)))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "author", ifelse(is.na(author)==T, "[author]", author))) %>%
+    dplyr::mutate(citation = stringr::str_replace(citation, "title", ifelse(is.na(title)==T, "[title]", title))) %>%
+
     dplyr::mutate(citation = ifelse(grepl("; \\[volume\\] \\(\\[issue\\]\\): \\[pages\\].", citation)==T,
                                     gsub("; \\[volume\\] \\(\\[issue\\]\\): \\[pages\\].", "; \\[epub ahead of print\\].", citation), citation)) %>%
     dplyr::mutate(citation = ifelse(is.na(citation_na)==F&(citation_na!="volume, pages"),

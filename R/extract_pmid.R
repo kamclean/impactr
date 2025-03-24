@@ -19,7 +19,7 @@
 #' @export
 
 # Function-------------------------------
-extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_impact= TRUE){
+extract_pmid <- function(pmid, get_authors = TRUE, get_collaborators = F, get_altmetric = TRUE, get_impact= TRUE){
 
   # Load required functions----------------
   require(magrittr);require(dplyr);require(furrr);require(RCurl);require(xml2);require(lubridate)
@@ -37,8 +37,8 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
 
   pmid <- check_pmid %>% dplyr::filter(check == "pass") %>% dplyr::pull(numeric)
 
-  data <- impactr::format_pubmed_xml(pmid, var_author = get_authors, var_collaborator = get_authors,
-                                     var_abstract = T) %>%
+  data2 <- format_pubmed_xml(pmid, var_author = get_authors, var_collaborator = get_collaborators,
+                                     var_abstract = F) %>%
 
     dplyr::mutate(date_publish = dplyr::case_when(is.na(date_publish)==T ~ history_entrez,
                                                   is.na(date_publish)==T ~ history_pubmed,
@@ -48,16 +48,17 @@ extract_pmid <- function(pmid, get_authors = TRUE, get_altmetric = TRUE, get_imp
     dplyr::select(-dplyr::starts_with("history_")) %>%
     dplyr::mutate(pmid = as.character(pmid))
 
-  if(get_altmetric==TRUE){data <- data %>% dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
-  if(get_impact==TRUE){data <- impactr::extract_impact_factor(data)}
+  if(get_altmetric==TRUE){data2 <- data2 %>% dplyr::mutate(altmetric = impactr::score_alm(doi))}
 
-  if("journal_full.y" %in% names(data)){
-    data <- data %>%
+  if(get_impact==TRUE){data2 <- impactr::extract_impact_factor(data2)}
+
+  if("journal_full.y" %in% names(data2)){
+    data2 <- data2 %>%
       dplyr::rename("journal_full" = journal_full.x, "journal_full2" = journal_full.y)}
 
   out <- tibble::enframe(as.character(pmid), name=  NULL, value = "pmid") %>%
-    dplyr::left_join(data, by = "pmid") %>%
+    dplyr::left_join(data2, by = "pmid") %>%
     dplyr::distinct(pmid, .keep_all = T) %>%
     dplyr::mutate(pmid = factor(pmid, levels = c(pmid)))
 

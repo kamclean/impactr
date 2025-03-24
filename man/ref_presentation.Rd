@@ -16,8 +16,7 @@ ref_presentation(
   con_city = "con_city",
   con_country = "con_country",
   author = "author",
- 
-    ref_format = "author. title. con_org con_name, con_date_range, con_city (con_country)."
+  ref_format = "author. title. con_org con_name, con_date_range, con_city (con_country)."
 )
 }
 \arguments{
